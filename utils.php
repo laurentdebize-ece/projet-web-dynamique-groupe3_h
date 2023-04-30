@@ -1,8 +1,9 @@
-<?
-
+<?php
     function get_db_config() {
+
         $jsonString = file_get_contents('../config/db.json');
         $config = json_decode($jsonString, true);
+        
         if ($config === null) {
             die('Erreur lors de la lecture du fichier JSON');
         }
@@ -13,3 +14,4 @@
 
         return [$dsn, $user, $password];
     }
+?>
