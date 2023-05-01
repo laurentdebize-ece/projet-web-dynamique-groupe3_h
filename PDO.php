@@ -1,36 +1,7 @@
 <?php
 
-    include_once 'utils.php';
-
-/// Class manager pour une table de la base de données
-class DbTableManager {
-
-    private string $table_name;
-    private string $class_table_name;
-    private ?PDO $db_pdo;
-
-    protected function __construct(string $table_name, string $class_table_name) {
-
-        // config des infos de table
-        $this->table_name = $table_name;
-        $this->class_table_name = $class_table_name;
-        
-        [$dsn, $user, $password] = get_db_config();
-
-        try {
-            $this->db_pdo = new PDO($dsn, $user, $password, array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
-            $this->db_pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } 
-        catch (PDOException $e) {
-            echo "Failed to connect: " . $e->getMessage() . "<br>";
-            exit();
-        }
-    }
-
-    public function get(?string $sql): mixed {
-        
-    }
-}
+    include_once 'src/Database.php';
+    include_once 'src/DatabaseTable.php';
 
 class Theme {
     private int $idTheme;
@@ -38,11 +9,11 @@ class Theme {
     private string $nomTheme;
 }
 
-class ThemeController extends DbTableManager {
-    public function __construct() {
-        parent::__construct('Themes', Theme::class);
-    }
-}
+// class ThemeController extends DbTableManager {
+//     public function __construct() {
+//         parent::__construct('Themes', Theme::class);
+//     }
+// }
 
 class Competence {
     private int $idCompetences;
@@ -51,22 +22,22 @@ class Competence {
     private string $dateCreation;
 }
 
-class CompetenceController extends DbTableManager {
-    public function __construct() {
-        parent::__construct('Competences', Competence::class);
-    }
-}
+// class CompetenceController extends DbTableManager {
+//     public function __construct() {
+//         parent::__construct('Competences', Competence::class);
+//     }
+// }
 
 class ThemesCompetences {
     private int $idCompetences;
     private int $idTheme;
 }
 
-class ThemeCompetencesController extends DbTableManager {
-    public function __construct() {
-        parent::__construct('Themes/Competences', ThemesCompetences::class);
-    }
-}
+// class ThemeCompetencesController extends DbTableManager {
+//     public function __construct() {
+//         parent::__construct('Themes/Competences', ThemesCompetences::class);
+//     }
+// }
 
 class Matiere {
     private int $idMatiere;
@@ -75,22 +46,22 @@ class Matiere {
     private string $idProfesseur;
 }
 
-class MatiereController extends DbTableManager {
-    public function __construct() {
-        parent::__construct('Matieres', Matiere::class);
-    }
-}
+// class MatiereController extends DbTableManager {
+//     public function __construct() {
+//         parent::__construct('Matieres', Matiere::class);
+//     }
+// }
 
 class MatiereCompetences {
     private int $idCompetences;
     private int $idMatiere;
 }
 
-class MatiereCompetencesController extends DbTableManager {
-    public function __construct() {
-        parent::__construct('Matiere/Competences', MatiereCompetences::class);
-    }
-}
+// class MatiereCompetencesController extends DbTableManager {
+//     public function __construct() {
+//         parent::__construct('Matiere/Competences', MatiereCompetences::class);
+//     }
+// }
 
 class Ecole {
     private int $idEcole;
@@ -99,11 +70,11 @@ class Ecole {
     private string $typeEtude;
 }
 
-class EcoleController extends DbTableManager {
-    public function __construct() {
-        parent::__construct('Ecoles', Ecole::class);
-    }
-}
+// class EcoleController extends DbTableManager {
+//     public function __construct() {
+//         parent::__construct('Ecoles', Ecole::class);
+//     }
+// }
 
 class Promotion {
     private int $idPromo;
@@ -113,11 +84,11 @@ class Promotion {
     private int $idEcole;
 }
 
-class PromotionController extends DbTableManager {
-    public function __construct() {
-        parent::__construct('Promotions', Promotion::class);
-    }
-}
+// class PromotionController extends DbTableManager {
+//     public function __construct() {
+//         parent::__construct('Promotions', Promotion::class);
+//     }
+// }
 
 class Cours {
     private int $idCours;
@@ -127,11 +98,11 @@ class Cours {
     private int $idMatiere;
 }
 
-class CoursController extends DbTableManager {
-    public function __construct() {
-        parent::__construct('Cours', Cours::class);
-    }
-}
+// class CoursController extends DbTableManager {
+//     public function __construct() {
+//         parent::__construct('Cours', Cours::class);
+//     }
+// }
 
 class Classe {
     private int $idClasse;
@@ -141,11 +112,11 @@ class Classe {
     private int $idEleve;
 }
 
-class ClassesController extends DbTableManager {
-    public function __construct() {
-        parent::__construct('Classes', Classe::class);
-    }
-}
+// class ClassesController extends DbTableManager {
+//     public function __construct() {
+//         parent::__construct('Classes', Classe::class);
+//     }
+// }
 
 class User {
     private int $idUser;
@@ -158,11 +129,11 @@ class User {
     private int $idEcole;
 }
 
-class UserController extends DbTableManager {
-    public function __construct() {
-        parent::__construct('Users', User::class);
-    }
-}
+// class UserController extends DbTableManager {
+//     public function __construct() {
+//         parent::__construct('Users', User::class);
+//     }
+// }
 
 class Evaluation {
     private int $idEvaluation;
@@ -177,11 +148,11 @@ class Evaluation {
     private int $idMatiere;
 }
 
-class EvaluationsController extends DbTableManager {
-    public function __construct() {
-        parent::__construct('Evaluations', Evaluation::class);
-    }
-}
+// class EvaluationsController extends DbTableManager {
+//     public function __construct() {
+//         parent::__construct('Evaluations', Evaluation::class);
+//     }
+// }
 
 
 class ControllerDB {

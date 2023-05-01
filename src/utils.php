@@ -1,7 +1,7 @@
 <?php
     function get_db_config() {
 
-        $jsonString = file_get_contents('../config/db.json');
+        $jsonString = file_get_contents('.\config\db_credentials.json');
         $config = json_decode($jsonString, true);
         
         if ($config === null) {
@@ -14,4 +14,3 @@
 
         return [$dsn, $user, $password];
     }
-?>
