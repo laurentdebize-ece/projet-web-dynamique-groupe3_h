@@ -1,0 +1,110 @@
+<?
+
+/// Un attribut à poser sur une propriété pour donner des paramètres supplémentaires à la propriété
+#[Attribute]
+class TableOpt
+{
+    /// Constructeur de l'attribut
+    /// @param string $Type Le type de la propriété si on veut le spécifier manuellement. Si laissé à null, le type sera déduit automatiquement du type de la variable.
+    /// @param bool $PrimaryKey Si la propriété est une clé primaire.
+    public function __construct(
+        public bool $Ignore = false,
+        public bool $AutoIncrement = false,
+        public bool $Nullable = false,
+        public bool $PrimaryKey = false,
+        public ?string $Type = null,
+    ) {
+    }
+}
+
+
+final class ClassQL
+{
+
+    private static function include_field_comparator(ReflectionProperty $prop): bool
+    {
+        $attributes = $prop->getAttributes('TableOpt');
+        foreach ($attributes as $attr) {
+            if ($attr->getArguments()["Ignore"]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /// Retourne tous les champs utilisables pour créer une table SQL.
+    public static function enumerateTableFields(string $table): array
+    {
+        $refl = new ReflectionClass($table);
+        $props = $refl->getProperties(ReflectionProperty::IS_PRIVATE);
+
+        return array_filter($props, 'self::include_field_comparator');
+    }
+
+
+    ///TODO: transformer en template pour insertion dans la BDD.
+    public static function getInsertionString(mixed $obj): string
+    {
+        $sqlStr = "(";
+        $fields = self::enumerateTableFields(get_class($obj));
+        array_walk($fields, fn (ReflectionProperty $prop) => $prop->setAccessible(true));
+        $stuff = array_map(fn (ReflectionProperty $prop): string => strval($prop->getValue($obj)), $fields);
+
+        $sqlStr .= implode(", ", $stuff);
+        $sqlStr .= ")";
+        return $sqlStr;
+    }
+
+    public static function getTableDefForClass(string $class): string
+    {
+        $table_fields = array_map(fn (ReflectionProperty $prop): string => " " . $prop->getName() . " " . self::getSQLTypeDefForField($prop), self::enumerateTableFields($class));
+        return implode(",", $table_fields);
+    }
+
+    private static function getSQLTypeDefForField(ReflectionProperty $prop): string
+    {
+        $type = self::getSQLTypeForField($prop);
+
+        $attributes = $prop->getAttributes('TableOpt');
+        foreach ($attributes as $attr) {
+
+            if ($attr->getArguments()["Nullable"]) {
+                $type .= " NULLABLE";
+            } else {
+                $type .= " NOT NULL";
+            }
+
+            if ($attr->getArguments()["PrimaryKey"]) {
+                $type .= " PRIMARY KEY";
+            }
+
+            if ($attr->getArguments()["AutoIncrement"]) {
+                $type .= " AUTO_INCREMENT";
+            }
+        }
+
+        return $type;
+    }
+
+    public static function getSQLTypeForField(ReflectionProperty $prop): string
+    {
+        $baseType = $prop->getType()->getName();
+
+        // on verifie que on n'a pas d'override de type spécifié sur la table.
+        $attributes = $prop->getAttributes('TableOpt');
+        foreach ($attributes as $attr) {
+            if (isset($attr->getArguments()["Type"])) {
+                return $attr->getArguments()["Type"];
+            }
+        }
+
+        switch ($baseType) {
+            case "string":
+                return "VARCHAR(32)";
+            case "DateTime":
+            case "bool":
+            case "int":
+                return strtoupper($baseType);
+        }
+    }
+}

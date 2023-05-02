@@ -1,5 +1,4 @@
 <?
-require_once 'src/database/Database.php';
 require_once 'src/database/DatabaseTable.php';
 
 class Theme extends DatabaseTable
@@ -105,7 +104,18 @@ class User extends DatabaseTable
     const TABLE_NAME = 'Users';
     const TABLE_TYPE = User::class;
 
-    private int $idUser;
+    public function __construct($email, $nomUser, $prenomUser, $hashPassword, $idEcole = 0, $typeAccount = 0)
+    {
+        $this->email = $email;
+        $this->nomUser = $nomUser;
+        $this->prenomUser = $prenomUser;
+        $this->hashPassword = $hashPassword;
+        $this->idEcole = $idEcole;
+        $this->typeAccount = $typeAccount;
+    }
+
+    #[TableOpt(PrimaryKey: true, AutoIncrement: true)]
+    private int $idUser = 0;
 
     private int $typeAccount;
     private string $email;
