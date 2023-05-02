@@ -1,4 +1,4 @@
-<?
+<?php
     require_once 'src/utils.php';
     require_once 'src/database/ClassQL.php';
 

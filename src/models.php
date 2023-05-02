@@ -1,4 +1,4 @@
-<?
+<?php
 require_once 'src/database/DatabaseTable.php';
 
 class Theme extends DatabaseTable

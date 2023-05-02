@@ -1,4 +1,4 @@
-<?
+<?php
 
 /// Un attribut à poser sur une propriété pour donner des paramètres supplémentaires à la propriété
 #[Attribute]

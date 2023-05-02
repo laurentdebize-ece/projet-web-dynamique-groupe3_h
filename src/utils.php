@@ -12,5 +12,9 @@
         $user = $config['credentials']['user'];
         $password = $config['credentials']['password'];
 
+        if (strstr($_SERVER['DOCUMENT_ROOT'],"wamp")){
+            $password = ""; //pas besoin de mdp sous WAMP
+        }
+
         return [$dsn, $user, $password];
     }
