@@ -14,9 +14,10 @@ abstract class DatabaseTable
 
     public static function select(?string $selector): array
     {
-        DatabaseController::getInstance()->createTable(static::TABLE_NAME, static::TABLE_TYPE);
+        $db = DatabaseController::getInstance();
+        $db->createTable(static::TABLE_NAME, static::TABLE_TYPE);
         $sql = "SELECT * FROM `" . static::TABLE_NAME . "`;";
-        $stmt = DatabaseController::getInstance()->query($sql);
+        $stmt = $db->query($sql);
         $stmt->execute();
         $stmt->setFetchMode(PDO::FETCH_CLASS, static::TABLE_TYPE);
         return $stmt->fetchAll();
@@ -24,6 +25,18 @@ abstract class DatabaseTable
 
     public static function insert(DatabaseController $db, array $objs): void
     {
-        $sql = "INSERT INTO `" . self::TABLE_NAME . "` VALUES ";
+        $stringObj = "(" . implode(",", $objs) . ")";
+        try{
+            $sql = "INSERT INTO `" . static::TABLE_NAME . "` VALUES " . $stringObj . ";";
+            echo $sql;
+            $stmt = $db->query($sql);
+            $stmt->execute();
+            echo "Data inserted sucessfully";
+        }
+        catch (PDOException $e) {
+            echo "Error inserting data: " . $e->getMessage() . "<br>";
+            exit();
+        }
+        
     }
 }

@@ -8,6 +8,7 @@ class DatabaseController
 {
     static private ?DatabaseController $instance = null;
     private ?PDO $db_pdo;
+    public ?string $db_name;
 
     private function __construct()
     {
@@ -15,8 +16,21 @@ class DatabaseController
         $this->db_pdo = new PDO($dsn, $user, $password, array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
         $this->db_pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         
-        
-        $this->db_pdo->exec("CREATE DATABASE IF NOT EXISTS `omnesskills`; USE `omnesskills`");
+        $this->db_name = 'OmnesMySkills';
+        $sql = "CREATE DATABASE IF NOT EXISTS {$this->db_name};
+                USE {$this->db_name};
+                ";
+        try {
+            $this->db_pdo->exec($sql);
+            echo "Database created sucessfully";
+        } 
+        catch (PDOException $e) {
+            echo "Error creating database: " . $e->getMessage() . "<br>";
+            $this->db_pdo = null;
+            $this->db_name = null;
+            exit();
+        }
+
     }
 
     public static function getInstance(): DatabaseController

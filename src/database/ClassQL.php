@@ -27,7 +27,7 @@ final class ClassQL
         $properties = $reflectionObject->getProperties();
 
         $values = array();
-        $attributes = getAttributesByNameObject($instanceObject);
+        $attributes = self::getArrayAttributesObject($instanceObject);
 
         foreach ($properties as $property) {
             $property->setAccessible(true);
