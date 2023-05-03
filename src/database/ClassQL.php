@@ -12,6 +12,7 @@ class TableOpt
         public bool $AutoIncrement = false,
         public bool $Nullable = false,
         public bool $PrimaryKey = false,
+        public bool $ForeignKey = false,
         public ?string $Type = null,
     ) {
     }
@@ -20,6 +21,53 @@ class TableOpt
 
 final class ClassQL
 {
+
+    public static function getArrayValuesObject(DatabaseTable $instanceObject): array
+    {
+        $reflectionObject = new ReflectionObject($instanceObject);
+        $properties = $reflectionObject->getProperties();
+
+        $values = array();
+        $attributes = getAttributesByNameObject($instanceObject);
+
+        foreach ($properties as $property) {
+            $property->setAccessible(true);
+            if (isset($attributes[$property->getName()])){
+                if ($attributes[$property->getName()]["AutoIncrement"]){
+                    $values[$property->getName()] = 0;
+                }
+            }
+            else{
+                $value = $property->getValue($instanceObject);
+                $values[$property->getName()] = $value;
+            }
+        }
+        return $values;
+    }
+
+    public static function getArrayAttributesObject(DatabaseTable $instanceObject): array
+    {
+        $reflectionObject = new ReflectionObject($instanceObject);
+        $properties = $reflectionObject->getProperties();
+
+        $attributesObject = array();
+
+        foreach ($properties as $property) {
+            $property->setAccessible(true);
+            $attributes = $property->getAttributes(TableOpt::class);
+            if (!empty($attributes)){
+                $propertyAttributes = array();
+                foreach ($attributes as $attr) {
+                    $arguments = $attr->getArguments();
+                    foreach ($arguments as $cle => $valeur){
+                        $propertyAttributes[$cle] = $valeur;
+                    }
+                }
+                $attributesObject[$property->getName()] = $propertyAttributes;
+            }
+        }
+        return $attributesObject;
+    }
 
     private static function include_field_comparator(ReflectionProperty $prop): bool
     {
@@ -68,12 +116,6 @@ final class ClassQL
         $attributes = $prop->getAttributes('TableOpt');
         foreach ($attributes as $attr) {
 
-            if ($attr->getArguments()["Nullable"]) {
-                $type .= " NULLABLE";
-            } else {
-                $type .= " NOT NULL";
-            }
-
             if ($attr->getArguments()["PrimaryKey"]) {
                 $type .= " PRIMARY KEY";
             }
@@ -100,7 +142,7 @@ final class ClassQL
 
         switch ($baseType) {
             case "string":
-                return "VARCHAR(32)";
+                return "VARCHAR(255)";
             case "DateTime":
             case "bool":
             case "int":
