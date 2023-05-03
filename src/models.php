@@ -115,7 +115,7 @@ class User extends DatabaseTable
     }
 
     #[TableOpt(PrimaryKey: true, AutoIncrement: true)]
-    private int $idUser = 0;
+    private ?int $idUser = null;
 
     private int $typeAccount;
     private string $email;
