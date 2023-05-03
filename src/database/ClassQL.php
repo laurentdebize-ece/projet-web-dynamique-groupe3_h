@@ -90,16 +90,42 @@ final class ClassQL
 
 
     ///TODO: transformer en template pour insertion dans la BDD.
-    public static function getInsertionString(mixed $obj): string
+    public static function getInsertionString(mixed $obj, string $tableName): string
     {
-        $sqlStr = "(";
-        $fields = self::enumerateTableFields(get_class($obj));
-        array_walk($fields, fn (ReflectionProperty $prop) => $prop->setAccessible(true));
-        $stuff = array_map(fn (ReflectionProperty $prop): string => strval($prop->getValue($obj)), $fields);
+        $fields = ClassQL::enumerateTableFields(get_class($obj));
+        array_walk($fields, fn (ReflectionProperty $prop) => $prop->setAccessible((true)));
 
-        $sqlStr .= implode(", ", $stuff);
+
+        $fieldList = array_map(fn (ReflectionProperty $prop): string => $prop->getName(), $fields);
+        $sqlStr = "(";
+        $sqlStr .= implode(", ", $fieldList);
         $sqlStr .= ")";
-        return $sqlStr;
+        // echo $sqlStr;
+
+        $values = array_map(fn (ReflectionProperty $prop) => ClassQL::getStringValue($prop->getValue($obj) ?? null), $fields);
+        $valStr = "(";
+        $valStr .= implode(", ", $values);
+        $valStr .= ")";
+
+        // echo $valStr;
+
+        $sql = "INSERT INTO `" . $tableName . "` " . $sqlStr . " VALUES " . $valStr . ";";
+        return $sql;
+    }
+
+    public static function getStringValue(mixed $obj): string {
+        if (is_null($obj)) {
+            return "NULL";
+        }
+
+        switch (gettype($obj)) {
+            case "string":
+                return "'" . $obj . "'";
+            case "DateTime":
+                return "'" . $obj->format("Y-m-d H:i:s") . "'";
+            default:
+                return strval($obj);
+        }
     }
 
     public static function getTableDefForClass(string $class): string

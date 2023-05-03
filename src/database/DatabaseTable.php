@@ -23,20 +23,12 @@ abstract class DatabaseTable
         return $stmt->fetchAll();
     }
 
-    public static function insert(DatabaseController $db, array $objs): void
+    public static function insert(DatabaseTable $object): void
     {
-        $stringObj = "(" . implode(",", $objs) . ")";
-        try{
-            $sql = "INSERT INTO `" . static::TABLE_NAME . "` VALUES " . $stringObj . ";";
-            echo $sql;
-            $stmt = $db->query($sql);
-            $stmt->execute();
-            echo "Data inserted sucessfully";
-        }
-        catch (PDOException $e) {
-            echo "Error inserting data: " . $e->getMessage() . "<br>";
-            exit();
-        }
-        
+        $db = DatabaseController::getInstance();
+        $db->createTable(static::TABLE_NAME, static::TABLE_TYPE);
+        $sql = ClassQL::getInsertionString($object, static::TABLE_NAME);
+        $db->get_pdo()->exec($sql);
+        echo $sql;
     }
 }

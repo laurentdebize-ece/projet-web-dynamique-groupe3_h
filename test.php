@@ -1,4 +1,4 @@
-<?
+<?php
 require_once 'src/models.php';
 require_once 'src/database/ClassQL.php';
 
@@ -6,17 +6,5 @@ require_once 'src/database/ClassQL.php';
 // User::select(null);
 // SELECT * FROM `Users`
 
-// $user = new User("salut", "jamy", "lol", "sjidsijds");
-// // echo ClassQL::getTableDefForClass(User::class);
-// User::select(null);
-
-echo ClassQL::getTableDefForClass(User::class);
-User::select(null);
-
-
-// User::select(0);
-// } catch (Exception $e) {
-//     echo "error";
-//     var_dump($e);
-// }
-// echo ClassQL::getTableDefForClass(User::class);
+$user = new User("salut@ccool.fr", "Dawood", "Jerry", "sjidsijds", 69, 1);
+User::insert($user);
