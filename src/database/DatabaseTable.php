@@ -3,6 +3,8 @@
 require_once 'src/database/Database.php';
 
 /// Représente une table de la base de données.
+/// ATTENTION : La table doit posséder un constructeur publique vide
+/// et les propriétés de la table doivent être mises a une valeur par défaut.
 abstract class DatabaseTable
 {
     /// Nom de la table dans la base de données.
