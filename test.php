@@ -6,11 +6,12 @@ require_once 'src/database/ClassQL.php';
 // User::select(null);
 // SELECT * FROM `Users`
 
-$user = new User("salut", "jamy", "lol", "sjidsijds");
+// $user = new User("salut", "jamy", "lol", "sjidsijds");
 // // echo ClassQL::getTableDefForClass(User::class);
+// User::select(null);
+
+echo ClassQL::getTableDefForClass(User::class);
 User::select(null);
-
-
 
 
 // User::select(0);

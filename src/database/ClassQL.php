@@ -10,7 +10,6 @@ class TableOpt
     public function __construct(
         public bool $Ignore = false,
         public bool $AutoIncrement = false,
-        public bool $Nullable = false,
         public bool $PrimaryKey = false,
         public ?string $Type = null,
     ) {
@@ -68,12 +67,6 @@ final class ClassQL
         $attributes = $prop->getAttributes('TableOpt');
         foreach ($attributes as $attr) {
 
-            if ($attr->getArguments()["Nullable"]) {
-                $type .= " NULLABLE";
-            } else {
-                $type .= " NOT NULL";
-            }
-
             if ($attr->getArguments()["PrimaryKey"]) {
                 $type .= " PRIMARY KEY";
             }
@@ -89,6 +82,7 @@ final class ClassQL
     public static function getSQLTypeForField(ReflectionProperty $prop): string
     {
         $baseType = $prop->getType()->getName();
+        $isNullable = $prop->getType()->allowsNull();
 
         // on verifie que on n'a pas d'override de type spécifié sur la table.
         $attributes = $prop->getAttributes('TableOpt');
@@ -100,11 +94,11 @@ final class ClassQL
 
         switch ($baseType) {
             case "string":
-                return "VARCHAR(32)";
+                return "VARCHAR(32)" . ($isNullable ? "" : " NOT NULL");
             case "DateTime":
             case "bool":
             case "int":
-                return strtoupper($baseType);
+                return strtoupper($baseType) . ($isNullable ? "" : " NOT NULL");;
         }
     }
 }
