@@ -18,11 +18,10 @@ class DatabaseController
         
         $this->db_name = 'OmnesMySkills';
         $sql = "CREATE DATABASE IF NOT EXISTS {$this->db_name};
-                USE {$this->db_name};
-                ";
+            USE {$this->db_name};
+            ";
         try {
             $this->db_pdo->exec($sql);
-            echo "Database created sucessfully";
         } 
         catch (PDOException $e) {
             echo "Error creating database: " . $e->getMessage() . "<br>";
@@ -30,9 +29,9 @@ class DatabaseController
             $this->db_name = null;
             exit();
         }
-
     }
 
+    /// Crée ou retourne le singleton de l'instance DatabaseController
     public static function getInstance(): DatabaseController
     {
         if (self::$instance === null) {
@@ -42,12 +41,41 @@ class DatabaseController
         return self::$instance;
     }
 
+    /// check si la database est bine initialisé dans phpMyAdmin
+    public function check_DB_exists(){
+        $sql = "SELECT SCHEMA_NAME FROM information_schema.SCHEMATA WHERE SCHEMA_NAME = '{$this->db_name}'";
+        $stmt = $this->db_pdo->prepare($sql);
+        $stmt->execute();
+        $resultat = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (count($resultat) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /// check si la DB contient une table donnée
+    public function check_table_exists($table_name){
+        $sql = "SHOW TABLES FROM {$this->db_name} LIKE '$table_name'";
+        $stmt = $this->db_pdo->prepare($sql);
+        $stmt->execute();
+        $resultat = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (count($resultat) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /// Crée une table avec le nom & le schéma de données spécifiées dans la BDD si celle-ci n'existe pas déjà.
     public function createTable(string $tableName, string $tableType): void
     {
         $tableDef = ClassQL::getTableDefForClass($tableType);
         $sql = "CREATE TABLE IF NOT EXISTS `$tableName` ($tableDef);";
         $this->db_pdo->exec($sql);
+        
     }
 
     public function get_pdo(): PDO {

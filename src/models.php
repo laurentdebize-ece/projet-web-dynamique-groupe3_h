@@ -6,7 +6,8 @@ class Theme extends DatabaseTable
     const TABLE_NAME = 'Themes';
     const TABLE_TYPE = Theme::class;
 
-    private int $idTheme;
+    #[TableOpt(PrimaryKey: true, AutoIncrement: true)]
+    private ?int $idTheme = null;
 
     private string $nomTheme;
 }
@@ -17,9 +18,18 @@ class Competence extends DatabaseTable
     const TABLE_NAME = 'Competences';
     const TABLE_TYPE = Competence::class;
 
-    private int $idCompetences;
+    public function __construct($nomCompetences,$dateCreation)
+    {
+        $this->nomCompetences = $nomCompetences;
+        $this->dateCreation = $dateCreation;
+    }
+
+    #[TableOpt(PrimaryKey: true, AutoIncrement: true)]
+    private ?int $idCompetences = null;
 
     private string $nomCompetences;
+
+    #[TableOpt(date: true)]
     private string $dateCreation;
 }
 
@@ -37,7 +47,8 @@ class Matiere extends DatabaseTable
     const TABLE_NAME = 'Matieres';
     const TABLE_TYPE = Matiere::class;
 
-    private int $idMatiere;
+    #[TableOpt(PrimaryKey: true, AutoIncrement: true)]
+    private ?int $idMatiere = null;
 
     private string $nomMatiere;
     private string $idProfesseur;
@@ -57,7 +68,8 @@ class Ecole extends DatabaseTable
     const TABLE_NAME = 'Ecoles';
     const TABLE_TYPE = Ecole::class;
 
-    private int $idEcole;
+    #[TableOpt(PrimaryKey: true, AutoIncrement: true)]
+    private ?int $idEcole = null;
 
     private string $nomEcole;
     private string $typeEtude;
@@ -68,7 +80,8 @@ class Promotion extends DatabaseTable
     const TABLE_NAME = 'Promotions';
     const TABLE_TYPE = Promotion::class;
 
-    private int $idPromo;
+    #[TableOpt(PrimaryKey: true, AutoIncrement: true)]
+    private ?int $idPromo = null;
 
     private int $annee;
     private string $statut;
@@ -80,7 +93,8 @@ class Cours extends DatabaseTable
     const TABLE_NAME = 'Cours';
     const TABLE_TYPE = Cours::class;
 
-    private int $idCours;
+    #[TableOpt(PrimaryKey: true, AutoIncrement: true)]
+    private ?int $idCours = null;
 
     private float $volumeHoraire;
     private int $idClasse;
@@ -92,7 +106,8 @@ class Classe extends DatabaseTable
     const TABLE_NAME = 'Classes';
     const TABLE_TYPE = Classe::class;
 
-    private int $idClasse;
+    #[TableOpt(PrimaryKey: true, AutoIncrement: true)]
+    private ?int $idClasse = null;
 
     private int $numGroupe;
     private int $idPromo;
@@ -104,7 +119,7 @@ class User extends DatabaseTable
     const TABLE_NAME = 'Users';
     const TABLE_TYPE = User::class;
 
-    public function __construct($email, $nomUser, $prenomUser, $hashPassword, $idEcole = 0, $typeAccount = 0)
+    public function __construct($email, $nomUser, $prenomUser, $hashPassword, $idEcole, $typeAccount)
     {
         $this->email = $email;
         $this->nomUser = $nomUser;
@@ -123,6 +138,9 @@ class User extends DatabaseTable
     private string $prenomUser;
     private string $hashPassword;
     private int $idEcole;
+
+    #[TableOpt(Ignore:true)]
+    private Ecole $ecole;
 }
 
 class Evaluation extends DatabaseTable
@@ -130,7 +148,8 @@ class Evaluation extends DatabaseTable
     const TABLE_NAME = 'Evaluations';
     const TABLE_TYPE = Evaluation::class;
 
-    private int $idEvaluation;
+    #[TableOpt(PrimaryKey: true, AutoIncrement: true)]
+    private ?int $idEvaluation = null;
 
     private string $AutoEvaluation;
     private string $dateAutoEvaluation;

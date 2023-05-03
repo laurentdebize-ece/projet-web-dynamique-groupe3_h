@@ -12,6 +12,7 @@ class TableOpt
         public bool $AutoIncrement = false,
         public bool $PrimaryKey = false,
         public bool $ForeignKey = false,
+        public bool $date = false,
         public ?string $Type = null,
     ) {
     }
@@ -21,7 +22,84 @@ class TableOpt
 final class ClassQL
 {
 
-    public static function getArrayValuesObject(DatabaseTable $instanceObject): array
+    /// tri et enlève les attributs avec le parametres 'Ignore'
+    private static function include_field_comparator(ReflectionProperty $prop): bool
+    {
+        $attributes = $prop->getAttributes(TableOpt::class);
+        foreach ($attributes as $attr) {
+            if ($attr->getArguments()["Ignore"]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /// Retourne tous les champs utilisables pour créer une table SQL.
+    public static function enumerateTableFields(string $table): array
+    {
+        $refl = new ReflectionClass($table);
+        $props = $refl->getProperties(ReflectionProperty::IS_PRIVATE);
+
+        return array_filter($props, 'self::include_field_comparator');
+    }
+
+    /// ajoute types supplémentaires incrémenté avec TableOpt pour sql
+    private static function getSQLTypeDefForField(ReflectionProperty $prop): string
+    {
+        $type = self::getSQLTypeForField($prop);
+
+        $attributes = $prop->getAttributes(TableOpt::class);
+        foreach ($attributes as $attr) {
+
+            if ($attr->getArguments()["PrimaryKey"]) {
+                $type .= " PRIMARY KEY";
+            }
+
+            if ($attr->getArguments()["AutoIncrement"]) {
+                $type .= " AUTO_INCREMENT";
+            }
+
+        }
+
+        return $type;
+    }
+
+    /// transformer type php -> type sql
+    public static function getSQLTypeForField(ReflectionProperty $prop): string
+    {
+        $baseType = $prop->getType()->getName();
+        $isNullable = $prop->getType()->allowsNull();
+
+        // on verifie que on n'a pas d'override de type spécifié sur la table.
+        $attributes = $prop->getAttributes(TableOpt::class);
+        foreach ($attributes as $attr) {
+            if (isset($attr->getArguments()["Type"])) {
+                return $attr->getArguments()["Type"];
+            }
+            if ($attr->getArguments()["date"]) {
+                $baseType = "DateTime";
+            }
+        }
+
+        switch ($baseType) {
+            case "string":
+                return "VARCHAR(255)" . ($isNullable ? "" : " NOT NULL");
+            case "DateTime":
+            case "bool":
+            case "int":
+                return strtoupper($baseType) . ($isNullable ? "" : " NOT NULL");;
+        }
+    }
+
+    /// string complet création de table depuis une classe donnée
+    public static function getTableDefForClass(string $class): string
+    {
+        $table_fields = array_map(fn (ReflectionProperty $prop): string => " " . $prop->getName() . " " . self::getSQLTypeDefForField($prop), self::enumerateTableFields($class));
+        return implode(",", $table_fields);
+    }
+
+    /// retourne les couples attributs/valeurs de chaque instance d'objet
+    public static function getArrayValuesObject(mixed $instanceObject): array
     {
         $reflectionObject = new ReflectionObject($instanceObject);
         $properties = $reflectionObject->getProperties();
@@ -33,7 +111,14 @@ final class ClassQL
             $property->setAccessible(true);
             if (isset($attributes[$property->getName()])){
                 if ($attributes[$property->getName()]["AutoIncrement"]){
-                    $values[$property->getName()] = 0;
+                    $values[$property->getName()] = NULL;
+                }
+                if ($attributes[$property->getName()]["Ignore"]){
+                    continue;
+                }
+                else {
+                    $value = $property->getValue($instanceObject);
+                    $values[$property->getName()] = $value;
                 }
             }
             else{
@@ -44,7 +129,8 @@ final class ClassQL
         return $values;
     }
 
-    public static function getArrayAttributesObject(DatabaseTable $instanceObject): array
+    /// retourne les attributs en fonction de TableOpt
+    public static function getArrayAttributesObject(mixed $instanceObject): array
     {
         $reflectionObject = new ReflectionObject($instanceObject);
         $properties = $reflectionObject->getProperties();
@@ -68,51 +154,7 @@ final class ClassQL
         return $attributesObject;
     }
 
-    private static function include_field_comparator(ReflectionProperty $prop): bool
-    {
-        $attributes = $prop->getAttributes('TableOpt');
-        foreach ($attributes as $attr) {
-            if ($attr->getArguments()["Ignore"]) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /// Retourne tous les champs utilisables pour créer une table SQL.
-    public static function enumerateTableFields(string $table): array
-    {
-        $refl = new ReflectionClass($table);
-        $props = $refl->getProperties(ReflectionProperty::IS_PRIVATE);
-
-        return array_filter($props, 'self::include_field_comparator');
-    }
-
-
-    ///TODO: transformer en template pour insertion dans la BDD.
-    public static function getInsertionString(mixed $obj, string $tableName): string
-    {
-        $fields = ClassQL::enumerateTableFields(get_class($obj));
-        array_walk($fields, fn (ReflectionProperty $prop) => $prop->setAccessible((true)));
-
-
-        $fieldList = array_map(fn (ReflectionProperty $prop): string => $prop->getName(), $fields);
-        $sqlStr = "(";
-        $sqlStr .= implode(", ", $fieldList);
-        $sqlStr .= ")";
-        // echo $sqlStr;
-
-        $values = array_map(fn (ReflectionProperty $prop) => ClassQL::getStringValue($prop->getValue($obj) ?? null), $fields);
-        $valStr = "(";
-        $valStr .= implode(", ", $values);
-        $valStr .= ")";
-
-        // echo $valStr;
-
-        $sql = "INSERT INTO `" . $tableName . "` " . $sqlStr . " VALUES " . $valStr . ";";
-        return $sql;
-    }
-
+    /// string pour requete sql en fonction du type
     public static function getStringValue(mixed $obj): string {
         if (is_null($obj)) {
             return "NULL";
@@ -122,57 +164,55 @@ final class ClassQL
             case "string":
                 return "'" . $obj . "'";
             case "DateTime":
+                echo 'ok';
                 return "'" . $obj->format("Y-m-d H:i:s") . "'";
             default:
                 return strval($obj);
         }
     }
 
-    public static function getTableDefForClass(string $class): string
+    ///TODO: transformer en template pour insertion dans la BDD.
+    public static function getInsertionString(mixed $obj, string $tableName): string
     {
-        $table_fields = array_map(fn (ReflectionProperty $prop): string => " " . $prop->getName() . " " . self::getSQLTypeDefForField($prop), self::enumerateTableFields($class));
-        return implode(",", $table_fields);
-    }
-
-    private static function getSQLTypeDefForField(ReflectionProperty $prop): string
-    {
-        $type = self::getSQLTypeForField($prop);
-
-        $attributes = $prop->getAttributes('TableOpt');
-        foreach ($attributes as $attr) {
-
-            if ($attr->getArguments()["PrimaryKey"]) {
-                $type .= " PRIMARY KEY";
-            }
-
-            if ($attr->getArguments()["AutoIncrement"]) {
-                $type .= " AUTO_INCREMENT";
-            }
+        $fields = ClassQL::getArrayValuesObject($obj);
+        $names = array();
+        $values = array();
+        foreach ($fields as $name => $value){
+            array_push($names,$name);
+            array_push($values,$value);
         }
 
-        return $type;
-    }
+        $fieldsStr = "(" .implode(", ", $names) . ")";
 
-    public static function getSQLTypeForField(ReflectionProperty $prop): string
-    {
-        $baseType = $prop->getType()->getName();
-        $isNullable = $prop->getType()->allowsNull();
+        $values = array_map(fn($value) => ClassQL::getStringValue($value ?? null), $values);
 
-        // on verifie que on n'a pas d'override de type spécifié sur la table.
-        $attributes = $prop->getAttributes('TableOpt');
-        foreach ($attributes as $attr) {
-            if (isset($attr->getArguments()["Type"])) {
-                return $attr->getArguments()["Type"];
-            }
-        }
+        $valStr = "(" .implode(", ", $values) . ")";
 
-        switch ($baseType) {
-            case "string":
-                return "VARCHAR(255)" . ($isNullable ? "" : " NOT NULL");
-            case "DateTime":
-            case "bool":
-            case "int":
-                return strtoupper($baseType) . ($isNullable ? "" : " NOT NULL");;
-        }
+        $sql = "INSERT INTO `" . $tableName . "` " . $fieldsStr . " VALUES " . $valStr . ";";
+        return $sql;
     }
 }
+
+/// ancien code lukeh getInsertionString
+//public static function getInsertionString(mixed $obj, string $tableName): string
+//{
+//    $fields = ClassQL::enumerateTableFields(get_class($obj));
+//    array_walk($fields, fn (ReflectionProperty $prop) => $prop->setAccessible((true)));
+//
+//
+//    $fieldList = array_map(fn (ReflectionProperty $prop): string => $prop->getName(), $fields);
+//    $sqlStr = "(";
+//    $sqlStr .= implode(", ", $fieldList);
+//    $sqlStr .= ")";
+//    // echo $sqlStr;
+//
+//    $values = array_map(fn (ReflectionProperty $prop) => ClassQL::getStringValue($prop->getValue($obj) ?? null), $fields);
+//    $valStr = "(";
+//    $valStr .= implode(", ", $values);
+//    $valStr .= ")";
+//
+//    // echo $valStr;
+//
+//    $sql = "INSERT INTO `" . $tableName . "` " . $sqlStr . " VALUES " . $valStr . ";";
+//    return $sql;
+//}

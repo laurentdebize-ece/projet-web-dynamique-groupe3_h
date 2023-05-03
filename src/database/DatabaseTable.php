@@ -12,23 +12,26 @@ abstract class DatabaseTable
 
     //TODO: ajouter des méthodes pour insérer, supprimer, modifier des données dans la table.
 
-    public static function select(?string $selector): array
+    public static function select(DatabaseController $db,?string $selector): array
     {
-        $db = DatabaseController::getInstance();
-        $db->createTable(static::TABLE_NAME, static::TABLE_TYPE);
+        if (!$db->check_table_exists(static::TABLE_NAME)){
+            $db->createTable(static::TABLE_NAME, static::TABLE_TYPE);
+        }      
         $sql = "SELECT * FROM `" . static::TABLE_NAME . "`;";
         $stmt = $db->query($sql);
         $stmt->execute();
-        $stmt->setFetchMode(PDO::FETCH_CLASS, static::TABLE_TYPE);
-        return $stmt->fetchAll();
+        $results = $stmt->fetchAll();
+        
+        return $results;
     }
 
-    public static function insert(DatabaseTable $object): void
+    public static function insert(DatabaseController $db,DatabaseTable $object): void
     {
-        $db = DatabaseController::getInstance();
-        $db->createTable(static::TABLE_NAME, static::TABLE_TYPE);
+        if (!$db->check_table_exists(static::TABLE_NAME)){
+            $db->createTable(static::TABLE_NAME, static::TABLE_TYPE);
+        } 
         $sql = ClassQL::getInsertionString($object, static::TABLE_NAME);
-        $db->get_pdo()->exec($sql);
         echo $sql;
+        $db->get_pdo()->exec($sql);
     }
 }
