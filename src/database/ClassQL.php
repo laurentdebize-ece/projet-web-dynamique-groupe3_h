@@ -12,7 +12,6 @@ class TableOpt
         public bool $AutoIncrement = false,
         public bool $PrimaryKey = false,
         public bool $ForeignKey = false,
-        public bool $date = false,
         public ?string $Type = null,
     ) {
     }
@@ -75,9 +74,6 @@ final class ClassQL
         foreach ($attributes as $attr) {
             if (isset($attr->getArguments()["Type"])) {
                 return $attr->getArguments()["Type"];
-            }
-            if ($attr->getArguments()["date"]) {
-                $baseType = "DateTime";
             }
         }
 
@@ -163,9 +159,10 @@ final class ClassQL
         switch (gettype($obj)) {
             case "string":
                 return "'" . $obj . "'";
-            case "DateTime":
-                echo 'ok';
-                return "'" . $obj->format("Y-m-d H:i:s") . "'";
+            case "object":
+                if ($obj instanceof DateTime) {
+                    return "'" . $obj->format("Y-m-d H:i:s") . "'";
+                }
             default:
                 return strval($obj);
         }
