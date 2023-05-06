@@ -188,7 +188,7 @@ class User extends DatabaseTable
     private string $hashPassword;
     private int $idEcole;
 
-    #[TableOpt(Ignore:true)]
+    #[TableOpt(Ignore: true)]
     private Ecole $ecole;
 }
 
@@ -197,7 +197,7 @@ class Evaluation extends DatabaseTable
     const TABLE_NAME = 'Evaluations';
     const TABLE_TYPE = Evaluation::class;
 
-    public function __construct($AutoEvaluation,  $idUser, $idCompetences, $idMatiere, $validation=null, $evaluationFinale=null, $dateEvaluation=null)
+    public function __construct($AutoEvaluation,  $idUser, $idCompetences, $idMatiere, $validation = null, $evaluationFinale = null, $dateEvaluation = null)
     {
         $this->AutoEvaluation = $AutoEvaluation;
         $this->dateAutoEvaluation = new DateTime('now', new DateTimeZone('Europe/Paris'));

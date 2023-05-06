@@ -14,26 +14,51 @@ abstract class DatabaseTable
 
     //TODO: ajouter des méthodes pour insérer, supprimer, modifier des données dans la table.
 
-    public static function select(DatabaseController $db,?string $selector): array
+    public static function select(DatabaseController $db, ?string $selector): array
     {
-        if (!$db->check_table_exists(static::TABLE_NAME)){
+        if (!$db->check_table_exists(static::TABLE_NAME)) {
             $db->createTable(static::TABLE_NAME, static::TABLE_TYPE);
-        }      
+        }
         $sql = "SELECT * FROM `" . static::TABLE_NAME . "`;";
         $stmt = $db->query($sql);
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $stmt->execute();
         $results = $stmt->fetchAll();
-        
+
         return $results;
     }
 
-    public static function insert(DatabaseController $db,DatabaseTable $object): void
+    /// Insère un objet dans la base de données.
+    public static function insert(DatabaseController $db, DatabaseTable $object): void
     {
-        if (!$db->check_table_exists(static::TABLE_NAME)){
+        if (!$db->check_table_exists(static::TABLE_NAME)) {
             $db->createTable(static::TABLE_NAME, static::TABLE_TYPE);
-        } 
+        }
         $sql = ClassQL::getInsertionString($object, static::TABLE_NAME);
-        echo $sql;
         $db->get_pdo()->exec($sql);
+    }
+
+    /// Crée un objet de la classe représentant la table à partir d'un tableau associatif de champs.
+    public static function fromFields(array $fields): DatabaseTable
+    {
+        $class = new ReflectionClass(static::TABLE_TYPE);
+        $obj = $class->newInstanceWithoutConstructor();
+        foreach ($fields as $key => $value) {
+            try {
+                $prop = $class->getProperty($key);
+                $prop->setAccessible(true);
+                switch ($prop->getType()) {
+                    case "DateTime":
+                        $prop->setValue($obj, new DateTime($value));
+                        break;
+                    default:
+                        $prop->setValue($obj, $value);
+                        break;
+                }
+            } catch (ReflectionException $e) {
+                continue;
+            }
+        }
+        return $obj;
     }
 }

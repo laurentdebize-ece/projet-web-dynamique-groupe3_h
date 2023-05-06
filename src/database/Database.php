@@ -1,6 +1,6 @@
 <?php
-    require_once 'src/utils.php';
-    require_once 'src/database/ClassQL.php';
+require_once 'src/utils.php';
+require_once 'src/database/ClassQL.php';
 
 
 /// Contrôle l'accès à la base de données.
@@ -15,15 +15,14 @@ class DatabaseController
         [$dsn, $user, $password] = get_db_config();
         $this->db_pdo = new PDO($dsn, $user, $password, array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
         $this->db_pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        
+
         $this->db_name = 'OmnesMySkills';
         $sql = "CREATE DATABASE IF NOT EXISTS {$this->db_name};
             USE {$this->db_name};
             ";
         try {
             $this->db_pdo->exec($sql);
-        } 
-        catch (PDOException $e) {
+        } catch (PDOException $e) {
             echo "Error creating database: " . $e->getMessage() . "<br>";
             $this->db_pdo = null;
             $this->db_name = null;
@@ -42,7 +41,8 @@ class DatabaseController
     }
 
     /// check si la database est bine initialisé dans phpMyAdmin
-    public function check_DB_exists(){
+    public function check_DB_exists()
+    {
         $sql = "SELECT SCHEMA_NAME FROM information_schema.SCHEMATA WHERE SCHEMA_NAME = '{$this->db_name}'";
         $stmt = $this->db_pdo->prepare($sql);
         $stmt->execute();
@@ -56,7 +56,8 @@ class DatabaseController
     }
 
     /// check si la DB contient une table donnée
-    public function check_table_exists($table_name){
+    public function check_table_exists($table_name)
+    {
         $sql = "SHOW TABLES FROM {$this->db_name} LIKE '$table_name'";
         $stmt = $this->db_pdo->prepare($sql);
         $stmt->execute();
@@ -75,10 +76,10 @@ class DatabaseController
         $tableDef = ClassQL::getTableDefForClass($tableType);
         $sql = "CREATE TABLE IF NOT EXISTS `$tableName` ($tableDef);";
         $this->db_pdo->exec($sql);
-        
     }
 
-    public function get_pdo(): PDO {
+    public function get_pdo(): PDO
+    {
         return $this->db_pdo;
     }
 

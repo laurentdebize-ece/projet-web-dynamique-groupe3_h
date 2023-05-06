@@ -57,7 +57,6 @@ final class ClassQL
             if ($attr->getArguments()["AutoIncrement"]) {
                 $type .= " AUTO_INCREMENT";
             }
-
         }
 
         return $type;
@@ -105,19 +104,17 @@ final class ClassQL
 
         foreach ($properties as $property) {
             $property->setAccessible(true);
-            if (isset($attributes[$property->getName()])){
-                if ($attributes[$property->getName()]["AutoIncrement"]){
+            if (isset($attributes[$property->getName()])) {
+                if ($attributes[$property->getName()]["AutoIncrement"]) {
                     $values[$property->getName()] = NULL;
                 }
-                if ($attributes[$property->getName()]["Ignore"]){
+                if ($attributes[$property->getName()]["Ignore"]) {
                     continue;
-                }
-                else {
+                } else {
                     $value = $property->getValue($instanceObject);
                     $values[$property->getName()] = $value;
                 }
-            }
-            else{
+            } else {
                 $value = $property->getValue($instanceObject);
                 $values[$property->getName()] = $value;
             }
@@ -136,11 +133,11 @@ final class ClassQL
         foreach ($properties as $property) {
             $property->setAccessible(true);
             $attributes = $property->getAttributes(TableOpt::class);
-            if (!empty($attributes)){
+            if (!empty($attributes)) {
                 $propertyAttributes = array();
                 foreach ($attributes as $attr) {
                     $arguments = $attr->getArguments();
-                    foreach ($arguments as $cle => $valeur){
+                    foreach ($arguments as $cle => $valeur) {
                         $propertyAttributes[$cle] = $valeur;
                     }
                 }
@@ -151,7 +148,8 @@ final class ClassQL
     }
 
     /// string pour requete sql en fonction du type
-    public static function getStringValue(mixed $obj): string {
+    public static function getStringValue(mixed $obj): string
+    {
         if (is_null($obj)) {
             return "NULL";
         }
@@ -174,42 +172,18 @@ final class ClassQL
         $fields = ClassQL::getArrayValuesObject($obj);
         $names = array();
         $values = array();
-        foreach ($fields as $name => $value){
-            array_push($names,$name);
-            array_push($values,$value);
+        foreach ($fields as $name => $value) {
+            array_push($names, $name);
+            array_push($values, $value);
         }
 
-        $fieldsStr = "(" .implode(", ", $names) . ")";
+        $fieldsStr = "(" . implode(", ", $names) . ")";
 
-        $values = array_map(fn($value) => ClassQL::getStringValue($value ?? null), $values);
+        $values = array_map(fn ($value) => ClassQL::getStringValue($value ?? null), $values);
 
-        $valStr = "(" .implode(", ", $values) . ")";
+        $valStr = "(" . implode(", ", $values) . ")";
 
         $sql = "INSERT INTO `" . $tableName . "` " . $fieldsStr . " VALUES " . $valStr . ";";
         return $sql;
     }
 }
-
-/// ancien code lukeh getInsertionString
-//public static function getInsertionString(mixed $obj, string $tableName): string
-//{
-//    $fields = ClassQL::enumerateTableFields(get_class($obj));
-//    array_walk($fields, fn (ReflectionProperty $prop) => $prop->setAccessible((true)));
-//
-//
-//    $fieldList = array_map(fn (ReflectionProperty $prop): string => $prop->getName(), $fields);
-//    $sqlStr = "(";
-//    $sqlStr .= implode(", ", $fieldList);
-//    $sqlStr .= ")";
-//    // echo $sqlStr;
-//
-//    $values = array_map(fn (ReflectionProperty $prop) => ClassQL::getStringValue($prop->getValue($obj) ?? null), $fields);
-//    $valStr = "(";
-//    $valStr .= implode(", ", $values);
-//    $valStr .= ")";
-//
-//    // echo $valStr;
-//
-//    $sql = "INSERT INTO `" . $tableName . "` " . $sqlStr . " VALUES " . $valStr . ";";
-//    return $sql;
-//}
