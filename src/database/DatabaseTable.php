@@ -13,12 +13,11 @@ abstract class DatabaseTable
     const TABLE_TYPE = self::TABLE_TYPE;
 
     //TODO: ajouter des méthodes pour insérer, supprimer, modifier des données dans la table.
+    //TODO: faire en sorte que toutes les fonctions retournent un SQLTypedStatement qui permet de parcourir les résultats de la requête en utilisant foreach avec des objets typesafe.
 
     public static function select(DatabaseController $db, ?string $selector): array
     {
-        if (!$db->check_table_exists(static::TABLE_NAME)) {
-            $db->createTable(static::TABLE_NAME, static::TABLE_TYPE);
-        }
+        $db->ensureTableExists(static::TABLE_NAME, static::TABLE_TYPE);
         $sql = "SELECT * FROM `" . static::TABLE_NAME . "`;";
         $stmt = $db->query($sql);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -31,14 +30,13 @@ abstract class DatabaseTable
     /// Insère un objet dans la base de données.
     public static function insert(DatabaseController $db, DatabaseTable $object): void
     {
-        if (!$db->check_table_exists(static::TABLE_NAME)) {
-            $db->createTable(static::TABLE_NAME, static::TABLE_TYPE);
-        }
+        $db->ensureTableExists(static::TABLE_NAME, static::TABLE_TYPE);
         $sql = ClassQL::getInsertionString($object, static::TABLE_NAME);
         $db->get_pdo()->exec($sql);
     }
 
     /// Crée un objet de la classe représentant la table à partir d'un tableau associatif de champs.
+    //FIXME: deplacer cette fonction dans ClassQL ???
     public static function fromFields(array $fields): DatabaseTable
     {
         $class = new ReflectionClass(static::TABLE_TYPE);

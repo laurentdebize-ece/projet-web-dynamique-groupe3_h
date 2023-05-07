@@ -70,6 +70,13 @@ class DatabaseController
         }
     }
 
+    public function ensureTableExists(string $tableName, string $tableType): void
+    {
+        if (!$this->check_table_exists($tableName)) {
+            $this->createTable($tableName, $tableType);
+        }
+    }
+
     /// Crée une table avec le nom & le schéma de données spécifiées dans la BDD si celle-ci n'existe pas déjà.
     public function createTable(string $tableName, string $tableType): void
     {
