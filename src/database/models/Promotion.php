@@ -7,17 +7,17 @@ class Promotion extends DatabaseTable
     const TABLE_NAME = 'Promotions';
     const TABLE_TYPE = Promotion::class;
 
-    public function __construct($annee, $statut, $idEcole)
+    public function __construct($annee, $idFiliere)
     {
         $this->annee = $annee;
-        $this->statut = $statut;
-        $this->idEcole = $idEcole;
+        $this->idFiliere = $idFiliere;
     }
 
     #[TableOpt(PrimaryKey: true, AutoIncrement: true)]
     private ?int $idPromo = null;
 
     private int $annee;
-    private string $statut;
-    private int $idEcole;
+    
+    #[TableOpt(ForeignKey: true, TableForeignKey: Filiere::class)]
+    private int $idFiliere;
 }

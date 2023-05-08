@@ -13,7 +13,7 @@ class Competence extends DatabaseTable
     }
 
     #[TableOpt(PrimaryKey: true, AutoIncrement: true)]
-    private ?int $idCompetences = null;
+    private ?int $idCompetencesss = null;
 
     private string $nomCompetences;
     private DateTime $dateCreation;

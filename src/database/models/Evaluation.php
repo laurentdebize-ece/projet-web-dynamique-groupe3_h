@@ -6,14 +6,14 @@ class Evaluation extends DatabaseTable
     const TABLE_NAME = 'Evaluations';
     const TABLE_TYPE = Evaluation::class;
 
-    public function __construct($AutoEvaluation,  $idUser, $idCompetences, $idMatiere, $validation = null, $evaluationFinale = null, $dateEvaluation = null)
+    public function __construct($AutoEvaluation,  $idEleve, $idCompetences, $idMatiere, $validation = null, $evaluationFinale = null, $dateEvaluation = null)
     {
         $this->AutoEvaluation = $AutoEvaluation;
         $this->dateAutoEvaluation = new DateTime('now', new DateTimeZone('Europe/Paris'));
         $this->validation = $validation;
         $this->evaluationFinale = $evaluationFinale;
         $this->dateEvaluation = $dateEvaluation;
-        $this->idUser = $idUser;
+        $this->idEleve = $idEleve;
         $this->idCompetences = $idCompetences;
         $this->idMatiere = $idMatiere;
     }
@@ -26,7 +26,11 @@ class Evaluation extends DatabaseTable
     private ?bool $validation;
     private ?string $evaluationFinale;
     private ?DateTime $dateEvaluation;
-    private int $idUser;
+
+    #[TableOpt(ForeignKey: true, TableForeignKey: User::class)]
+    private int $idEleve;
+    #[TableOpt(ForeignKey: true, TableForeignKey: Competence::class)]
     private int $idCompetences;
+    #[TableOpt(ForeignKey: true, TableForeignKey: Matiere::class)]
     private int $idMatiere;
 }

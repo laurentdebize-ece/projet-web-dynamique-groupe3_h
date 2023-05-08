@@ -12,9 +12,11 @@ class MatiereCompetences extends DatabaseTable
         $this->idMatiere = $idMatiere;
     }
 
-    #[TableOpt(PrimaryKey: true, ForeignKey: true)]
-    private int $idCompetences;
+    #[TableOpt(PrimaryKey: true, AutoIncrement: true)]
+    private ?int $idMatiereCompetences = null;
 
-    #[TableOpt(PrimaryKey: true, ForeignKey: true)]
+    #[TableOpt(ForeignKey: true, TableForeignKey: Competence::class)]
+    private int $idCompetences;
+    #[TableOpt(ForeignKey: true, TableForeignKey: Matiere::class)]
     private int $idMatiere;
 }

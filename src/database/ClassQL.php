@@ -12,6 +12,7 @@ class TableOpt
         public bool $AutoIncrement = false,
         public bool $PrimaryKey = false,
         public bool $ForeignKey = false,
+        public ?DatabaseTable $TableForeignKey = null,
         public ?string $Type = null,
     ) {
     }
@@ -46,16 +47,37 @@ final class ClassQL
     private static function getSQLTypeDefForField(ReflectionProperty $prop): string
     {
         $type = self::getSQLTypeForField($prop);
-
         $attributes = $prop->getAttributes(TableOpt::class);
         foreach ($attributes as $attr) {
 
             if ($attr->getArguments()["PrimaryKey"]) {
-                $type .= " PRIMARY KEY";
+                $type .= " NOT NULL PRIMARY KEY "; 
             }
 
             if ($attr->getArguments()["AutoIncrement"]) {
                 $type .= " AUTO_INCREMENT";
+            }
+
+            if ($attr->getArguments()["ForeignKey"]) {
+                if (!isset($attr->getArguments()["TableForeignKey"])){
+                    throw new Exception("ForeignKey must have TableForeignKey");
+                }
+                else {
+                    $table = $attr->getArguments()["TableForeignKey"];
+                    $refl_table = new ReflectionClass($table);
+                    $refl_table_props = $refl_table->getProperties(ReflectionProperty::IS_PRIVATE);
+                    $champ = "";
+                    foreach ($refl_table_props as $refl_table_prop) {
+                        $attributes = $refl_table_prop->getAttributes(TableOpt::class);
+                        foreach ($attributes as $attr) {
+                            if ($attr->getArguments()["PrimaryKey"]) {
+                                $champForeign = $refl_table_prop->getName();
+                            }
+                        }
+                    }
+                    $champ = $prop->getName();
+                    $type .= ", FOREIGN KEY " . "($champ)" . " REFERENCES " . $table::TABLE_NAME . "($champForeign)";
+                }
             }
         }
 
@@ -74,11 +96,16 @@ final class ClassQL
             if (isset($attr->getArguments()["Type"])) {
                 return $attr->getArguments()["Type"];
             }
+            if (isset($attr->getArguments()["ForeignKey"])) {
+                return "INT";
+            }
         }
 
         switch ($baseType) {
             case "string":
                 return "VARCHAR(255)" . ($isNullable ? "" : " NOT NULL");
+            case "float":
+                return "DECIMAL(8,2)" . ($isNullable ? "" : " NOT NULL");
             case "DateTime":
             case "bool":
             case "int":

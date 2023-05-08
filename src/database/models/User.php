@@ -6,14 +6,14 @@ class User extends DatabaseTable
     const TABLE_NAME = 'Users';
     const TABLE_TYPE = User::class;
 
-    public function __construct($email, $nomUser, $prenomUser, $hashPassword, $idEcole, $typeAccount)
+    public function __construct($typeAccount, $email, $nomUser, $prenomUser, $hashPassword, $idClasse)
     {
+        $this->typeAccount = $typeAccount;
         $this->email = $email;
         $this->nomUser = $nomUser;
         $this->prenomUser = $prenomUser;
         $this->hashPassword = $hashPassword;
-        $this->idEcole = $idEcole;
-        $this->typeAccount = $typeAccount;
+        $this->idClasse = $idClasse;
     }
 
     #[TableOpt(PrimaryKey: true, AutoIncrement: true)]
@@ -24,5 +24,7 @@ class User extends DatabaseTable
     private string $nomUser;
     private string $prenomUser;
     private string $hashPassword;
-    private int $idEcole;
+
+    #[TableOpt(ForeignKey: true, TableForeignKey: Classe::class)]
+    private int $idClasse;
 }

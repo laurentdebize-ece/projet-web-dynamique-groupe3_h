@@ -35,28 +35,72 @@ abstract class DatabaseTable
         $db->get_pdo()->exec($sql);
     }
 
-    /// Crée un objet de la classe représentant la table à partir d'un tableau associatif de champs.
-    //FIXME: deplacer cette fonction dans ClassQL ???
-    public static function fromFields(array $fields): DatabaseTable
+    /// retourne la valeur de la clé primaire de la table
+    public static function getPrimaryKeyValue(DatabaseTable $object): ?int
     {
-        $class = new ReflectionClass(static::TABLE_TYPE);
-        $obj = $class->newInstanceWithoutConstructor();
-        foreach ($fields as $key => $value) {
-            try {
-                $prop = $class->getProperty($key);
-                $prop->setAccessible(true);
-                switch ($prop->getType()) {
-                    case "DateTime":
-                        $prop->setValue($obj, new DateTime($value));
-                        break;
-                    default:
-                        $prop->setValue($obj, $value);
-                        break;
+        $class = new ReflectionClass($object);
+        $properties = $class->getProperties();
+        $primaryKeyValue = null;
+
+        foreach ($properties as $property) {
+            $attributes = $property->getAttributes(TableOpt::class);
+            foreach ($attributes as $attribute) {
+                $arguments = $attribute->getArguments();
+                if (isset($arguments['PrimaryKey']) && $arguments['PrimaryKey'] === true) {
+                    $property->setAccessible(true);
+                    $primaryKeyValue = intval($property->getValue($object));
                 }
-            } catch (ReflectionException $e) {
-                continue;
+            }
+            if ($primaryKeyValue !== null) {
+                return $primaryKeyValue;
             }
         }
-        return $obj;
+
+        if ($primaryKeyValue === null) {
+            return null;
+        }
+    }
+
+    /// Crée un objet de la classe représentant la table à partir d'un tableau associatif de champs.
+    /// Si $index est spécifié, retourne l'objet dont la clé primaire correspond à $index.
+    /// Si $index n'est pas spécifié, retourne tous les objets.
+    //FIXME: deplacer cette fonction dans ClassQL ???
+    public static function fromFields(array $object, ?int $index = null): array
+    {
+        $objs = array();
+        foreach ($object as $fields) {
+            $class = new ReflectionClass(static::TABLE_TYPE);
+            $obj = $class->newInstanceWithoutConstructor();
+            
+            foreach ($fields as $key => $value) {
+                try {
+                    $prop = $class->getProperty($key);
+                    $prop->setAccessible(true);
+                    
+                    switch ($prop->getType()) {
+                        case "DateTime":
+                            $prop->setValue($obj, new DateTime($value));
+                            break;
+                        default:
+                            $prop->setValue($obj, $value);
+                            break;
+                    }
+                } 
+                catch (ReflectionException $e) {
+                    echo "Error during reflection: " . $e->getMessage() . "<br>";
+                    exit();
+                }
+            }
+            if ($index === null) {
+                array_push($objs, $obj);
+            }
+            else {
+                $primaryKeyValue = static::getPrimaryKeyValue($obj);
+                if ($primaryKeyValue === $index) {
+                    $objs[] = $obj;
+                }
+            }
+        }
+        return $objs;
     }
 }

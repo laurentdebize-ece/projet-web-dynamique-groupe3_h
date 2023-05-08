@@ -12,9 +12,11 @@ class ThemesCompetences extends DatabaseTable
         $this->idTheme = $idTheme;
     }
 
-    #[TableOpt(PrimaryKey: true, ForeignKey: true)]
-    private int $idCompetences;
+    #[TableOpt(PrimaryKey: true, AutoIncrement: true)]
+    private ?int $idThemesCompetences = null;
 
-    #[TableOpt(PrimaryKey: true, ForeignKey: true)]
+    #[TableOpt(ForeignKey: true, TableForeignKey: Competence::class)]
+    private int $idCompetences;
+    #[TableOpt(ForeignKey: true, TableForeignKey: Theme::class)]
     private int $idTheme;
 }

@@ -70,6 +70,16 @@ class DatabaseController
         }
     }
 
+    /// Crée une table avec le nom & le schéma de données spécifiées dans la BDD si celle-ci n'existe pas déjà.
+    public function createTable(string $tableName, string $tableType): void
+    {
+        $tableDef = ClassQL::getTableDefForClass($tableType);
+        $sql = "CREATE TABLE IF NOT EXISTS `$tableName` ($tableDef);";
+        echo $sql . '<br>';
+        $this->db_pdo->exec($sql);
+    }
+
+    /// Assure la création d'une table avec le nom & le schéma de données spécifiées dans la BDD.
     public function ensureTableExists(string $tableName, string $tableType): void
     {
         if (!$this->check_table_exists($tableName)) {
@@ -77,14 +87,20 @@ class DatabaseController
         }
     }
 
-    /// Crée une table avec le nom & le schéma de données spécifiées dans la BDD si celle-ci n'existe pas déjà.
-    public function createTable(string $tableName, string $tableType): void
+    /// Crée toutes les tables de la BDD
+    public function createAllTable():void
     {
-        $tableDef = ClassQL::getTableDefForClass($tableType);
-        $sql = "CREATE TABLE IF NOT EXISTS `$tableName` ($tableDef);";
-        $this->db_pdo->exec($sql);
+        $all_classes = get_declared_classes();
+        foreach ($all_classes as $classe) {
+            if (is_subclass_of($classe, DatabaseTable::class)) {
+                if ($classe::TABLE_NAME != null and $classe::TABLE_TYPE != null) {
+                    $this->ensureTableExists($classe::TABLE_NAME, $classe::TABLE_TYPE);
+                }
+            }
+        }
     }
 
+    /// retourne le PDO de la database
     public function get_pdo(): PDO
     {
         return $this->db_pdo;
