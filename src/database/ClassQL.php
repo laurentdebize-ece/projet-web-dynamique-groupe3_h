@@ -232,8 +232,12 @@ final class ClassQL
     public static function getUpdateString(DatabaseTable $obj): ?string
     {
         $champs = self::getArrayValuesObject($obj);
-        var_dump($champs);
-        [$PrimaryKeyName,$PrimaryKeyValue] = $obj::getPrimaryKeyProperty($obj);
+        // var_dump($champs);
+        $PrimaryKeyName = self::get_table_primary_key($obj::class);
+        $prop = new ReflectionProperty($obj::class, $PrimaryKeyName);
+        $prop->setAccessible(true);
+        $PrimaryKeyValue = $prop->getValue($obj);
+
         $modifs = array();
         foreach ($champs as $champ => $value) {
             if ($champ !== $PrimaryKeyName){

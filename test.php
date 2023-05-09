@@ -8,6 +8,5 @@ require_once 'src/database/ClassQL.php';
 $db = DatabaseController::getInstance();
 $db->createAllTable();
 $user = new Evaluation("lol", 0, 0, 0);
-Evaluation::insert($db, $user);
-var_dump(Evaluation::fromFields(Evaluation::select($db, null)[0]));
+echo ClassQL::getUpdateString($user);
 // var_dump(User::fromFields(User::select($db, null)[0]));
