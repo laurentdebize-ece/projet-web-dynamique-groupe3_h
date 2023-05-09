@@ -27,10 +27,10 @@ class Evaluation extends DatabaseTable
     private ?string $evaluationFinale;
     private ?DateTime $dateEvaluation;
 
-    #[TableOpt(ForeignKey: true, TableForeignKey: User::class)]
+    #[TableOpt(TableForeignKey: User::class)]
     private int $idEleve;
-    #[TableOpt(ForeignKey: true, TableForeignKey: Competence::class)]
+    #[TableOpt(TableForeignKey: Competence::class)]
     private int $idCompetences;
-    #[TableOpt(ForeignKey: true, TableForeignKey: Matiere::class)]
+    #[TableOpt(TableForeignKey: Matiere::class)]
     private int $idMatiere;
 }

@@ -11,8 +11,7 @@ class TableOpt
         public bool $Ignore = false,
         public bool $AutoIncrement = false,
         public bool $PrimaryKey = false,
-        public bool $ForeignKey = false,
-        public ?DatabaseTable $TableForeignKey = null,
+        public ?string $TableForeignKey = null,
         public ?string $Type = null,
     ) {
     }
@@ -34,6 +33,38 @@ final class ClassQL
         return true;
     }
 
+    private static function get_table_primary_key(string $table): string
+    {
+        $refl = new ReflectionClass($table);
+        $props = $refl->getProperties(ReflectionProperty::IS_PRIVATE);
+        foreach ($props as $prop) {
+            $attributes = $prop->getAttributes(TableOpt::class);
+            foreach ($attributes as $attr) {
+                if ($attr->getArguments()["PrimaryKey"]) {
+                    return $prop->getName();
+                }
+            }
+        }
+        return null;
+    }
+
+    /// Retourne l'odre des tables à créer pour que les clés étrangères fonctionnent.
+    private static function get_table_deps_recusrive(string $table, array $deps): array
+    {
+        $fields = self::enumerateTableFields($table);
+        foreach ($fields as $field) {
+            $attributes = $field->getAttributes(TableOpt::class);
+            foreach ($attributes as $attr) {
+                if (!is_null($attr->getArguments()["TableForeignKey"])) {
+                    $table = $attr->getArguments()["TableForeignKey"];
+                    $deps[] = $table;
+                    $deps = self::get_table_deps_recusrive($table, $deps);
+                }
+            }
+        }
+        return $deps;
+    }
+
     /// Retourne tous les champs utilisables pour créer une table SQL.
     public static function enumerateTableFields(string $table): array
     {
@@ -51,33 +82,19 @@ final class ClassQL
         foreach ($attributes as $attr) {
 
             if ($attr->getArguments()["PrimaryKey"]) {
-                $type .= " NOT NULL PRIMARY KEY "; 
+                $type .= " NOT NULL PRIMARY KEY ";
             }
 
             if ($attr->getArguments()["AutoIncrement"]) {
                 $type .= " AUTO_INCREMENT";
             }
 
-            if ($attr->getArguments()["ForeignKey"]) {
-                if (!isset($attr->getArguments()["TableForeignKey"])){
-                    throw new Exception("ForeignKey must have TableForeignKey");
-                }
-                else {
-                    $table = $attr->getArguments()["TableForeignKey"];
-                    $refl_table = new ReflectionClass($table);
-                    $refl_table_props = $refl_table->getProperties(ReflectionProperty::IS_PRIVATE);
-                    $champ = "";
-                    foreach ($refl_table_props as $refl_table_prop) {
-                        $attributes = $refl_table_prop->getAttributes(TableOpt::class);
-                        foreach ($attributes as $attr) {
-                            if ($attr->getArguments()["PrimaryKey"]) {
-                                $champForeign = $refl_table_prop->getName();
-                            }
-                        }
-                    }
-                    $champ = $prop->getName();
-                    $type .= ", FOREIGN KEY " . "($champ)" . " REFERENCES " . $table::TABLE_NAME . "($champForeign)";
-                }
+            if (!is_null($attr->getArguments()["TableForeignKey"])) {
+
+                $table = $attr->getArguments()["TableForeignKey"];
+                $champForeign = self::get_table_primary_key($table);
+                $champ = $prop->getName();
+                $type .= ", FOREIGN KEY " . "($champ)" . " REFERENCES " . $table::TABLE_NAME . "($champForeign)";
             }
         }
 
@@ -96,9 +113,6 @@ final class ClassQL
             if (isset($attr->getArguments()["Type"])) {
                 return $attr->getArguments()["Type"];
             }
-            if (isset($attr->getArguments()["ForeignKey"])) {
-                return "INT";
-            }
         }
 
         switch ($baseType) {
@@ -114,10 +128,10 @@ final class ClassQL
     }
 
     /// string complet création de table depuis une classe donnée
-    public static function getTableDefForClass(string $class): string
+    public static function getTableDefForClass(string $class): array
     {
-        $table_fields = array_map(fn (ReflectionProperty $prop): string => " " . $prop->getName() . " " . self::getSQLTypeDefForField($prop), self::enumerateTableFields($class));
-        return implode(",", $table_fields);
+        $table_defs = array_map(fn (ReflectionProperty $prop): string => " " . $prop->getName() . " " . self::getSQLTypeDefForField($prop), self::enumerateTableFields($class));
+        return [implode(",", $table_defs), self::get_table_deps_recusrive($class, array())];
     }
 
     /// retourne les couples attributs/valeurs de chaque instance d'objet

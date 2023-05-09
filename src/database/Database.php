@@ -73,7 +73,10 @@ class DatabaseController
     /// Crée une table avec le nom & le schéma de données spécifiées dans la BDD si celle-ci n'existe pas déjà.
     public function createTable(string $tableName, string $tableType): void
     {
-        $tableDef = ClassQL::getTableDefForClass($tableType);
+        [$tableDef, $tableDeps] = ClassQL::getTableDefForClass($tableType);
+        foreach ($tableDeps as $dep) {
+            $this->ensureTableExists($dep::TABLE_NAME, $dep::TABLE_TYPE);
+        }
         $sql = "CREATE TABLE IF NOT EXISTS `$tableName` ($tableDef);";
         echo $sql . '<br>';
         $this->db_pdo->exec($sql);

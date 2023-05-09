@@ -19,6 +19,6 @@ class Classe extends DatabaseTable
     private int $numGroupe;
     private ?int $effectif;
 
-    #[TableOpt(ForeignKey: true, TableForeignKey: Promotion::class)]
+    #[TableOpt(TableForeignKey: Promotion::class)]
     private int $idPromo;
 }

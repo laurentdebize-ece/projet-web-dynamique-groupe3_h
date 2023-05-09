@@ -18,6 +18,6 @@ class Promotion extends DatabaseTable
 
     private int $annee;
     
-    #[TableOpt(ForeignKey: true, TableForeignKey: Filiere::class)]
+    #[TableOpt(TableForeignKey: Filiere::class)]
     private int $idFiliere;
 }

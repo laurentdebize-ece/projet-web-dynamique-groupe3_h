@@ -25,6 +25,6 @@ class User extends DatabaseTable
     private string $prenomUser;
     private string $hashPassword;
 
-    #[TableOpt(ForeignKey: true, TableForeignKey: Classe::class)]
+    #[TableOpt(TableForeignKey: Classe::class)]
     private int $idClasse;
 }

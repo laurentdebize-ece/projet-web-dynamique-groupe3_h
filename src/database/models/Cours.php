@@ -19,7 +19,7 @@ class Cours extends DatabaseTable
 
     private float $volumeHoraire;
 
-    #[TableOpt(ForeignKey: true, TableForeignKey: Classe::class)]
+    #[TableOpt(TableForeignKey: Classe::class)]
     private int $idClasse;
     #[TableOpt(ForeignKey: true, TableForeignKey: Matiere::class)]
     private int $idMatiere;

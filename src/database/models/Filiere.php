@@ -17,6 +17,6 @@ class Filiere extends DatabaseTable
 
     private string $nomFiliere;
 
-    #[TableOpt(ForeignKey: true, TableForeignKey: Ecole::class)]
+    #[TableOpt(TableForeignKey: Ecole::class)]
     private int $idEcole;
 }
