@@ -35,8 +35,15 @@ abstract class DatabaseTable
         $db->get_pdo()->exec($sql);
     }
 
+    public static function modify(DatabaseController $db, DatabaseTable $object): void
+    {
+        $db->ensureTableExists(static::TABLE_NAME, static::TABLE_TYPE);
+        $sql = ClassQL::getUpdateString($object);
+        $db->get_pdo()->exec($sql);
+    }
+
     /// retourne la valeur de la clé primaire de la table
-    public static function getPrimaryKeyValue(DatabaseTable $object): ?int
+    public static function getPrimaryKeyProperty(DatabaseTable $object): ?array
     {
         $class = new ReflectionClass($object);
         $properties = $class->getProperties();
@@ -49,6 +56,8 @@ abstract class DatabaseTable
                 if (isset($arguments['PrimaryKey']) && $arguments['PrimaryKey'] === true) {
                     $property->setAccessible(true);
                     $primaryKeyValue = intval($property->getValue($object));
+                    $primaryKeyName = $property->getName();
+                    return [$primaryKeyName,$primaryKeyValue];
                 }
             }
             if ($primaryKeyValue !== null) {
@@ -62,17 +71,17 @@ abstract class DatabaseTable
     }
 
     /// Crée un objet de la classe représentant la table à partir d'un tableau associatif de champs.
-    /// Si $index est spécifié, retourne l'objet dont la clé primaire correspond à $index.
-    /// Si $index n'est pas spécifié, retourne tous les objets.
     //FIXME: deplacer cette fonction dans ClassQL ???
-    public static function fromFields(array $object, ?int $index = null): array
+    public static function fromFieldsAll(DatabaseController $db): array
     {
         $objs = array();
-        foreach ($object as $fields) {
+        $objects = static::select($db,null);
+        foreach ($objects as $object)
+        {
             $class = new ReflectionClass(static::TABLE_TYPE);
             $obj = $class->newInstanceWithoutConstructor();
             
-            foreach ($fields as $key => $value) {
+            foreach ($object as $key => $value) {
                 try {
                     $prop = $class->getProperty($key);
                     $prop->setAccessible(true);
@@ -91,16 +100,23 @@ abstract class DatabaseTable
                     exit();
                 }
             }
-            if ($index === null) {
-                array_push($objs, $obj);
-            }
-            else {
-                $primaryKeyValue = static::getPrimaryKeyValue($obj);
-                if ($primaryKeyValue === $index) {
-                    $objs[] = $obj;
-                }
-            }
+            $objs[] = $obj;
         }
         return $objs;
+    }
+
+
+    /// retourne l'objet dont la clé primaire correspond à $index.
+    public static function fromFieldsIndex(DatabaseController $db, int $index): ?DatabaseTable
+    {
+        $objects = static::fromFieldsAll($db);
+        foreach ($objects as $object)
+        {
+            [$_,$primaryKeyValue] = static::getPrimaryKeyProperty($object);
+            if ($primaryKeyValue === $index) {
+                return $object;
+            }
+        }
+        return null;
     }
 }
