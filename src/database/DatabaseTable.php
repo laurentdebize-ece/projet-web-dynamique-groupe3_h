@@ -35,9 +35,14 @@ abstract class DatabaseTable
         $db->get_pdo()->exec($sql);
     }
 
+    public static function modify(DatabaseController $db, DatabaseTable $object): void
+    {
+        $db->ensureTableExists(static::TABLE_NAME, static::TABLE_TYPE);
+        $sql = ClassQL::getUpdateString($object);
+        $db->get_pdo()->exec($sql);
+    }
+
     /// Crée un objet de la classe représentant la table à partir d'un tableau associatif de champs.
-    /// Si $index est spécifié, retourne l'objet dont la clé primaire correspond à $index.
-    /// Si $index n'est pas spécifié, retourne tous les objets.
     //FIXME: deplacer cette fonction dans ClassQL ???
     public static function fromFields(array $object): DatabaseTable
     {

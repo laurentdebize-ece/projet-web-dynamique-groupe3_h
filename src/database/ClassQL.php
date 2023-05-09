@@ -227,4 +227,31 @@ final class ClassQL
         $sql = "INSERT INTO `" . $tableName . "` " . $fieldsStr . " VALUES " . $valStr . ";";
         return $sql;
     }
+
+
+    public static function getUpdateString(DatabaseTable $obj): ?string
+    {
+        $champs = self::getArrayValuesObject($obj);
+        var_dump($champs);
+        [$PrimaryKeyName,$PrimaryKeyValue] = $obj::getPrimaryKeyProperty($obj);
+        $modifs = array();
+        foreach ($champs as $champ => $value) {
+            if ($champ !== $PrimaryKeyName){
+                if ($value === null) {
+                    $value = "NULL";
+                }
+                if ($value instanceof DateTime){
+                    $value = $value->format("Y-m-d H:i:s");
+                }
+                array_push($modifs, "`$champ` = `$value`");
+            }
+        }
+
+        $modifsStr = implode(", ", $modifs);
+        $tableName = $obj::TABLE_NAME;
+        
+        $sql = "UPDATE `" . $tableName . "` SET " . $modifsStr . " WHERE `" . $tableName . "`.`" . $PrimaryKeyName . "` = " . $PrimaryKeyValue . ";";
+        echo $sql;
+        return $sql;
+    }
 }
