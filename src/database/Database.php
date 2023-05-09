@@ -1,7 +1,7 @@
 <?php
 require_once 'src/utils.php';
 require_once 'src/database/ClassQL.php';
-
+require_once 'src/database/TypedPDOStatement.php';
 
 /// Contrôle l'accès à la base de données.
 class DatabaseController
@@ -93,8 +93,15 @@ class DatabaseController
         return $this->db_pdo;
     }
 
-    /// Exécute une requête SQL et retourne le statement PDO pour utilisation.
-    public function query(string $sql): PDOStatement
+    /// Exécute une requête SQL et retourne le statement PDO typé pour utilisation.
+    public function queryTyped(string $sql, string $className): TypedPDOStatement
+    {
+        $stmt = $this->db_pdo->prepare($sql);
+        return new TypedPDOStatement($stmt, $className);
+    }
+
+    /// Exécute une requête SQL et retourne le statement PDO non-typé pour utilisation.
+    public function queryUntyped(string $sql): PDOStatement
     {
         $stmt = $this->db_pdo->prepare($sql);
         return $stmt;

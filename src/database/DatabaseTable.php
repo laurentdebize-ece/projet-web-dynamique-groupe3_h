@@ -13,18 +13,13 @@ abstract class DatabaseTable
     const TABLE_TYPE = self::TABLE_TYPE;
 
     //TODO: ajouter des méthodes pour insérer, supprimer, modifier des données dans la table.
-    //TODO: faire en sorte que toutes les fonctions retournent un SQLTypedStatement qui permet de parcourir les résultats de la requête en utilisant foreach avec des objets typesafe.
 
-    public static function select(DatabaseController $db, ?string $selector): array
+    public static function select(DatabaseController $db, ?string $selector): TypedPDOStatement
     {
         $db->ensureTableExists(static::TABLE_NAME, static::TABLE_TYPE);
-        $sql = "SELECT * FROM `" . static::TABLE_NAME . "`;";
-        $stmt = $db->query($sql);
-        $stmt->setFetchMode(PDO::FETCH_ASSOC);
-        $stmt->execute();
-        $results = $stmt->fetchAll();
-
-        return $results;
+        $sql = "SELECT " . ($selector != null ? ("(" . $selector . ")") : "*") . "FROM `" . static::TABLE_NAME . "`;";
+        $stmt = $db->queryTyped($sql, static::TABLE_TYPE);
+        return $stmt;
     }
 
     /// Insère un objet dans la base de données.
@@ -41,9 +36,4 @@ abstract class DatabaseTable
         $sql = ClassQL::getUpdateString($object);
         $db->getPDO()->exec($sql);
     }
-
-    /// Crée un objet de la classe représentant la table à partir d'un tableau associatif de champs.
-    //FIXME: deplacer cette fonction dans ClassQL ???
 }
-
-// begin_session();

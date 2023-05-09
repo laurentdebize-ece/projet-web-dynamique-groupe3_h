@@ -247,7 +247,7 @@ final class ClassQL
                 if ($value instanceof DateTime) {
                     $value = $value->format("Y-m-d H:i:s");
                 }
-                array_push($modifs, "`$champ` = `$value`");
+                array_push($modifs, "`$champ` = '$value'");
             }
         }
 
