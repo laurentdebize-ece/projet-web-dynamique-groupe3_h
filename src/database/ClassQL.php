@@ -135,13 +135,13 @@ final class ClassQL
     }
 
     /// retourne les couples attributs/valeurs de chaque instance d'objet
-    public static function getArrayValuesObject(mixed $instanceObject): array
+    public static function getObjectValues(mixed $instanceObject): array
     {
         $reflectionObject = new ReflectionObject($instanceObject);
         $properties = $reflectionObject->getProperties();
 
         $values = array();
-        $attributes = self::getArrayAttributesObject($instanceObject);
+        $attributes = self::getObjectAttributes($instanceObject);
 
         foreach ($properties as $property) {
             $property->setAccessible(true);
@@ -164,7 +164,7 @@ final class ClassQL
     }
 
     /// retourne les attributs en fonction de TableOpt
-    public static function getArrayAttributesObject(mixed $instanceObject): array
+    public static function getObjectAttributes(mixed $instanceObject): array
     {
         $reflectionObject = new ReflectionObject($instanceObject);
         $properties = $reflectionObject->getProperties();
@@ -207,10 +207,10 @@ final class ClassQL
         }
     }
 
-    ///TODO: transformer en template pour insertion dans la BDD.
+    /// Retourne la requête SQL pour insérer un objet dans une table.
     public static function getInsertionString(mixed $obj, string $tableName): string
     {
-        $fields = ClassQL::getArrayValuesObject($obj);
+        $fields = ClassQL::getObjectValues($obj);
         $names = array();
         $values = array();
         foreach ($fields as $name => $value) {
@@ -229,10 +229,10 @@ final class ClassQL
     }
 
 
+    /// Retourne la requête SQL pour mettre à jour un objet dans une table.
     public static function getUpdateString(DatabaseTable $obj): ?string
     {
-        $champs = self::getArrayValuesObject($obj);
-        // var_dump($champs);
+        $champs = self::getObjectValues($obj);
         $PrimaryKeyName = self::get_table_primary_key($obj::class);
         $prop = new ReflectionProperty($obj::class, $PrimaryKeyName);
         $prop->setAccessible(true);
@@ -240,11 +240,11 @@ final class ClassQL
 
         $modifs = array();
         foreach ($champs as $champ => $value) {
-            if ($champ !== $PrimaryKeyName){
+            if ($champ !== $PrimaryKeyName) {
                 if ($value === null) {
                     $value = "NULL";
                 }
-                if ($value instanceof DateTime){
+                if ($value instanceof DateTime) {
                     $value = $value->format("Y-m-d H:i:s");
                 }
                 array_push($modifs, "`$champ` = `$value`");
@@ -253,9 +253,34 @@ final class ClassQL
 
         $modifsStr = implode(", ", $modifs);
         $tableName = $obj::TABLE_NAME;
-        
+
         $sql = "UPDATE `" . $tableName . "` SET " . $modifsStr . " WHERE `" . $tableName . "`.`" . $PrimaryKeyName . "` = " . $PrimaryKeyValue . ";";
-        echo $sql;
         return $sql;
+    }
+
+    /// Crée un objet à partir d'un tableau associatif et du nom de la classe de la table.
+    public static function createFromFields(array $fieldAssoc, string $tableType): mixed
+    {
+        $class = new ReflectionClass($tableType);
+        $obj = $class->newInstanceWithoutConstructor();
+
+        foreach ($fieldAssoc as $key => $value) {
+            try {
+                $prop = $class->getProperty($key);
+                $prop->setAccessible(true);
+
+                switch ($prop->getType()) {
+                    case "DateTime":
+                        $prop->setValue($obj, new DateTime($value));
+                        break;
+                    default:
+                        $prop->setValue($obj, $value);
+                        break;
+                }
+            } catch (ReflectionException $e) {
+            }
+        }
+
+        return $obj;
     }
 }

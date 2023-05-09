@@ -3,8 +3,8 @@
 require_once 'src/database/Database.php';
 
 /// Représente une table de la base de données.
-/// ATTENTION : La table doit posséder un constructeur publique vide
-/// et les propriétés de la table doivent être mises a une valeur par défaut.
+/// ATTENTION : 
+/// les propriétés de la table doivent être mises a une valeur par défaut.
 abstract class DatabaseTable
 {
     /// Nom de la table dans la base de données.
@@ -32,42 +32,18 @@ abstract class DatabaseTable
     {
         $db->ensureTableExists(static::TABLE_NAME, static::TABLE_TYPE);
         $sql = ClassQL::getInsertionString($object, static::TABLE_NAME);
-        $db->get_pdo()->exec($sql);
+        $db->getPDO()->exec($sql);
     }
 
     public static function modify(DatabaseController $db, DatabaseTable $object): void
     {
         $db->ensureTableExists(static::TABLE_NAME, static::TABLE_TYPE);
         $sql = ClassQL::getUpdateString($object);
-        $db->get_pdo()->exec($sql);
+        $db->getPDO()->exec($sql);
     }
 
     /// Crée un objet de la classe représentant la table à partir d'un tableau associatif de champs.
     //FIXME: deplacer cette fonction dans ClassQL ???
-    public static function fromFields(array $object): DatabaseTable
-    {
-        $class = new ReflectionClass(static::TABLE_TYPE);
-        $obj = $class->newInstanceWithoutConstructor();
-
-        foreach ($object as $key => $value) {
-            try {
-                $prop = $class->getProperty($key);
-                $prop->setAccessible(true);
-
-                switch ($prop->getType()) {
-                    case "DateTime":
-                        $prop->setValue($obj, new DateTime($value));
-                        break;
-                    default:
-                        $prop->setValue($obj, $value);
-                        break;
-                }
-            } catch (ReflectionException $e) {
-            }
-        }
-
-        return $obj;
-    }
 }
 
 // begin_session();

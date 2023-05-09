@@ -6,7 +6,8 @@ require_once 'src/database/ClassQL.php';
 // var_dump(ClassQL::getTableDefForClass(Evaluation::class));
 
 $db = DatabaseController::getInstance();
-$db->createAllTable();
-$user = new Evaluation("lol", 0, 0, 0);
-echo ClassQL::getUpdateString($user);
-// var_dump(User::fromFields(User::select($db, null)[0]));
+$db->initTables();
+$ecole = new Ecole("ECE", 'Engineering');
+$ecolea = new Ecole("ESILV", 'Engineering');
+Ecole::insert($db, $ecolea);
+var_dump(ClassQL::createFromFields(Ecole::select($db, null)[4], Ecole::class));

@@ -30,33 +30,8 @@ class DatabaseController
         }
     }
 
-    /// Crée ou retourne le singleton de l'instance DatabaseController
-    public static function getInstance(): DatabaseController
-    {
-        if (self::$instance === null) {
-            self::$instance = new DatabaseController();
-        }
-
-        return self::$instance;
-    }
-
-    /// check si la database est bine initialisé dans phpMyAdmin
-    public function check_DB_exists()
-    {
-        $sql = "SELECT SCHEMA_NAME FROM information_schema.SCHEMATA WHERE SCHEMA_NAME = '{$this->db_name}'";
-        $stmt = $this->db_pdo->prepare($sql);
-        $stmt->execute();
-        $resultat = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        if (count($resultat) > 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     /// check si la DB contient une table donnée
-    public function check_table_exists($table_name)
+    private function check_table_exists($table_name)
     {
         $sql = "SHOW TABLES FROM {$this->db_name} LIKE '$table_name'";
         $stmt = $this->db_pdo->prepare($sql);
@@ -70,6 +45,16 @@ class DatabaseController
         }
     }
 
+    /// Crée ou retourne le singleton de l'instance DatabaseController
+    public static function getInstance(): DatabaseController
+    {
+        if (self::$instance === null) {
+            self::$instance = new DatabaseController();
+        }
+
+        return self::$instance;
+    }
+
     /// Crée une table avec le nom & le schéma de données spécifiées dans la BDD si celle-ci n'existe pas déjà.
     public function createTable(string $tableName, string $tableType): void
     {
@@ -78,7 +63,6 @@ class DatabaseController
             $this->ensureTableExists($dep::TABLE_NAME, $dep::TABLE_TYPE);
         }
         $sql = "CREATE TABLE IF NOT EXISTS `$tableName` ($tableDef);";
-        echo $sql . '<br>';
         $this->db_pdo->exec($sql);
     }
 
@@ -91,7 +75,7 @@ class DatabaseController
     }
 
     /// Crée toutes les tables de la BDD
-    public function createAllTable():void
+    public function initTables(): void
     {
         $all_classes = get_declared_classes();
         foreach ($all_classes as $classe) {
@@ -104,7 +88,7 @@ class DatabaseController
     }
 
     /// retourne le PDO de la database
-    public function get_pdo(): PDO
+    public function getPDO(): PDO
     {
         return $this->db_pdo;
     }
