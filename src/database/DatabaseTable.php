@@ -14,10 +14,13 @@ abstract class DatabaseTable
 
     //TODO: ajouter des méthodes pour insérer, supprimer, modifier des données dans la table.
 
-    public static function select(DatabaseController $db, ?string $selector): TypedPDOStatement
+    public static function select(DatabaseController $db, ?string $selector = null, ?array $conds = null): TypedPDOStatement
     {
         $db->ensureTableExists(static::TABLE_NAME, static::TABLE_TYPE);
-        $sql = "SELECT " . ($selector != null ? ("(" . $selector . ")") : "*") . "FROM `" . static::TABLE_NAME . "`;";
+        $sel = ($selector != null ? ("(" . $selector . ") ") : "*");
+        $clauses  = $conds != null ? implode(" ", $conds) : "";
+
+        $sql = "SELECT " . $sel . " FROM `" . static::TABLE_NAME . "` " . $clauses . ";";
         $stmt = $db->queryTyped($sql, static::TABLE_TYPE);
         return $stmt;
     }
