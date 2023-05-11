@@ -31,15 +31,23 @@ class User extends DatabaseTable
     /*
         @param $db LA BBDD
     */
-    public static function authenticate(DatabaseController $db, string $email, string $hashMdp): ?User
+    public static function authenticate(DatabaseController $db, string $email, string $hashMdp): User|bool|null
     {
-        // $hashMdp = password_hash($mdp, PASSWORD_BCRYPT);
         //SAFETY: Le LIMIT 1 est censé limiter le nombre de résultats à 1.
-        $user = User::select($db, null, ["WHERE", "`email` = '$email'", "AND", "`hashPassword` = '$hashMdp'", "LIMIT 1"])->fetchAllTyped();
-        if (count($user) != 0) {
-            return $user[0];
+        $user = User::select($db, null, ["WHERE", "`email` = '$email'", "LIMIT 1"])->fetchAllTyped();
+        if (count($user) > 0) {
+            if ($user[0]->login($hashMdp)) {
+                return $user[0];
+            }
+            return false;
         }
         return null;
+    }
+
+    /// Vérifie si le mot de passe spécifié est correct et que l'utilisateur peut se connecter.
+    public function login(string $hashMdp): bool
+    {
+        return password_verify($hashMdp, $this->hashPassword);
     }
 
     #[TableOpt(PrimaryKey: true, AutoIncrement: true)]
