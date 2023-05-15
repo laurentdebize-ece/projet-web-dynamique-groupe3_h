@@ -14,5 +14,6 @@ class Theme extends DatabaseTable
     #[TableOpt(PrimaryKey: true, AutoIncrement: true)]
     private ?int $idTheme = null;
 
+    #[TableOpt(Unique: true)]
     private string $nomTheme;
 }

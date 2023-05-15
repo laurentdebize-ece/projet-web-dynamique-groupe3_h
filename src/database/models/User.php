@@ -11,7 +11,7 @@ class User extends DatabaseTable
     const ACCOUNT_TYPE_USER = 1;
     const ACCOUNT_TYPE_PROF = 2;
 
-    public function __construct(int $typeAccount, string $email, string $nomUser, string $prenomUser, $hashPassword, ?Classe $classe = null)
+    public function __construct(int $typeAccount, string $email, string $nomUser, string $prenomUser, $hashPassword, ?int $idClasse = null)
     {
         if ($typeAccount >= 3 || $typeAccount < 0)
             throw new InvalidArgumentException("Type de compte spécifié invalide");
@@ -21,7 +21,7 @@ class User extends DatabaseTable
         $this->nomUser = $nomUser;
         $this->prenomUser = $prenomUser;
         $this->hashPassword = $hashPassword;
-        $this->idClasse = null;
+        $this->idClasse = $idClasse;
     }
 
     /// Authentitfie un utilisateur.
@@ -54,6 +54,8 @@ class User extends DatabaseTable
     private ?int $idUser = null;
 
     private int $typeAccount;
+
+    #[TableOpt(Unique: true)]
     private string $email;
     private string $nomUser;
     private string $prenomUser;

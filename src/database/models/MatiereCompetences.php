@@ -3,7 +3,7 @@ require_once 'src/database/DatabaseTable.php';
 
 class MatiereCompetences extends DatabaseTable
 {
-    const TABLE_NAME = 'Matiere/Competences';
+    const TABLE_NAME = 'MatiereCompetences';
     const TABLE_TYPE = MatiereCompetences::class;
 
     public function __construct($idCompetences, $idMatiere)
