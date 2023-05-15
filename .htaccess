@@ -3,3 +3,5 @@ RewriteEngine on
 # Ajouter ci-dessous pour chaque route (page) du site le nom de la page et la route vers le fichier .php
 # Exemple: 
 # RewriteRule ^lol src/routes/lol.php [QSA]
+
+RewriteRule ^login login.php [QSA]
