@@ -1,11 +1,11 @@
 <?php
 header("no-cache");
+require_once "src/session.php";
 require_once "src/database/Database.php";
 require_once "src/database/models/User.php";
 
 
 /// Vérification de l'authentification
-
 $pass_incorrect = false;
 $email_incorrect = false;
 
@@ -17,6 +17,9 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
     $email_incorrect = $user === null;
 
     if (is_object($user)) {
+        $sess = SessionManager::getInstance();
+        $sess->login($user);
+
         if (isset($_POST["redirect"])) {
             header("Location: " . $_POST["redirect"]);
         } else {
