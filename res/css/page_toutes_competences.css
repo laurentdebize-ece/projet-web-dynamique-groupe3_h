@@ -1,0 +1,150 @@
+html{
+    background-color:  rgb(229, 226, 224);
+}
+
+h1 {
+    text-shadow: 3px 3px rgb(235, 203, 160);
+    text-align: center;
+}
+
+.logo{
+    height: 75px;
+    width: 200px;
+}
+
+#header {
+    background-color: rgb(240, 240, 240);
+}
+
+#wrapper{
+    background-color:  rgb(229, 226, 224);
+}
+
+
+.b1 {
+    height: 75px;
+    width: 200px;
+    border: none;
+    display: inline-block;
+    transition-duration: 0.6s;
+}
+
+.b1:hover {
+    background-color: rgb(232, 216, 194);
+}
+
+#navigation{
+    background-color: rgb(240, 240, 240);
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height: 550px;
+    overflow: scroll;
+    scroll-behavior: smooth;
+    width: auto;
+    border: solid black 2px;
+
+}
+
+
+#emplacement_filtres{
+    display: flex;
+    justify-content: end;
+}
+
+.filtres{
+    background-color: rgb(173, 216, 230);
+    margin-right: 40px;
+    border-radius: 8px;
+}
+
+.filtres:hover{
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2), 0 1px 10px 0 rgba(0, 0, 0, 0.19);
+}
+
+#titreOnglet{
+    font-size: x-large;
+    margin-right: 10px;
+    display: flex;
+    justify-content: space-between;
+    text-decoration: none;
+}
+
+.texteOnglet1{
+    color: black;
+    text-decoration: none;
+    margin-left: 10px;
+    height: 31px;
+    background: linear-gradient(to top,black 0%, black 8%, transparent 8.01%) no-repeat;
+    background-size: 0 100%;
+    transition: background-size 0.5s;
+}
+
+.texteOnglet1:hover{
+    color: black;
+    background-size: 100% 100%;
+}
+
+.texteOnglet2{
+    color: black;
+    text-decoration: none;
+    height: 31px;
+    background: linear-gradient(to top,black 0%, black 8%, transparent 8.01%) no-repeat;
+    background-size: 0 100%;
+    transition: background-size 0.5s;
+}
+
+.texteOnglet2:hover{
+    color: black;
+    background-size: 100% 100%;
+}
+
+.texteOnglet3{
+    text-decoration-line: underline;
+}
+
+
+.matiere{
+    display: flex;
+    flex-wrap: wrap;
+    width: 1410px;
+    justify-content: space-between;
+}
+
+.matieres{
+    font-size: large;
+    padding-left: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    overflow: scroll;
+}
+
+::-webkit-scrollbar{
+    display: none;
+}
+
+/* .b2 {
+    background-color: rgb(147, 129, 207);
+    border: none;
+    width: 100px;
+    height: 25px;
+    border-radius: 8px;
+    transition-duration: 0.6s;
+} */
+
+.titreMatieres{
+    height: 27px;
+    width: 170px;
+}
+
+.titreMatieres:hover {
+    text-shadow: 3px 3px rgb(234, 210, 177);
+}
+
+.ligne{
+    display: flex;
+    justify-content: space-between;
+}
