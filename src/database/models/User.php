@@ -50,6 +50,17 @@ class User extends DatabaseTable
         return password_verify($hashMdp, $this->hashPassword);
     }
 
+    /// Retourne l'ID de l'utilisateur.
+    public function getID(): int
+    {
+        return $this->idUser;
+    }
+
+    /// Retourne le nom d'affichage de l'utilisateur.
+    public function getDisplayName(): string {
+        return $this->prenomUser . " " . $this->nomUser;
+    }
+
     #[TableOpt(PrimaryKey: true, AutoIncrement: true)]
     private ?int $idUser = null;
 
