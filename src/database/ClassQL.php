@@ -10,6 +10,7 @@ class TableOpt
     public function __construct(
         public bool $Ignore = false,
         public bool $AutoIncrement = false,
+        public bool $Unique = false,
         public bool $PrimaryKey = false,
         public ?string $TableForeignKey = null,
         public ?string $Type = null,
@@ -89,6 +90,10 @@ final class ClassQL
                 $type .= " AUTO_INCREMENT";
             }
 
+            if ($attr->getArguments()["Unique"]) {
+                $type .= " UNIQUE";
+            }
+
             if (!is_null($attr->getArguments()["TableForeignKey"])) {
 
                 $table = $attr->getArguments()["TableForeignKey"];
@@ -153,10 +158,18 @@ final class ClassQL
                     continue;
                 } else {
                     $value = $property->getValue($instanceObject);
+                    if ($value instanceof DateTime)
+                    {
+                        $value = $value->format("Y-m-d H:i:s");
+                    }
                     $values[$property->getName()] = $value;
                 }
             } else {
                 $value = $property->getValue($instanceObject);
+                if ($value instanceof DateTime)
+                {
+                    $value = $value->format("Y-m-d H:i:s");
+                }
                 $values[$property->getName()] = $value;
             }
         }
@@ -210,7 +223,7 @@ final class ClassQL
     /// Retourne la requête SQL pour insérer un objet dans une table.
     public static function getInsertionString(mixed $obj, string $tableName): string
     {
-        $fields = ClassQL::getObjectValues($obj);
+        $fields = self::getObjectValues($obj);
         $names = array();
         $values = array();
         foreach ($fields as $name => $value) {
@@ -258,6 +271,20 @@ final class ClassQL
         return $sql;
     }
 
+    // Retourne la requête pour enlever une ligne d'une table dans la bbd
+    // FIXME : ne prend pas en compte les dependances des foreign key !
+    public static function getDeleteString(DatabaseTable $obj): ?string
+    {
+        $tableName = $obj::TABLE_NAME;
+        $PrimaryKeyName = self::get_table_primary_key($obj::class);
+        $prop = new ReflectionProperty($obj::class, $PrimaryKeyName);
+        $prop->setAccessible(true);
+        $PrimaryKeyValue = $prop->getValue($obj);
+        $sql = "DELETE FROM`" . $tableName . "` WHERE `" . $tableName . "`.`" . $PrimaryKeyName . "` = " . $PrimaryKeyValue . ";";
+        echo $sql;
+        return $sql;
+    }
+
     /// Crée un objet à partir d'un tableau associatif et du nom de la classe de la table.
     public static function createFromFields(array $fieldAssoc, string $tableType): mixed
     {
@@ -268,7 +295,6 @@ final class ClassQL
             try {
                 $prop = $class->getProperty($key);
                 $prop->setAccessible(true);
-
                 switch ($prop->getType()) {
                     case "DateTime":
                         $prop->setValue($obj, new DateTime($value));
@@ -277,7 +303,8 @@ final class ClassQL
                         $prop->setValue($obj, $value);
                         break;
                 }
-            } catch (ReflectionException $e) {
+            } 
+            catch (ReflectionException $e) {
             }
         }
 

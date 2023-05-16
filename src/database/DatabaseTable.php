@@ -17,7 +17,7 @@ abstract class DatabaseTable
     public static function select(DatabaseController $db, ?string $selector = null, ?array $conds = null): TypedPDOStatement
     {
         $db->ensureTableExists(static::TABLE_NAME, static::TABLE_TYPE);
-        $sel = ($selector != null ? ("(" . $selector . ") ") : "*");
+        $sel = ($selector != null ? $selector : "*");
         $clauses  = $conds != null ? implode(" ", $conds) : "";
 
         $sql = "SELECT " . $sel . " FROM `" . static::TABLE_NAME . "` " . $clauses . ";";
@@ -33,10 +33,19 @@ abstract class DatabaseTable
         $db->getPDO()->exec($sql);
     }
 
+    /// Modifie un objet dans la base de données
     public static function modify(DatabaseController $db, DatabaseTable $object): void
     {
         $db->ensureTableExists(static::TABLE_NAME, static::TABLE_TYPE);
         $sql = ClassQL::getUpdateString($object);
+        $db->getPDO()->exec($sql);
+    }
+
+    /// Enleve un element de la BDD
+    public static function delete(DatabaseController $db, DatabaseTable $object): void
+    {
+        $db->ensureTableExists(static::TABLE_NAME, static::TABLE_TYPE);
+        $sql = ClassQL::getDeleteString($object);
         $db->getPDO()->exec($sql);
     }
 }

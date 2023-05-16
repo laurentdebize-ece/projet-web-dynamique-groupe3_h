@@ -16,7 +16,7 @@ class DatabaseController
         $this->db_pdo = new PDO($dsn, $user, $password, array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
         $this->db_pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $this->db_name = 'OmnesMySkills';
+        $this->db_name = 'omnesmyskills';
         $sql = "CREATE DATABASE IF NOT EXISTS {$this->db_name};
             USE {$this->db_name};
             ";
@@ -83,6 +83,38 @@ class DatabaseController
                 if ($classe::TABLE_NAME != null and $classe::TABLE_TYPE != null) {
                     $this->ensureTableExists($classe::TABLE_NAME, $classe::TABLE_TYPE);
                 }
+            }
+        }
+    }
+
+    /// Initialisation des valeurs par défaut fichier config/default.sql
+    public function initDefaultValues(): void
+    {
+        $sql = "SHOW TABLES FROM {$this->db_name}";
+        $stmt = $this->db_pdo->prepare($sql);
+        $stmt->execute();
+        $resultat = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $total_lignes = 0;
+        if($resultat) {
+            foreach ($resultat as $result)
+            {
+                $table_name = $result["Tables_in_"."{$this->db_name}"];
+                $resultat_comptage = $this->db_pdo->query("SELECT COUNT(*) AS total FROM `$table_name`");
+
+                if ($resultat_comptage) {
+                    $donnees_comptage = $resultat_comptage->fetch(PDO::FETCH_ASSOC);
+                    $total_lignes += $donnees_comptage["total"];
+                }
+            }
+
+            if ($total_lignes == 0) {
+                try{
+                    $this->db_pdo->exec(file_get_contents('./config/default.sql'));
+                }
+                catch (PDOException $e) {
+                    echo $e->getMessage() . "<br>";
+                }           
             }
         }
     }

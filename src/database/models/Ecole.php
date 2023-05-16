@@ -15,6 +15,7 @@ class Ecole extends DatabaseTable
     #[TableOpt(PrimaryKey: true, AutoIncrement: true)]
     private ?int $idEcole = null;
 
+    #[TableOpt(Unique: true)]
     private string $nomEcole;
     private string $typeEtude;
 }

@@ -3,7 +3,7 @@ require_once 'src/database/DatabaseTable.php';
 
 class ThemesCompetences extends DatabaseTable
 {
-    const TABLE_NAME = 'Themes/Competences';
+    const TABLE_NAME = 'ThemesCompetences';
     const TABLE_TYPE = ThemesCompetences::class;
 
     public function __construct($idCompetences, $idTheme)

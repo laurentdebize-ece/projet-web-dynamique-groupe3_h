@@ -15,6 +15,7 @@ class Filiere extends DatabaseTable
     #[TableOpt(PrimaryKey: true, AutoIncrement: true)]
     private ?int $idFiliere = null;
 
+    #[TableOpt(Unique: true)]
     private string $nomFiliere;
 
     #[TableOpt(TableForeignKey: Ecole::class)]
