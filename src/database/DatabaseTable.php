@@ -29,20 +29,16 @@ abstract class DatabaseTable
     public static function insert(DatabaseController $db, DatabaseTable $object): void
     {
         $db->ensureTableExists(static::TABLE_NAME, static::TABLE_TYPE);
-        if (classQL::ensureUnique($db,$object,false) === true){
-            $sql = ClassQL::getInsertionString($object, static::TABLE_NAME);
-            $db->getPDO()->exec($sql);
-        }
+        $sql = ClassQL::getInsertionString($object, static::TABLE_NAME);
+        $db->getPDO()->exec($sql);
     }
 
     /// Modifie un objet dans la base de données
     public static function modify(DatabaseController $db, DatabaseTable $object): void
     {
         $db->ensureTableExists(static::TABLE_NAME, static::TABLE_TYPE);
-        if (classQL::ensureUnique($db,$object,false) === true){
-            $sql = ClassQL::getUpdateString($object);
-            $db->getPDO()->exec($sql);
-        }
+        $sql = ClassQL::getUpdateString($object);
+        $db->getPDO()->exec($sql);
     }
 
     /// Enleve un element de la BDD
