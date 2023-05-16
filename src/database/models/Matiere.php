@@ -17,7 +17,7 @@ class Matiere extends DatabaseTable
     #[TableOpt(Unique: true)]
     private string $nomMatiere;
 
-    public static function getSubjectsAllStudents(DatabaseController $db): array|null
+    public static function getAllSubjects(DatabaseController $db): array|null
     {
         $idEleve = User::ACCOUNT_TYPE_USER;
         $users = User::select($db, null, ["WHERE","`typeAccount` = $idEleve"])->fetchAllTyped();
