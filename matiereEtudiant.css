@@ -1,0 +1,72 @@
+.slide {
+    padding-top: 80px;
+    padding-bottom: 80px;
+    display: flex;
+    overflow: scroll;
+    scroll-behavior: smooth;
+}
+
+.logo{
+    height: 75px;
+    width: 200px;
+}
+
+h1{
+    text-shadow: 3px 3px rgb(235,203,160);
+    text-align: center;
+}
+
+.ensemble-fleche {
+    width: 900px;
+
+    display: flex;
+    margin: auto;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+#header {
+    background-color: rgb(240, 240, 240);
+}
+
+.b1 {
+    height: 75px;
+    width: 200px;
+    border: none;
+    display: inline-block;
+    transition-duration: 0.6s;
+}
+
+.b1:hover {
+    background-color: rgb(232, 216, 194);
+}
+
+#matiere {
+
+
+    height: 300px;
+    width: 250px;
+    transition-duration: 1000ms;
+    margin: 5px;
+    z-index: 1;
+    border: 1px solid rgb(240, 240, 240);
+    background-color: rgb(240, 240, 240);
+
+
+
+}
+
+#matiere:hover {
+    background-color: rgb(66, 63, 63);
+    ;
+}
+
+#texte {
+    text-align: center;
+}
+
+.background {
+    background-color: rgb(229, 226, 224);
+}
