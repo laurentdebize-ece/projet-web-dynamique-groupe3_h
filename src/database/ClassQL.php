@@ -99,7 +99,7 @@ final class ClassQL
                 $table = $attr->getArguments()["TableForeignKey"];
                 $champForeign = self::get_table_primary_key($table);
                 $champ = $prop->getName();
-                $type .= ", FOREIGN KEY " . "($champ)" . " REFERENCES " . $table::TABLE_NAME . "($champForeign)";
+                $type .= ", FOREIGN KEY " . "($champ)" . " REFERENCES " . $table::TABLE_NAME . "($champForeign)" . " ON DELETE CASCADE" . " ON UPDATE CASCADE";
             }
         }
 
