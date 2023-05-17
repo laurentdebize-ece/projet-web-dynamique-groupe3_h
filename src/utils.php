@@ -1,4 +1,6 @@
 <?php
+    error_reporting(E_ERROR);
+
     function get_db_config() {
 
         $jsonString = file_get_contents('.\config\db_credentials.json');
