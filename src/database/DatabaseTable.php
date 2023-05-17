@@ -44,7 +44,7 @@ abstract class DatabaseTable
     /// Enleve un element de la BDD
     public static function delete(DatabaseController $db, DatabaseTable $object): void
     {
-        $db->ensureTableExists(static::TABLE_NAME, static::TABLE_TYPE);
+        $db->ensureTableExists(static::TABLE_NAME, static::TABLE_TYPE);  
         $sql = ClassQL::getDeleteString($object);
         $db->getPDO()->exec($sql);
     }

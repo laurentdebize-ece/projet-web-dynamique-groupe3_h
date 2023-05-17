@@ -17,14 +17,13 @@ class Matiere extends DatabaseTable
     #[TableOpt(Unique: true)]
     private string $nomMatiere;
 
-    public static function getAllSubjects(DatabaseController $db): array|null
+    public static function getAllSubjectsUsers(DatabaseController $db, int $idUser): array|null
     {
-        $idEleve = User::ACCOUNT_TYPE_USER;
-        $users = User::select($db, null, ["WHERE","`typeAccount` = $idEleve"])->fetchAllTyped();
+        $user = User::select($db, null, ["WHERE","`idUser` = $idUser","LIMIT 1"])->fetchTyped();
+        $arrayUser = classQL::getObjectValues($user);
         $matieresUsers = array();
-        foreach ($users as $user)
+        if ($arrayUser['typeAccount'] === User::ACCOUNT_TYPE_USER)
         {
-            $arrayUser = classQL::getObjectValues($user);
             if (is_null($arrayUser['idClasse'])){
                 return null;
             }
