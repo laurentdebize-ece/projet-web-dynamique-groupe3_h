@@ -73,7 +73,7 @@ class SessionManager
     public function ensureLoggedIn(): void
     {
         if (!$this->isLoggedIn() || !$this->isSessionValid()) {
-            header("Location: /login?redirect=" . urlencode($_SERVER["REQUEST_URI"]));
+            header("Location: /login.php?redirect=" . urlencode($_SERVER["REQUEST_URI"]));
             exit();
         }
     }
