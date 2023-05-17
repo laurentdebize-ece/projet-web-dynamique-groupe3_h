@@ -280,8 +280,8 @@ final class ClassQL
         $prop = new ReflectionProperty($obj::class, $PrimaryKeyName);
         $prop->setAccessible(true);
         $PrimaryKeyValue = $prop->getValue($obj);
-        $sql = "DELETE FROM`" . $tableName . "` WHERE `" . $tableName . "`.`" . $PrimaryKeyName . "` = " . $PrimaryKeyValue . ";";
-        echo $sql;
+        $sql = "DELETE FROM `" . $tableName . "` WHERE `" . $tableName . "`.`" . $PrimaryKeyName . "` = " . $PrimaryKeyValue . ";";
+        // echo $sql;
         return $sql;
     }
 

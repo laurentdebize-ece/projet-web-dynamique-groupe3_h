@@ -5,3 +5,4 @@ RewriteEngine on
 # RewriteRule ^lol src/routes/lol.php [QSA]
 
 RewriteRule ^login login.php [QSA]
+RewriteRule ^adminUserDashboard adminUserDashboard.php [QSA]

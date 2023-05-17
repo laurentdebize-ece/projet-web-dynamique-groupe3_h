@@ -61,6 +61,12 @@ class User extends DatabaseTable
         return $this->prenomUser . " " . $this->nomUser;
     }
 
+    /// Retourne le type de compte de l'utilisateur.
+    public function getAccountType(): int
+    {
+        return $this->typeAccount;
+    }
+
     #[TableOpt(PrimaryKey: true, AutoIncrement: true)]
     private ?int $idUser = null;
 

@@ -7,6 +7,7 @@ class SessionManager
     private const SESSION_VALID_UNTIL = "valid_until";
     private const SESSION_VALID_DURATION = 3600;
     private const SESSION_UID = "uid";
+    private const SESSION_UAUTHORITY = "authority";
 
     private static ?SessionManager $instance = null;
 
@@ -37,12 +38,18 @@ class SessionManager
         return isset($_SESSION[self::SESSION_VALID_UNTIL]) && $_SESSION[self::SESSION_VALID_UNTIL] > time();
     }
 
+    public function getAuthority(): int
+    {
+        return $_SESSION[self::SESSION_UAUTHORITY];
+    }
+
     /// Connecte un utilisateur.
     public function login(User $user): void
     {
         session_regenerate_id(true);
         $_SESSION[self::SESSION_UID] = $user->getID();
         $_SESSION[self::SESSION_VALID_UNTIL] = time() + self::SESSION_VALID_DURATION;
+        $_SESSION[self::SESSION_UAUTHORITY] = $user->getAccountType();
     }
 
     /// Déconnecte un utilisateur.
@@ -67,6 +74,18 @@ class SessionManager
     {
         if (!$this->isLoggedIn() || !$this->isSessionValid()) {
             header("Location: /login?redirect=" . urlencode($_SERVER["REQUEST_URI"]));
+            exit();
+        }
+    }
+
+    /// Vérifie que l'utilisateur est connecté et que la session est valide pour aacéder à la page et possède l'autorité nécessaire.
+    public function ensureHasAuthority(int $authority): void
+    {
+        $this->ensureLoggedIn();
+        if ($this->getAuthority() != $authority) {
+            // header("Location: /");
+            echo "non je crois pas non";
+            http_response_code(403);
             exit();
         }
     }
