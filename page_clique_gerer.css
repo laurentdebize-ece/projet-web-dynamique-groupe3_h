@@ -1,0 +1,52 @@
+.logo {
+    height: 75px;
+    width: 200px;
+}
+
+h1 {
+    text-shadow: 3px 3px rgb(235, 203, 160);
+    text-align: center;
+}
+
+#header {
+    background-color: rgb(240, 240, 240);
+
+
+}
+
+.b1 {
+
+    height: 75px;
+    width: 200px;
+    border: none;
+    display: inline-block;
+    transition-duration: 0.6s;
+}
+
+.b1:hover {
+    background-color: rgb(232, 216, 194);
+}
+
+.background{
+    background-color: rgb(229, 226, 224);
+}
+
+#carre {
+
+    height: 400px;
+    width: 300px;
+    float:left;
+    margin-top: 5%;
+    margin-left: 6.5%;
+    border: 1px solid rgb(240, 240, 240);
+    background-color: rgb(240, 240, 240);
+
+}
+
+#texte {
+    text-align: center;
+}
+#carre:hover {
+    background-color: rgb(173, 216, 230);
+    
+}
