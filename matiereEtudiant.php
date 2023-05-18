@@ -1,9 +1,11 @@
 <?php
 header("no-cache, no-store, must-revalidate");
 require 'src/session.php';
+// require 'src/database/models/Matiere.php';
+
 $sess = SessionManager::getInstance();
 $sess->ensureHasAuthority(User::ACCOUNT_TYPE_USER);
-
+// var_dump($matieres);
 ?>
 
 <!DOCTYPE html>
@@ -49,73 +51,23 @@ $sess->ensureHasAuthority(User::ACCOUNT_TYPE_USER);
     <div class="ensemble-fleche">
         <img src="res/img/fleche_gauche.svg" class="img-svg1">
         <div class="slide">
-            <div id="matiere">
-                <img src="res/img/imageMatiere.png" alt="Cinque Terre" width="250" height="154">
-                <br><br>
-                <div id="texte">
-                    Mathématique
-                </div>
 
-            </div>
-            <div id="matiere">
-                <img src="res/img/imageMatiere.png" alt="Cinque Terre" width="250" height="154">
-                <br><br>
-                <div id="texte">
-                    Physique
-                </div>
-            </div>
+            <?php
+            $matieres = Matiere::getAllSubjectsUser(DatabaseController::getInstance(), 11);
+            foreach ($matieres as $matiere) {
+                echo "<a href=\"$matiere[1]\">
+                <span class=\"matiere\">
+                    <img src=\"res/img/imageMatiere.png\">
+                    <br><br>
+                    <div id=\"texte\">
+                        " . $matiere[0] . "
+                    </div>
+                </span>
+                </a>";
+            }
 
+            ?>
 
-            <div id="matiere">
-                <img src="res/img/imageMatiere.png" alt="Cinque Terre" width="250" height="154">
-                <br><br>
-                <div id="texte">
-                    Histoire
-                </div>
-            </div>
-
-            <div id="matiere">
-                <img src="res/img/imageMatiere.png" alt="Cinque Terre" width="250" height="154">
-                <br><br>
-                <div id="texte">
-                    Anglais
-                </div>
-
-            </div>
-
-            <div id="matiere">
-                <img src="res/img/imageMatiere.png" alt="Cinque Terre" width="250" height="154">
-                <br><br>
-                <div id="texte">
-                    Francais
-                </div>
-
-            </div>
-
-            <div id="matiere">
-                <img src="res/img/imageMatiere.png" alt="Cinque Terre" width="250" height="154">
-                <br><br>
-                <div id="texte">
-                    SVT
-                </div>
-
-            </div>
-            <div id="matiere">
-                <img src="res/img/imageMatiere.png" alt="Cinque Terre" width="250" height="154">
-                <br><br>
-                <div id="texte">
-                    SVT
-                </div>
-
-            </div>
-            <div id="matiere">
-                <img src="res/img/imageMatiere.png" alt="Cinque Terre" width="250" height="154">
-                <br><br>
-                <div id="texte">
-                    SVT
-                </div>
-
-            </div>
         </div>
         <img src="res/img/fleche_droite.svg" class="img-svg2">
     </div>

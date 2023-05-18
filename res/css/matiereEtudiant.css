@@ -25,14 +25,10 @@ h1 {
 
 .ensemble-fleche {
     width: 80%;
-
     display: flex;
     margin: auto;
 }
 
-::-webkit-scrollbar {
-    display: none;
-}
 
 #header {
     background-color: rgb(240, 240, 240);
@@ -50,7 +46,8 @@ h1 {
     background-color: rgb(232, 216, 194);
 }
 
-#matiere {
+.matiere {
+    display: block;
     height: 300px;
     width: 250px;
     transition-duration: 250ms;
@@ -61,11 +58,18 @@ h1 {
     border-radius: 8px;
 }
 
-#matiere img {
-    border-top-right-radius: 8px;
+a {
+    text-decoration: none;
+    color: black;
 }
 
-#matiere:hover {
+.matiere img {
+    border-top-right-radius: 8px;
+    width: 250px; 
+    height: 154px;
+}
+
+.matiere:hover {
     background-color: rgb(149, 138, 138);
 }
 
