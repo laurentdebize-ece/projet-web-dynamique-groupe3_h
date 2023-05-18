@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+
+body {
+    background-image: url("../img/fish_pond.gif");
+    background-size: cover;
+    margin: 0;
+    font-family: 'Varela Round', sans-serif;
+}
+
+.panel {
+    position: absolute;
+    width: 75%;
+    height: 60%;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+
+    /* */
+    background-color: white;
+    border-radius: 8px;
+
+    display: flex;
+    flex-direction: row;
+    box-shadow: black 0px 0px 16px;
+}
+
+.panel img {
+    display: inline;
+    height: 100%;
+    width: 40vw;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.panel .form {
+    display: flex;
+    flex-direction: column;
+    width: 65%;
+    height: 100%;
+    margin-top: 5%;
+    margin-left: 15px;
+    text-align: center;
+    align-items: center;
+}
+
+.panel .form fieldset {
+    border: 2px gray solid;
+    border-radius: 8px;
+    max-width: fit-content;
+    color: gray;
+}
+
+.panel .form input {
+    display: inline;
+    width: 100%;
+    height: 100%;
+    border-style: none;
+    color: gray;
+    outline: none;
+}
+
+.panel .form fieldset:focus-within {
+    border-color: black;
+    color: black;
+}
+
+.panel .form input:focus {
+    border-color: black;
+    color: black;
+}
+
+.panel .form input[type=submit] {
+    width: 100%;
+    height: 20%;
+    background-color: #00FF7F;
+    border-radius: 8px;
+    color: white;
+}
+
+#email,
+#password {
+    width: 256px;
+}
+
+#login {
+    margin-bottom: 15%;
+}
+
+/* écartement inter champs */
+fieldset {
+    margin-bottom: 15px;
+}
+
+.underlined {
+    margin-top: 15%;
+    color: gray;
+    font-style: oblique;
+}
+
+.incorrect {
+    border-color: red;
+    color: red;
+}
