@@ -54,7 +54,7 @@ $sess->ensureHasAuthority(User::ACCOUNT_TYPE_USER);
             <?php
             $matieres = Matiere::getAllSubjectsUser(DatabaseController::getInstance(), $sess->getUser()->getID());
             foreach ($matieres as $matiere) {
-                echo "<a href=\"$matiere[1]\">
+                echo "<a href=\"/showMatiereCompetences.php?id=$matiere[1]\">
                 <span class=\"matiere\">
                     <img src=\"res/img/imageMatiere.png\">
                     <br><br>
