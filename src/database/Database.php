@@ -2,6 +2,7 @@
 require_once 'src/utils.php';
 require_once 'src/database/ClassQL.php';
 require_once 'src/database/TypedPDOStatement.php';
+require_once 'src/database/models/models.php';
 
 /// Contrôle l'accès à la base de données.
 class DatabaseController
@@ -28,6 +29,8 @@ class DatabaseController
             $this->db_name = null;
             exit();
         }
+        $this->initTables();
+        $this->initDefaultValues();
     }
 
     /// check si la DB contient une table donnée
@@ -75,7 +78,7 @@ class DatabaseController
     }
 
     /// Crée toutes les tables de la BDD
-    public function initTables(): void
+    private function initTables(): void
     {
         $all_classes = get_declared_classes();
         foreach ($all_classes as $classe) {
@@ -88,7 +91,7 @@ class DatabaseController
     }
 
     /// Initialisation des valeurs par défaut fichier config/default.sql
-    public function initDefaultValues(): void
+    private function initDefaultValues(): void
     {
         $sql = "SHOW TABLES FROM {$this->db_name}";
         $stmt = $this->db_pdo->prepare($sql);
