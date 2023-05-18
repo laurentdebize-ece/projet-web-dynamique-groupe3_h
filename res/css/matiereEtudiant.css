@@ -1,23 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+
+body {
+    margin: 0;
+    font-family: 'Varela Round', sans-serif;
+}
+
 .slide {
     padding-top: 80px;
     padding-bottom: 80px;
     display: flex;
-    overflow: scroll;
+    overflow: hidden;
     scroll-behavior: smooth;
 }
 
-.logo{
+.logo {
     height: 75px;
     width: 200px;
 }
 
-h1{
-    text-shadow: 3px 3px rgb(235,203,160);
+h1 {
+    text-shadow: 3px 3px rgb(235, 203, 160);
     text-align: center;
 }
 
 .ensemble-fleche {
-    width: 900px;
+    width: 80%;
 
     display: flex;
     margin: auto;
@@ -44,23 +51,22 @@ h1{
 }
 
 #matiere {
-
-
     height: 300px;
     width: 250px;
-    transition-duration: 1000ms;
+    transition-duration: 250ms;
     margin: 5px;
     z-index: 1;
     border: 1px solid rgb(240, 240, 240);
     background-color: rgb(240, 240, 240);
+    border-radius: 8px;
+}
 
-
-
+#matiere img {
+    border-top-right-radius: 8px;
 }
 
 #matiere:hover {
-    background-color: rgb(66, 63, 63);
-    ;
+    background-color: rgb(149, 138, 138);
 }
 
 #texte {
@@ -69,4 +75,16 @@ h1{
 
 .background {
     background-color: rgb(229, 226, 224);
+}
+
+.img-svg2 {
+    width: 5%;
+    margin-left: 2%;
+    cursor: pointer;
+}
+
+.img-svg1 {
+    width: 5%;
+    margin-right: 2%;
+    cursor: pointer;
 }
