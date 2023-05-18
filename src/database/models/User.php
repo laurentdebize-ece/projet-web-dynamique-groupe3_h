@@ -56,6 +56,12 @@ class User extends DatabaseTable
         return $this->idUser;
     }
 
+    /// Retourne l'ID de la classe de l'utilisateur.
+    public function getClasse(): int|null
+    {
+        return $this->idClasse;
+    }
+
     /// Retourne le nom d'affichage de l'utilisateur.
     public function getDisplayName(): string {
         return $this->prenomUser . " " . $this->nomUser;
