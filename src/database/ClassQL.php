@@ -99,7 +99,7 @@ final class ClassQL
                 $table = $attr->getArguments()["TableForeignKey"];
                 $champForeign = self::get_table_primary_key($table);
                 $champ = $prop->getName();
-                $type .= ", FOREIGN KEY " . "($champ)" . " REFERENCES " . $table::TABLE_NAME . "($champForeign)";
+                $type .= ", FOREIGN KEY " . "($champ)" . " REFERENCES " . $table::TABLE_NAME . "($champForeign)" . " ON DELETE CASCADE" . " ON UPDATE CASCADE";
             }
         }
 
@@ -280,8 +280,7 @@ final class ClassQL
         $prop = new ReflectionProperty($obj::class, $PrimaryKeyName);
         $prop->setAccessible(true);
         $PrimaryKeyValue = $prop->getValue($obj);
-        $sql = "DELETE FROM `" . $tableName . "` WHERE `" . $tableName . "`.`" . $PrimaryKeyName . "` = " . $PrimaryKeyValue . ";";
-        // echo $sql;
+        $sql = "DELETE FROM`" . $tableName . "` WHERE `" . $tableName . "`.`" . $PrimaryKeyName . "` = " . $PrimaryKeyValue . ";";
         return $sql;
     }
 
@@ -310,4 +309,14 @@ final class ClassQL
 
         return $obj;
     }
+
+    /// Retourne le nom de la table SQL en réglant les problèmes d'apostrophe
+    public static function escapeSQL(string $nom): string
+    {
+        if (strpos($nom, "'") !== false) {
+            $nom = str_replace("'", "\\'", $nom);
+        }
+        return $nom;
+    }
+    
 }

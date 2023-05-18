@@ -62,7 +62,7 @@ class DatabaseController
         foreach ($tableDeps as $dep) {
             $this->ensureTableExists($dep::TABLE_NAME, $dep::TABLE_TYPE);
         }
-        $sql = "CREATE TABLE IF NOT EXISTS `$tableName` ($tableDef);";
+        $sql = "CREATE TABLE IF NOT EXISTS `$tableName` ($tableDef) ENGINE=InnoDB;";
         $this->db_pdo->exec($sql);
     }
 

@@ -19,4 +19,25 @@ class ThemesCompetences extends DatabaseTable
     private int $idCompetences;
     #[TableOpt(TableForeignKey: Theme::class)]
     private int $idTheme;
+
+    public static function getSubjectCompetencesThemeUser(DatabaseController $db, int $idUser): array
+    {
+        $themesArray = array();
+        $array = MatiereCompetences::getSubjectCompetencesUser($db, $idUser);
+        foreach ($array as $matiere => $competences) {
+            foreach ($competences['transverses'] as $competence) {
+                $nomCompetence = classQL::escapeSQL($competence);
+                $idCompetence = classQL::getObjectValues(Competence::select($db, null, ["WHERE", "nomCompetences = '$nomCompetence'","LIMIT 1"])->fetchTyped())['idCompetences'];
+                $themes = Theme::getThemesByCompetences($db, $idCompetence);
+                $themesArray[$matiere][$competence] = $themes;
+            }
+            foreach ($competences['specifiques'] as $competence) {
+                $nomCompetence = classQL::escapeSQL($competence);
+                $idCompetence = classQL::getObjectValues(Competence::select($db, null, ["WHERE", "nomCompetences = '$nomCompetence'","LIMIT 1"])->fetchTyped())['idCompetences'];
+                $themes = Theme::getThemesByCompetences($db, $idCompetence);
+                $themesArray[$matiere][$competence] = $themes;
+            }
+        }
+        return $themesArray;
+    }
 }

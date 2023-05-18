@@ -56,7 +56,9 @@ INSERT INTO Users (typeAccount,email,nomUser,prenomUser,hashPassword,idClasse) V
     (2,"prof2Humanité@ece.fr","Madame","Humanité","$2y$10$mecfXPv7PNFuW9lTB6rgE.sMYXUpCv0qsYB6bvz7sjHVohGDIhPOO",NULL), -- mdp:prof2Humanité -- 8
     (2,"prof1Langues@ece.fr","Mister","Langues","$2y$10$176cbX87PWmbi1GgDAWVM.6FlGU1El4AEcleaHN3fHduWOnikr6DS",NULL), -- mdp:prof1Langues -- 9
 
-    (0,"admin1@ece.fr","LeToutPuissant","Lucas","$2y$10$NjjrShOX1B/6WsPBaT3f1OPpehtIk1HVEAQ.2QlM6fDgAZHLLUBim",NULL); -- mdp:lukeh -- 10
+    (0,"admin1@ece.fr","LeToutPuissant","Lucas","$2y$10$NjjrShOX1B/6WsPBaT3f1OPpehtIk1HVEAQ.2QlM6fDgAZHLLUBim",NULL), -- mdp:lukeh -- 10
+    (1,"user1@ece.fr","LaSalope","Tiffany","$2y$10$NjjrShOX1B/6WsPBaT3f1OPpehtIk1HVEAQ.2QlM6fDgAZHLLUBim",2), -- mdp:lukeh -- 11
+    (1,"user2@ece.fr","thm","thm","$2y$10$NjjrShOX1B/6WsPBaT3f1OPpehtIk1HVEAQ.2QlM6fDgAZHLLUBim",1); -- mdp:lukeh -- 12
 
 
 INSERT INTO Cours (volumeHoraire, idClasse, idMatiere, idProfesseur) VALUES
