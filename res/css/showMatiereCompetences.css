@@ -1,8 +1,13 @@
-html{
-    background-color:  rgb(229, 226, 224);
+@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+
+
+body {
+    margin: 0px;
+    background-color: rgb(229, 226, 224);
+    font-family: 'Varela Round', sans-serif;
 }
 
-.logo{
+.logo {
     height: 75px;
     width: 200px;
 }
@@ -23,7 +28,7 @@ html{
     background-color: rgb(232, 216, 194);
 }
 
-#wrapper{
+#wrapper {
     background-color: rgb(229, 226, 224);
     /* background-color: rgb(217, 61, 47); */
 }
@@ -33,60 +38,39 @@ h1 {
     text-align: center;
 }
 
-.titreMatiere{
+.titreMatiere {
     height: 36px;
     width: 200px;
 }
 
-.titreMatiere:hover{
-    text-shadow: 3px 3px rgb(210, 157, 88);
-}
 
-h2{
+h2 {
     text-align: center;
 }
 
 
-h4{
+h4 {
     margin-left: 40px;
     text-decoration: underline;
+    text-align: center;
 }
 
-.liste_competences{
+.liste_competences {
     margin-top: 20px;
-    margin-left: 230px;
+    margin-right: 5%;
+    margin-left: 5%;
+    /* margin-left: 230px; */
     font-size: 20px;
     display: flex;
     flex-direction: column;
 }
 
-li{
-/*     display: flex;
+li {
+    /*     display: flex;
     justify-content: space-between; */
     margin-top: 25px;
 }
 
-.bt_NA{
-    width: 50px;
-    font-size: 16px;
-    border-radius: 8px;
-    background-color: rgba(217, 61, 47, 0.8);
-}
-
-.bt_ECA{
-    width: 50px;
-    font-size: 16px;
-    border-radius: 8px;
-    background-color: rgba(217, 112, 47, 0.8);
-}
-
-.bt_A{
-    width: 50px;
-    font-size: 16px;
-    border-radius: 8px;
-    background-color: rgba(48, 209, 99, 0.8);
-}
-
-::-webkit-scrollbar{
-    display: none;
+.competence {
+    margin-bottom: 10px;
 }
