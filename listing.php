@@ -5,7 +5,6 @@ require 'src/session.php';
 
 $sess = SessionManager::getInstance();
 $sess->ensureHasAuthority(User::ACCOUNT_TYPE_USER);
-// var_dump($matieres);
 ?>
 
 <!DOCTYPE html>
@@ -53,7 +52,7 @@ $sess->ensureHasAuthority(User::ACCOUNT_TYPE_USER);
         <div class="slide">
 
             <?php
-            $matieres = Matiere::getAllSubjectsUser(DatabaseController::getInstance(), 11);
+            $matieres = Matiere::getAllSubjectsUser(DatabaseController::getInstance(), $sess->getUser()->getID());
             foreach ($matieres as $matiere) {
                 echo "<a href=\"$matiere[1]\">
                 <span class=\"matiere\">
@@ -65,9 +64,7 @@ $sess->ensureHasAuthority(User::ACCOUNT_TYPE_USER);
                 </span>
                 </a>";
             }
-
             ?>
-
         </div>
         <img src="res/img/fleche_droite.svg" class="img-svg2">
     </div>
