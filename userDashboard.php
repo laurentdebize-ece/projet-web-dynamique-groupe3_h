@@ -1,3 +1,9 @@
+<?php
+header("no-cache, no-store, must-revalidate");
+require_once 'src/session.php';
+$sess = SessionManager::getInstance();
+$sess->ensureHasAuthority(User::ACCOUNT_TYPE_USER);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,16 +11,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="page_daccueil.css" rel="stylesheet" type="text/css" />
-
-    <link rel="stylesheet" href="https://fonts.google.com/specimen/Lora?query=Lora">
-    <style>
-        #titre {
-            font-family: 'Lora', sans-serif;
-        }
-    </style>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>Document</title>
+    <link href="res/css/bootstrap.min.css" rel="stylesheet">
+    <link href="res/css/dashboardEtudiant.css" rel="stylesheet" type="text/css">
+    <link rel="icon" type="icon_onglet.png" href="res/img/icon_onglet.png">
+    <title>SkillTracker - Dashboard étudiant</title>
 </head>
 
 <body>
@@ -23,7 +23,7 @@
             <div id="barreMenu">
                 <table>
                     <tr>
-                        <img class="logo" src="logo_skills_tracker_noir.png" alt="logo">
+                        <img class="logo" src="res/img/logo_skills_tracker_noir.png" alt="logo">
                     </tr>
                     <tr>
                         <button class="b1"> <strong>Mon compte</strong></button>
@@ -43,21 +43,21 @@
                 <p>
                 <h1> <strong> <span id="titre">SKILLS TRACKER</span> </strong></h1> <br>
                 <h2>
-                    Bienvenue sur Skills Tracker. Consulter toutes vos compétences <br>
+                    Bienvenue sur Skills Tracker. Consultez toutes vos compétences <br>
                     dans vos différentes matières et auto-évaluez vous dessus <br>
                     en direct.
                 </h2>
                 </p>
                 <br>
-                <button class="b2"> <strong>MATIERES</strong></button>
+                <a href="/listing.php"><button class="b2"><strong>MATIERES</strong></button></a>
             </div>
         </div>
         <footer>
             Copyright © 2022 Skills Tracker <br>
-            <span><img src="telephone-outbound.svg" alt="icon"> (+33) 6 34 56 78 43</span>
+            <span><img src="res/img/telephone-outbound.svg" alt="icon"> (+33) 6 34 56 78 43</span>
             <br>
             <a href="mailto:contact@skillstracker.com" class="email">
-                <img src="envelope-at.svg" alt="icon">
+                <img src="res/img/envelope-at.svg" alt="icon">
                 <span>contact@skillstracker.com</span>
             </a>
             <p>
