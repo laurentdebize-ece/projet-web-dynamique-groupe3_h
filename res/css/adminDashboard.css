@@ -1,19 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+
 body {
-    background-image: url(background-img.svg);
+    margin: 0px;
+    background-image: url("../img/background-img.svg");
     background-size: 1755px 1210px;
     background-position: right bottom;
     background-repeat: no-repeat;
-    height: 760px;
+    font-weight: 'Varela Round', sans-serif;
 }
 
 h1 {
     text-shadow: 3px 3px rgb(235, 203, 160);
-    font-family: "Lora";
+    /* font-family: "Lora"; */
 }
 
 h2:hover {
     text-shadow: 3px 3px rgb(234, 210, 177);
 }
+
+/* Barre de navigation */
 
 .logo {
     height: 75px;
@@ -22,19 +27,35 @@ h2:hover {
 
 #barreMenu {
     background-color: rgb(240, 240, 240);
+    text-align: center;
+    width: 100%;
+    height: 75px;
+    display: flex;
+    flex-direction: row;
 }
 
 .b1 {
-    height: 75px;
+    display: inline-block;
+    height: 100%;
     width: 200px;
     border: none;
-    display: inline-block;
     transition-duration: 0.6s;
+    vertical-align: super;
 }
 
 .b1:hover {
     background-color: rgb(232, 216, 194);
 }
+
+.b1 p {
+    font-weight: 'Varela Round', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 5%;
+    color: black;
+}
+
+/* Barre de navigation */
 
 .b2 {
     background-color: rgb(147, 129, 207);
@@ -89,6 +110,8 @@ h2:hover {
 
 #titre {
     font-size: 60px;
+    text-align: center;
+    font-weight: bold;
 }
 
 footer {
