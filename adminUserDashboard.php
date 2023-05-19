@@ -98,6 +98,10 @@ if (isset($_POST["action"])) {
                     $user = User::select(DatabaseController::getInstance(), null, ["WHERE `idUser` = $id", "LIMIT 1"])->fetchAllTyped();
                     if (count($user) > 0) {
                         User::delete(DatabaseController::getInstance(), $user[0]);
+
+                        if ($user[0]->getID() === $session->getUser()->getID()) {
+                            $session->logout();
+                        }
                     }
                 } catch (Exception $e) {
                     $errMsg = $e->getMessage();

@@ -1,0 +1,134 @@
+@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+
+body {
+    margin: 0px;
+    background-image: url("../img/background-img.svg");
+    background-size: 1755px 1210px;
+    background-position: right bottom;
+    background-repeat: no-repeat;
+    font-weight: 'Varela Round', sans-serif;
+}
+
+h1 {
+    text-shadow: 3px 3px rgb(235, 203, 160);
+    /* font-family: "Lora"; */
+}
+
+h2:hover {
+    text-shadow: 3px 3px rgb(234, 210, 177);
+}
+
+/* Barre de navigation */
+
+.logo {
+    height: 75px;
+    width: 200px;
+}
+
+#barreMenu {
+    background-color: rgb(240, 240, 240);
+    text-align: center;
+    width: 100%;
+    height: 75px;
+    display: flex;
+    flex-direction: row;
+}
+
+.b1 {
+    display: inline-block;
+    height: 100%;
+    width: 200px;
+    border: none;
+    transition-duration: 0.6s;
+    vertical-align: super;
+}
+
+.b1:hover {
+    background-color: rgb(232, 216, 194);
+}
+
+.b1 p {
+    font-weight: 'Varela Round', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 5%;
+    color: black;
+}
+
+/* Barre de navigation */
+
+.b2 {
+    background-color: rgb(147, 129, 207);
+    border: none;
+    width: 200px;
+    height: 60px;
+    border-radius: 8px;
+    transition-duration: 0.6s;
+}
+
+.b2:hover {
+    animation-name: degrade;
+    animation-duration: 2.5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-out;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+@keyframes degrade {
+    0% {
+        background-color: rgb(37, 104, 127);
+    }
+
+    20% {
+        background-color: rgb(45, 132, 158);
+    }
+
+    40% {
+        background-color: rgb(56, 154, 187)
+    }
+
+    60% {
+        background-color: rgb(87, 174, 201);
+    }
+
+    80% {
+        background-color: rgb(127, 193, 215);
+    }
+
+    100% {
+        background-color: rgb(173, 216, 230);
+    }
+
+}
+
+#navigation {
+    text-align: center;
+    margin-top: 125px;
+    margin-bottom: 210px;
+    font-size: x-large;
+}
+
+#titre {
+    font-size: 60px;
+    text-align: center;
+    font-weight: bold;
+}
+
+footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    text-align: center;
+    font-size: .60;
+    background-color: rgb(232, 216, 194);
+}
+
+.insta {
+    text-decoration: none;
+    color: black;
+}
+
+.email {
+    text-decoration: none;
+    color: black;
+}

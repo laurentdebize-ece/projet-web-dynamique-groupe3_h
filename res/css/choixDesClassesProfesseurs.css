@@ -1,0 +1,98 @@
+/* code rajouté*/
+.logo {
+    height: 75px;
+    width: 200px;
+}
+
+h1 {
+    text-shadow: 3px 3px rgb(235, 203, 160);
+    text-align: center;
+}
+
+#header {
+    background-color: rgb(240, 240, 240);
+
+
+}
+
+.b1 {
+
+    height: 75px;
+    width: 200px;
+    border: none;
+    display: inline-block;
+    transition-duration: 0.6s;
+}
+
+.b1:hover {
+    background-color: rgb(232, 216, 194);
+}
+
+.slide {
+    padding-top: 15px;
+    padding-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    overflow: scroll;
+    scroll-behavior: smooth;
+}
+
+.ensemble-fleche {
+
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+    height: 400px;
+    margin: auto;
+
+
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+
+
+#classe {
+    height: 120px;
+    width: 600px;
+    transition-duration: 1000ms;
+    margin: 5px;
+    z-index: 1;
+    border: 1px solid rgb(240, 240, 240);
+    background-color: rgb(240, 240, 240);
+
+}
+
+#classe:hover {
+    background-color: rgb(66, 63, 63);
+    ;
+}
+
+.background {
+    background-color: rgb(229, 226, 224);
+    margin: -8px;
+} 
+
+#texte2 {
+    text-align: center;
+    padding-top: 10px;
+}
+
+#bouton {
+    width: 100px;
+    height: 40px;
+    border-radius: 15px;
+    border: 1px solid black;
+}
+
+#bouton:hover {
+    background-color: rgb(229, 226, 224);
+}
+
+#espace {
+    width: 240px;
+
+    background-color: rgb(240, 240, 240);
+}
