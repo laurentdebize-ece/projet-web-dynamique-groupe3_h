@@ -1,14 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+
 body {
-    background-image: url(background-img.svg);
+    margin: 0px;
+    background-image: url("../img/background-img.svg");
     background-size: 1755px 1210px;
     background-position: right bottom;
     background-repeat: no-repeat;
-    height: 760px;
+    font-family: 'Varela Round', sans-serif;
 }
 
 h1 {
     text-shadow: 3px 3px rgb(235, 203, 160);
-    font-family: "Lora";
+    font-family: 'Variala Round', sans-serif;
 }
 
 h2:hover {
@@ -89,6 +92,7 @@ h2:hover {
 
 #titre {
     font-size: 60px;
+    font-family: 'Varela Round', sans-serif;
 }
 
 footer {
@@ -108,4 +112,8 @@ footer {
 .email {
     text-decoration: none;
     color: black;
+}
+
+#titre {
+    font-family: 'Valera Round', sans-serif;
 }
