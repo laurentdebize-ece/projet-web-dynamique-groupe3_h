@@ -1,29 +1,8 @@
-html{
-    background-color:  rgb(229, 226, 224);
+html {
+    background-color: rgb(229, 226, 224);
 }
 
-.logo{
-    height: 75px;
-    width: 200px;
-}
-
-#header {
-    background-color: rgb(240, 240, 240);
-}
-
-.b1 {
-    height: 75px;
-    width: 200px;
-    border: none;
-    display: inline-block;
-    transition-duration: 0.6s;
-}
-
-.b1:hover {
-    background-color: rgb(232, 216, 194);
-}
-
-#wrapper{
+#wrapper {
     background-color: rgb(229, 226, 224);
     /* background-color: rgb(217, 61, 47); */
 }
@@ -33,26 +12,26 @@ h1 {
     text-align: center;
 }
 
-.titreMatiere{
+.titreMatiere {
     height: 36px;
     width: 200px;
 }
 
-.titreMatiere:hover{
+.titreMatiere:hover {
     text-shadow: 3px 3px rgb(210, 157, 88);
 }
 
-h2{
+h2 {
     text-align: center;
 }
 
 
-h4{
+h4 {
     margin-left: 40px;
     text-decoration: underline;
 }
 
-.liste_competences{
+.liste_competences {
     margin-top: 20px;
     margin-left: 230px;
     font-size: 20px;
@@ -60,33 +39,33 @@ h4{
     flex-direction: column;
 }
 
-li{
-/*     display: flex;
+li {
+    /*     display: flex;
     justify-content: space-between; */
     margin-top: 25px;
 }
 
-.bt_NA{
+.bt_NA {
     width: 50px;
     font-size: 16px;
     border-radius: 8px;
     background-color: rgba(217, 61, 47, 0.8);
 }
 
-.bt_ECA{
+.bt_ECA {
     width: 50px;
     font-size: 16px;
     border-radius: 8px;
     background-color: rgba(217, 112, 47, 0.8);
 }
 
-.bt_A{
+.bt_A {
     width: 50px;
     font-size: 16px;
     border-radius: 8px;
     background-color: rgba(48, 209, 99, 0.8);
 }
 
-::-webkit-scrollbar{
+::-webkit-scrollbar {
     display: none;
 }

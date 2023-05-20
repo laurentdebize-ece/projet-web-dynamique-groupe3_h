@@ -1,0 +1,24 @@
+
+/* Styles pour la toolbar */
+
+.logo {
+    height: 75px;
+    width: 200px;
+}
+
+.toolbar {
+    background-color: rgb(240, 240, 240);
+    display: flex;
+}
+
+.toolbar-btn {
+    height: 75px;
+    width: 200px;
+    border: none;
+    display: inline-block;
+    transition-duration: 0.6s;
+}
+
+.toolbar-btn:hover {
+    background-color: rgb(232, 216, 194);
+}

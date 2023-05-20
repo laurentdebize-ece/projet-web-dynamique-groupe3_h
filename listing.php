@@ -14,6 +14,7 @@ $sess->ensureHasAuthority(User::ACCOUNT_TYPE_USER);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="res/css/bootstrap.min.css">
+    <link rel="stylesheet" href="res/css/toolbar.css" type="text/css">
     <link rel="stylesheet" href="res/css/matiereEtudiant.css" type="text/css">
     <link rel="icon" type="icon_onglet.png" href="res/img/icon_onglet.png">
     <script src="res\js\jquery-3.7.0.min.js"></script>
@@ -22,24 +23,10 @@ $sess->ensureHasAuthority(User::ACCOUNT_TYPE_USER);
 </head>
 
 <body class="background">
-    <div id="header">
-        <table>
-            <tr>
-                <img class="logo" src="res/img/logo_skills_tracker_noir.png" alt="logo">
-            </tr>
-            <tr>
-                <button class="b1"> <strong>Mon compte</strong></button>
-            </tr>
-            <tr>
-                <button class="b1"> <strong>Mes compétences</strong></button>
-            </tr>
-            <tr>
-                <button class="b1"> <strong>A propos</strong></button>
-            </tr>
-            <tr>
-                <button class="b1"> <strong>Contact</strong></button>
-            </tr>
-        </table>
+    <div class="toolbar">
+        <a href="/"><img class="logo" src="res/img/logo_skills_tracker_noir.png" alt="logo"></a>
+        <a href="/listing.php"><button class="toolbar-btn"> <strong>Mes matières</strong></button></a>
+        <a><button class="toolbar-btn"> <strong>Mes compétences</strong></button></a>
     </div>
 
     <h1 id="texte">

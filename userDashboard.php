@@ -12,33 +12,20 @@ $sess->ensureHasAuthority(User::ACCOUNT_TYPE_USER);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="res/css/bootstrap.min.css" rel="stylesheet">
-    <link href="res/css/dashboardEtudiant.css" rel="stylesheet" type="text/css">
+    <link href="res/css/toolbar.css" rel="stylesheet" type="text/css">
+    <link href="res/css/dashboard.css" rel="stylesheet" type="text/css">
     <link rel="icon" type="icon_onglet.png" href="res/img/icon_onglet.png">
     <title>SkillTracker - Dashboard étudiant</title>
 </head>
 
 <body>
+    <div class="toolbar">
+        <a href="/"><img class="logo" src="res/img/logo_skills_tracker_noir.png" alt="logo"></a>
+        <a href="/listing.php"><button class="toolbar-btn"> <strong>Mes matières</strong></button></a>
+        <a><button class="toolbar-btn"> <strong>Mes compétences</strong></button></a>
+    </div>
     <div id="wrapper">
         <div id="content">
-            <div id="barreMenu">
-                <table>
-                    <tr>
-                        <img class="logo" src="res/img/logo_skills_tracker_noir.png" alt="logo">
-                    </tr>
-                    <tr>
-                        <button class="b1"> <strong>Mon compte</strong></button>
-                    </tr>
-                    <tr>
-                        <button class="b1"> <strong>Mes compétences</strong></button>
-                    </tr>
-                    <tr>
-                        <button class="b1"> <strong>A propos</strong></button>
-                    </tr>
-                    <tr>
-                        <button class="b1"> <strong>Contact</strong></button>
-                    </tr>
-                </table>
-            </div>
             <div id="navigation">
                 <p>
                 <h1> <strong> <span id="titre">SKILLS TRACKER</span> </strong></h1> <br>
