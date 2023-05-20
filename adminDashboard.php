@@ -13,26 +13,21 @@ $sess->ensureHasAuthority(User::ACCOUNT_TYPE_ADMIN);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="res/css/bootstrap.min.css">
-    <link rel="stylesheet" href="res/css/adminDashboard.css" type="text/css">
+    <link rel="stylesheet" href="res/css/toolbar.css" type="text/css">
+    <link rel="stylesheet" href="res/css/dashboard.css" type="text/css">
     <link rel="icon" type="icon_onglet.png" href="res/img/icon_onglet.png">
     <title>Accueil</title>
 </head>
 
 <body>
+    <div class="toolbar">
+        <a href="/"><img class="logo" src="res/img/logo_skills_tracker_noir.png" alt="logo"></a>
+        <a href="/adminUserDashboard.php"><button class="toolbar-btn"> <strong>Utilisateurs</strong></button></a>
+        <a><button class="toolbar-btn"> <strong>Compétences</strong></button></a>
+        <a><button class="toolbar-btn"> <strong>Ecoles</strong></button></a>
+    </div>
     <div id="wrapper">
         <div id="content">
-            <div id="barreMenu">
-                <a href="/"> <img class="logo" src="res/img/logo_skills_tracker_noir.png" alt="logo"></a>
-                <a href="/adminUserDashboard.php"> <span class="b1">
-                        <p>Utilisateurs</p>
-                    </span></a>
-                <a href="/adminUserDashboard.php"> <span class="b1">
-                        <p>Compétences & Matieres</p>
-                    </span></a>
-                <a href="/adminUserDashboard.php"> <span class="b1">
-                        <p>Ecoles</p>
-                    </span></a>
-            </div>
             <div id="navigation">
                 <p>
                 <h1> <span id="titre">Ravi de vous revoir, <?php echo $sess->getUser()->getDisplayName() ?></span> </h1> <br>

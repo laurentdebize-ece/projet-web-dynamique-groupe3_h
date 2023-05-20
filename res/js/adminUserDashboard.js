@@ -11,7 +11,6 @@ function showUserEditPopup(uid) {
 
 
 $(document).ready(function () {
-
     const addUserModal = bootstrap.Modal.getOrCreateInstance("#addusermodal");
 
     const createAdminCollapse = bootstrap.Collapse.getOrCreateInstance("#createadmin", {
