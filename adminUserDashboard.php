@@ -183,7 +183,7 @@ if (isset($_POST["action"])) {
                     $uid = $user["idUser"];
 
                     echo "<tr>";
-                    echo "<td>" . $user["nomUser"] . " " . $user["prenomUser"] . "</td>";
+                    echo "<td>" . $user["prenomUser"] . " " . $user["nomUser"]  . "</td>";
                     $typesComptes = ["Admin", "Eleve", "Prof"];
                     echo "<td>" . $typesComptes[$user["typeAccount"]] . "</td>";
                     if ($user["numGroupe"] == null) {
