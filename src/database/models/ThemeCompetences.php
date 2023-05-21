@@ -25,13 +25,13 @@ class ThemesCompetences extends DatabaseTable
         $themesArray = array();
         $array = MatiereCompetences::getSubjectCompetencesUser($db, $idUser);
         foreach ($array as $matiere => $competences) {
-            foreach ($competences['transverses'] as $competence) {
+            foreach ($competences[Competence::COMPETENCE_TYPE_TRANSVERSE] as $competence) {
                 $nomCompetence = classQL::escapeSQL($competence);
                 $idCompetence = classQL::getObjectValues(Competence::select($db, null, ["WHERE", "nomCompetences = '$nomCompetence'","LIMIT 1"])->fetchTyped())['idCompetences'];
                 $themes = Theme::getThemesByCompetences($db, $idCompetence);
                 $themesArray[$matiere][$competence] = $themes;
             }
-            foreach ($competences['specifiques'] as $competence) {
+            foreach ($competences[Competence::COMPETENCE_TYPE_MATIERE] as $competence) {
                 $nomCompetence = classQL::escapeSQL($competence);
                 $idCompetence = classQL::getObjectValues(Competence::select($db, null, ["WHERE", "nomCompetences = '$nomCompetence'","LIMIT 1"])->fetchTyped())['idCompetences'];
                 $themes = Theme::getThemesByCompetences($db, $idCompetence);

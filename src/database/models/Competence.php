@@ -6,6 +6,10 @@ class Competence extends DatabaseTable
     const TABLE_NAME = 'Competences';
     const TABLE_TYPE = Competence::class;
 
+    const COMPETENCE_TYPE_TRANSVERSE = 'transverse';
+    const COMPETENCE_TYPE_MATIERE = 'matiere';
+
+
     public function __construct($nomCompetences)
     {
         $this->nomCompetences = $nomCompetences;
@@ -19,6 +23,13 @@ class Competence extends DatabaseTable
     private string $nomCompetences;
     private DateTime $dateCreation;
 
+    public static function getAllCompetences(DatabaseController $db):array
+    {
+        $competences = Competence::select($db,null,["ORDER BY","nomCompetences ASC"])->fetchAll();
+        $competences = array_map(fn ($competence) => $competence['nomCompetences'], $competences);
+        return $competences;
+    }
+
     public static function getCompetencesByMatiere(DatabaseController $db, int $idMatiere): array
     {
 
@@ -26,8 +37,8 @@ class Competence extends DatabaseTable
         $table_competences = Competence::TABLE_NAME;
         $table_matiere_competences = MatiereCompetences::TABLE_NAME;
         $matiereCompetence = array();
-        $matiereCompetence['transverses'] = array();
-        $matiereCompetence['specifiques'] = array();
+        $matiereCompetence[Competence::COMPETENCE_TYPE_TRANSVERSE] = array();
+        $matiereCompetence[Competence::COMPETENCE_TYPE_MATIERE] = array();
 
         $competences = Competence::select($db,null,["JOIN $table_matiere_competences ON",
                                                 "$table_matiere_competences.idCompetences = $table_competences.idCompetences",
@@ -39,11 +50,11 @@ class Competence extends DatabaseTable
             $nomCompetence = $competence['nomCompetences'];
             if (in_array($nomCompetence,MatiereCompetences::getCompetencesTransverses($db)))
             {
-                array_push($matiereCompetence['transverses'], $nomCompetence);
+                array_push($matiereCompetence[Competence::COMPETENCE_TYPE_TRANSVERSE], $nomCompetence);
             }
             else
             {
-                array_push($matiereCompetence['specifiques'], $nomCompetence);
+                array_push($matiereCompetence[Competence::COMPETENCE_TYPE_MATIERE], $nomCompetence);
             }
         }
 
@@ -53,121 +64,106 @@ class Competence extends DatabaseTable
     /// ajoute une competence depuis un admin, ajoutez une condition sur les nomMatieres et nomThemes pour être sûr qu'ils existent
     private static function addCompetencesAdmin(DatabaseController $db, string $nomCompetences, array $nomMatieres, array $nomThemes): void
     {
-        Competence::insert($db,new Competence($nomCompetences));
-        $competences = Competence::select($db,null,["WHERE","nomCompetences = '$nomCompetences'","LIMIT 1"])->fetchTyped();
-        var_dump($competences);
-        $idCompetences = ClassQL::getObjectValues($competences)['idCompetences'];
-        foreach ($nomMatieres as $nomMatiere)
-        {
-            $matiere = Matiere::select($db,null,["WHERE","nomMatiere = '$nomMatiere'","LIMIT 1"])->fetchTyped();
-            var_dump($matiere);
-            if($matiere){
-                $idMatiere = ClassQL::getObjectValues($matiere)['idMatiere'];
-                MatiereCompetences::insert($db,new MatiereCompetences($idCompetences,$idMatiere));
+        !in_array($nomCompetences,Competence::select($db,"DISTINCT nomCompetences")->fetchAll())? Competence::insert($db,new Competence($nomCompetences)) : null;
+        $nomCompetence = classQL::escapeSQL($nomCompetences);
+        $competences = Competence::select($db,null,["WHERE","nomCompetences = '$nomCompetence'","LIMIT 1"])->fetchTyped();
+        if($competences !== null){
+            $idCompetences = ClassQL::getObjectValues($competences)['idCompetences'];
+            foreach ($nomMatieres as $nomMatiere)
+            {
+                $matiere = Matiere::select($db,null,["WHERE","nomMatiere = '$nomMatiere'","LIMIT 1"])->fetchTyped();
+                if($matiere){
+                    $idMatiere = ClassQL::getObjectValues($matiere)['idMatiere'];
+                    MatiereCompetences::insert($db,new MatiereCompetences($idCompetences,$idMatiere));
+                }
             }
-        }
-        foreach ($nomThemes as $nomTheme)
-        {
-            $theme = Theme::select($db,null,["WHERE","nomTheme = '$nomTheme'","LIMIT 1"])->fetchTyped();
-            var_dump($theme);
-            if ($theme){
-                $idTheme = ClassQL::getObjectValues($theme)['idTheme'];
-                ThemesCompetences::insert($db,new ThemesCompetences($idCompetences,$idTheme));
+            foreach ($nomThemes as $nomTheme)
+            {
+                $theme = Theme::select($db,null,["WHERE","nomTheme = '$nomTheme'","LIMIT 1"])->fetchTyped();
+                if ($theme){
+                    $idTheme = ClassQL::getObjectValues($theme)['idTheme'];
+                    ThemesCompetences::insert($db,new ThemesCompetences($idCompetences,$idTheme));
+                }
             }
         }
     }
 
-    private static function addCompetencesEleve(DatabaseController $db, int $idUser)
+    private static function addCompetencesEleve(DatabaseController $db, int $idUser, int $idCompetences)
     {
-        
+        $addCompetence = Competence::select($db, null, ["WHERE", "idCompetences = $idCompetences", "LIMIT 1"])->fetchTyped();
+
+        if ($addCompetence !== null) {
+            $nomCompetence = ClassQL::getObjectValues($addCompetence)['nomCompetences'];
+            $competencesUser = MatiereCompetences::getSubjectCompetencesUser($db, $idUser);
+
+            if (in_array($nomCompetence,Competence::getAllCompetences($db)) and !in_array($nomCompetence, $competencesUser)) {
+                $competence = new UserCompetence($idCompetences, $idUser);
+                UserCompetence::insert($db, $competence);
+            }
+        }
     }
 
     /// ajoute une competence depuis un professeur, ajoutez une condition sur les nomMatieres et nomThemes pour être sûr qu'ils existent
     private static function addCompetenceProf(DatabaseController $db, int $idUser, string $nomCompetences, array $nomMatieres, array $nomThemes): void
     {
         $array = MatiereCompetences::getSubjectCompetencesUser($db, $idUser);
-        var_dump($array);
         if (isset($nomCompetences)){
             foreach 
-            ($nomMatieres as $nomMatiere)
-            {
+            ($nomMatieres as $nomMatiere) {
                 if (in_array($nomMatiere,array_keys($array)) and !in_array($nomCompetences,$array)) {
 
-                    try
+                    if (!in_array($nomCompetences,self::getAllCompetences($db))){
+                        Competence::insert($db,new Competence($nomCompetences));
+                    }
+                    
+                    $nomCompetenceSQL = classQL::escapeSQL($nomCompetences);
+                    $competence = Competence::select($db,null,["WHERE","nomCompetences = '$nomCompetenceSQL'","LIMIT 1"])->fetchTyped();
+                    var_dump($competence);
+                    $idCompetences = ClassQL::getObjectValues($competence)['idCompetences'];
+                    foreach ($nomMatieres as $nomMatiere)
                     {
-                        !in_array($nomCompetences,Competence::select($db,"DISTINCT nomCompetences")->fetchAll())? Competence::insert($db,new Competence($nomCompetences)) : null;
-                        $competence = Competence::select($db,null,["WHERE","nomCompetences = '$nomCompetences'","LIMIT 1"])->fetchTyped();
-                        $idCompetences = ClassQL::getObjectValues($competence)['idCompetences'];
-                        foreach ($nomMatieres as $nomMatiere)
+                        $matiere = Matiere::select($db,null,["WHERE","nomMatiere = '$nomMatiere'","LIMIT 1"])->fetchTyped();
+                        if($matiere)
                         {
-                            $matiere = Matiere::select($db,null,["WHERE","nomMatiere = '$nomMatiere'","LIMIT 1"])->fetchTyped();
-                            if($matiere)
-                            {
-                                $idMatiere = ClassQL::getObjectValues($matiere)['idMatiere'];
-                                !in_array($nomCompetences,$array)? MatiereCompetences::insert($db,new MatiereCompetences($idCompetences,$idMatiere)): null;
-                            }
-                        }
-                        foreach ($nomThemes as $nomTheme)
-                        {
-                            $theme = Theme::select($db,null,["WHERE","nomTheme = '$nomTheme'","LIMIT 1"])->fetchTyped();
-                            if ($theme)
-                            {
-                                $idTheme = ClassQL::getObjectValues($theme)['idTheme'];
-                                !in_array($nomCompetences,$array)? ThemesCompetences::insert($db,new ThemesCompetences($idCompetences,$idTheme)): null;
-                            }
+                            $idMatiere = ClassQL::getObjectValues($matiere)['idMatiere'];
+                            !in_array($nomCompetences,$array)? MatiereCompetences::insert($db,new MatiereCompetences($idCompetences,$idMatiere)): null;
                         }
                     }
-                    catch (Exception $e)
+                    foreach ($nomThemes as $nomTheme)
                     {
-                        echo "Erreur lors de l'ajout de la compétence";
+                        $theme = Theme::select($db,null,["WHERE","nomTheme = '$nomTheme'","LIMIT 1"])->fetchTyped();
+                        if ($theme)
+                        {
+                            $idTheme = ClassQL::getObjectValues($theme)['idTheme'];
+                            !in_array($nomCompetences,$array)? ThemesCompetences::insert($db,new ThemesCompetences($idCompetences,$idTheme)): null;
+                        }
                     }
-    
+                    
                 }
             }
         }
-        
     }
 
-
-    public static function addCompetenceUser(DatabaseController $db, int $idUser, ?string $nomCompetences = null, ?array $nomMatieres = null, ?array $nomThemes = null): void
+    public static function addCompetenceUser(DatabaseController $db, int $idUser, string $nomCompetences, ?array $nomMatieres = null, ?array $nomThemes = null): void
     {
         $user = User::select($db, null, ["WHERE","`idUser` = $idUser","LIMIT 1"])->fetchTyped();
         $arrayUser = classQL::getObjectValues($user);
-        $competence = Competence::select($db,null,["WHERE","`nomCompetences` = '$nomCompetences'","LIMIT 1"])->fetchAll()[0];
-        if (!$competence){
-            switch($arrayUser['typeAccount'])
-            {
-                case User::ACCOUNT_TYPE_ADMIN:
-                    self::addCompetencesAdmin($db, $nomCompetences, $nomMatieres, $nomThemes);
-                    break;
-                case User::ACCOUNT_TYPE_USER:
-                    $competencesUser = MatiereCompetences::getSubjectCompetencesUser($db, $idUser);
-                    $allCompetences = Competence::select($db,"DISTINCT nomCompetences")->fetchAll();
-
-                    $missingCompetences = array();
-                    foreach ($allCompetences as $competence)
-                    {
-                        $competenceName = $competence['nomCompetences'];
-                        $found = false;
-                        foreach ($competencesUser as $matiere => $competences)
-                        {
-                            if (in_array($competenceName, $competences)) {
-                                $found = true;
-                                break;
-                            }
-                        }
-                        if (!$found) {
-                            $missingCompetences[] = $competenceName;
-                        }
-                    }
-                    /// FIXME: probleme avec le stockage des nouvelles compétences choisis par l'utilisateur -> insertion dans bdd?
-                    /// missing competences correspond aux compétences disponibles pour l'utilisateur mais pas encore choisies
-
-                case User::ACCOUNT_TYPE_PROF:
-                    echo 'ok';
-                    self::addCompetenceProf($db, $idUser, $nomCompetences, $nomMatieres, $nomThemes);
-                    break;
-            }
+        $nomCompetence = ClassQL::escapeSQL($nomCompetences);
+        $competence = Competence::select($db,null,["WHERE","`nomCompetences` = '$nomCompetence'","LIMIT 1"])->fetchTyped();
+        switch($arrayUser['typeAccount'])
+        {
+            case User::ACCOUNT_TYPE_ADMIN:
+                self::addCompetencesAdmin($db, $nomCompetences, $nomMatieres, $nomThemes);
+                break;
+            case User::ACCOUNT_TYPE_USER:
+                if($competence !== null){
+                    $idCompetences = classQL::getObjectValues($competence)['idCompetences'];
+                    self::addCompetencesEleve($db, $idUser, $idCompetences);
+                }
+                break;
+            case User::ACCOUNT_TYPE_PROF:
+                self::addCompetenceProf($db, $idUser, $nomCompetences, $nomMatieres, $nomThemes);
+                break;
         }
     }
 }
