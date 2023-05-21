@@ -121,7 +121,7 @@ if (isset($_POST["action"])) {
 <body>
     <div class="toolbar">
         <a href="/"><img class="logo" src="res/img/logo_skills_tracker_noir.png" alt="logo"></a>
-        <a href="/adminUserDashboard.php"><button class="toolbar-btn"> <strong>Utilisateurs</strong></button></a>
+        <a href="/users.php"><button class="toolbar-btn"> <strong>Utilisateurs</strong></button></a>
         <a><button class="toolbar-btn"> <strong>Compétences</strong></button></a>
         <a><button class="toolbar-btn"> <strong>Ecoles</strong></button></a>
     </div>
@@ -129,10 +129,10 @@ if (isset($_POST["action"])) {
         <button class="btn btn-primary" id="adduserbtn"> ➕ Créer un utilisateur</button>
         <div class="btn-group" role="group" aria-label="filtre">
             <button class="btn btn-primary active">Filtrer</button>
-            <a href="adminUserDashboard.php?filter=all" class="btn btn-primary">Tout</a>
-            <a href="adminUserDashboard.php?filter=prof" class="btn btn-primary">Professeurs</a>
-            <a href="adminUserDashboard.php?filter=eleve" class="btn btn-primary">Eleves</a>
-            <a href="adminUserDashboard.php?filter=admin" class="btn btn-primary">Administrateurs</a>
+            <a href="users.php?filter=all" class="btn btn-primary">Tout</a>
+            <a href="users.php?filter=prof" class="btn btn-primary">Professeurs</a>
+            <a href="users.php?filter=eleve" class="btn btn-primary">Eleves</a>
+            <a href="users.php?filter=admin" class="btn btn-primary">Administrateurs</a>
         </div>
         <table class="table table-light table-stripped table-hover">
             <thead>

@@ -22,7 +22,7 @@ $sess->ensureHasAuthority(User::ACCOUNT_TYPE_ADMIN);
 <body>
     <div class="toolbar">
         <a href="/"><img class="logo" src="res/img/logo_skills_tracker_noir.png" alt="logo"></a>
-        <a href="/adminUserDashboard.php"><button class="toolbar-btn"> <strong>Utilisateurs</strong></button></a>
+        <a href="/users.php"><button class="toolbar-btn"> <strong>Utilisateurs</strong></button></a>
         <a><button class="toolbar-btn"> <strong>Compétences</strong></button></a>
         <a><button class="toolbar-btn"> <strong>Ecoles</strong></button></a>
     </div>
