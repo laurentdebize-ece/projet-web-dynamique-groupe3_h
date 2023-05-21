@@ -17,7 +17,7 @@ class Matiere extends DatabaseTable
     #[TableOpt(Unique: true)]
     private string $nomMatiere;
 
-    public static function getAllSubjectsUser(DatabaseController $db, int $idUser): array|null
+    public static function getAllSubjectsUser(DatabaseController $db, int $idUser): ?array
     {
         $user = User::select($db, null, ["WHERE", "`idUser` = $idUser", "LIMIT 1"])->fetchTyped();
         if ($user->getAccountType() === User::ACCOUNT_TYPE_USER) {
@@ -40,6 +40,9 @@ class Matiere extends DatabaseTable
                 }
                 return $matieresUser;
             }
+        }
+        else{
+            return null;
         }
     }
 }

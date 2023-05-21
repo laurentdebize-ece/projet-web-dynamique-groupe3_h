@@ -29,7 +29,7 @@ final class TypedPDOStatement
     }
 
     /// Retourne le résultat de la requête sous forme d'un objet typé.
-    public function fetchTyped(): object
+    public function fetchTyped(): ?object
     {
         $obj = $this->stmt->fetch();
         if (is_null($obj) || $obj === false)

@@ -137,7 +137,8 @@ INSERT INTO Competences (nomCompetences,DateCreation) VALUES
     ("Nombres complexes","2023-05-14 00:00:00"), -- 6
     ("Maxwell","2023-05-14 00:00:00"), -- 7
     ("Pointeur de structures","2023-05-14 00:00:00"), -- 8
-    ("Sensibilisation Environnementale","2023-05-14 00:00:00"); -- 9
+    ("Sensibilisation Environnementale","2023-05-14 00:00:00"), -- 9
+    ("Culture générale","2023-05-14 00:00:00"); -- 10
 
 INSERT INTO Themes (nomTheme) VALUES
     ("Logique"), -- 1
@@ -188,7 +189,9 @@ INSERT INTO MatiereCompetences (idCompetences,idMatiere) VALUES
     (8,8),
 
     (9,13),
-    (9,14);
+    (9,14),
+
+    (10,15);
 
 
 INSERT INTO ThemesCompetences (idCompetences,idTheme) VALUES
@@ -215,4 +218,6 @@ INSERT INTO ThemesCompetences (idCompetences,idTheme) VALUES
     (8,1),
 
     (9,4),
-    (9,5);
+    (9,5),
+    
+    (10,4);
