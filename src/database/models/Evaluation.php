@@ -31,6 +31,20 @@ class Evaluation extends DatabaseTable
         $this->idMatiere = $idMatiere;
     }
 
+    public static function getEvaluationForCompetence(DatabaseController $db, int $idEleve, int $idCompetence): ?Evaluation
+    {
+        return Evaluation::select($db, null, ["WHERE", "idEleve = $idEleve", "AND", "idCompetences = $idCompetence", "LIMIT 1"])->fetchTyped();
+    }
+
+    public function getEvaluation(): string
+    {
+        if ($this->evaluationFinale != null) {
+            return $this->evaluationFinale;
+        } else {
+            return $this->AutoEvaluation;
+        }
+    }
+
     #[TableOpt(PrimaryKey: true, AutoIncrement: true)]
     private ?int $idEvaluation = null;
 

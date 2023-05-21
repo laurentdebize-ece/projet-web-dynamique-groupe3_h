@@ -6,20 +6,23 @@ require_once 'src/database/models/Competence.php';
 $sess = SessionManager::getInstance();
 $sess->ensureHasAuthority(User::ACCOUNT_TYPE_USER);
 
-function drawCompetences(array $competences, string $typesCompetences, string $titre)
+function drawCompetences(SessionManager $sess, array $competences, string $typesCompetences, string $titre)
 {
     if (count($competences[$typesCompetences]) > 0) {
         echo "<h4>$titre</h4>";
         echo "<div class=\"liste_competences\">";
         foreach ($competences[$typesCompetences] as $competence) {
-            echo "<div class=\"card card-body competence\">
-               <p>$competence</p>
-               <div class=\"btn-group\" role=\"group\">
-                   <button class=\"btn btn-success\">A</button>
-                   <button class=\"btn btn-secondary active\">ECA</button>
-                   <button class=\"btn btn-danger\">NA</button>
-                </div>
-            </div>";
+            [$nomCompetence, $idCompetence] = $competence;
+            $evaluation = Evaluation::getEvaluationForCompetence(DatabaseController::getInstance(), $sess->getUser()->getId(), $idCompetence);
+            echo "<div class=\"card card-body competence\">";
+            echo "<p><b>$nomCompetence</b></p>";
+            if (!is_null($evaluation)) {
+                echo "Evaluation : " . $evaluation->getEvaluation();
+            } else {
+                echo "<i> Pas encore évalué </i>";
+                echo "<a href=\"evaluation.php?id=$idCompetence\"><button class=\"btn btn-primary\">Evaluer</button></a>";
+            }
+            echo "</div>";
         }
         echo "</div>";
     }
@@ -32,7 +35,6 @@ if (!isset($_GET['id'])) {
 }
 
 $matieres = Competence::getCompetencesByMatiere(DatabaseController::getInstance(), $_GET['id']);
-
 ?>
 
 
@@ -66,8 +68,8 @@ $matieres = Competence::getCompetencesByMatiere(DatabaseController::getInstance(
         <br>
 
         <?php
-        drawCompetences($matieres, 'specifiques', 'Compétences de la matière');
-        drawCompetences($matieres, 'transverses', 'Compétences transverses');
+        drawCompetences($sess, $matieres, Competence::COMPETENCE_TYPE_MATIERE, 'Compétences de la matière');
+        drawCompetences($sess, $matieres, Competence::COMPETENCE_TYPE_TRANSVERSE, 'Compétences transverses');
         ?>
     </div>
 </body>
