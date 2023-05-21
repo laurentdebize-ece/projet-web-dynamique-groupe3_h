@@ -25,6 +25,7 @@ function getAllClasses()
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="res/css/bootstrap.min.css">
+    <link rel="stylesheet" href="res/css/toolbar.css">
     <link rel="stylesheet" href="res/css/adminUserDashboard.css">
     <script src="res/js/jquery-3.7.0.min.js"></script>
     <script src="res/js/bootstrap.bundle.min.js"></script>
@@ -118,77 +119,85 @@ if (isset($_POST["action"])) {
 
 
 <body>
-    <button class="btn btn-primary" id="adduserbtn"> ➕ Créer un utilisateur</button>
-    <div class="btn-group" role="group" aria-label="filtre">
-        <a href="adminUserDashboard.php?filter=all" class="btn btn-primary">Tout</a>
-        <a href="adminUserDashboard.php?filter=prof" class="btn btn-primary">Professeurs</a>
-        <a href="adminUserDashboard.php?filter=eleve" class="btn btn-primary">Eleves</a>
-        <a href="adminUserDashboard.php?filter=admin" class="btn btn-primary">Administrateurs</a>
+    <div class="toolbar">
+        <a href="/"><img class="logo" src="res/img/logo_skills_tracker_noir.png" alt="logo"></a>
+        <a href="/adminUserDashboard.php"><button class="toolbar-btn"> <strong>Utilisateurs</strong></button></a>
+        <a><button class="toolbar-btn"> <strong>Compétences</strong></button></a>
+        <a><button class="toolbar-btn"> <strong>Ecoles</strong></button></a>
     </div>
-    <table class="table table-light table-stripped table-hover">
-        <thead>
-            <tr>
-                <th>Prénom / Nom</th>
-                <th>Type</th>
-                <th>Classe</th>
-                <th>e-mail</th>
-                <th> </th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            $reqFilter = [];
+    <div class="panel">
+        <button class="btn btn-primary" id="adduserbtn"> ➕ Créer un utilisateur</button>
+        <div class="btn-group" role="group" aria-label="filtre">
+            <button class="btn btn-primary active">Filtrer</button>
+            <a href="adminUserDashboard.php?filter=all" class="btn btn-primary">Tout</a>
+            <a href="adminUserDashboard.php?filter=prof" class="btn btn-primary">Professeurs</a>
+            <a href="adminUserDashboard.php?filter=eleve" class="btn btn-primary">Eleves</a>
+            <a href="adminUserDashboard.php?filter=admin" class="btn btn-primary">Administrateurs</a>
+        </div>
+        <table class="table table-light table-stripped table-hover">
+            <thead>
+                <tr>
+                    <th>Prénom / Nom</th>
+                    <th>Type</th>
+                    <th>Classe</th>
+                    <th>e-mail</th>
+                    <th> </th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $reqFilter = [];
 
-            if (isset($_GET["filter"])) {
-                switch ($_GET["filter"]) {
-                    case "all":
-                        $reqFilter = [];
-                        break;
+                if (isset($_GET["filter"])) {
+                    switch ($_GET["filter"]) {
+                        case "all":
+                            $reqFilter = [];
+                            break;
 
-                    case "prof":
-                        $reqFilter = ["WHERE `typeAccount` = 2"];
-                        break;
+                        case "prof":
+                            $reqFilter = ["WHERE `typeAccount` = 2"];
+                            break;
 
-                    case "eleve":
-                        $reqFilter = ["WHERE `typeAccount` = 1"];
-                        break;
+                        case "eleve":
+                            $reqFilter = ["WHERE `typeAccount` = 1"];
+                            break;
 
-                    case "admin":
-                        $reqFilter = ["WHERE `typeAccount` = 0"];
-                        break;
+                        case "admin":
+                            $reqFilter = ["WHERE `typeAccount` = 0"];
+                            break;
 
-                    default:
-                        $reqFilter = [];
-                        break;
+                        default:
+                            $reqFilter = [];
+                            break;
+                    }
                 }
-            }
 
-            $users = User::select(DatabaseController::getInstance(), null, array_merge([
-                "LEFT JOIN `classes` ON `users`.`idClasse` = `classes`.`idClasse`",
-                "LEFT JOIN `promotions` ON `classes`.`idPromo` = `promotions`.`idPromo`",
-                "LEFT JOIN `filieres` ON `filieres`.`idFiliere` = `promotions`.`idFiliere`",
-                "LEFT JOIN `ecoles` ON `ecoles`.`idEcole` = `filieres`.`idEcole`"
-            ], $reqFilter))->fetchAll();
+                $users = User::select(DatabaseController::getInstance(), null, array_merge([
+                    "LEFT JOIN `classes` ON `users`.`idClasse` = `classes`.`idClasse`",
+                    "LEFT JOIN `promotions` ON `classes`.`idPromo` = `promotions`.`idPromo`",
+                    "LEFT JOIN `filieres` ON `filieres`.`idFiliere` = `promotions`.`idFiliere`",
+                    "LEFT JOIN `ecoles` ON `ecoles`.`idEcole` = `filieres`.`idEcole`"
+                ], $reqFilter))->fetchAll();
 
-            foreach ($users as $user) {
-                $uid = $user["idUser"];
+                foreach ($users as $user) {
+                    $uid = $user["idUser"];
 
-                echo "<tr>";
-                echo "<td>" . $user["nomUser"] . " " . $user["prenomUser"] . "</td>";
-                $typesComptes = ["Admin", "Eleve", "Prof"];
-                echo "<td>" . $typesComptes[$user["typeAccount"]] . "</td>";
-                if ($user["numGroupe"] == null) {
-                    echo "<td> </td>";
-                } else {
-                    echo "<td> <span class=\"rounded-pill text-bg-info\">" . $user['numGroupe'] . " / "  . $user['nomFiliere'] . " " . $user['nomEcole'] . " / " . $user['annee'] . "</span> </td>";
+                    echo "<tr>";
+                    echo "<td>" . $user["nomUser"] . " " . $user["prenomUser"] . "</td>";
+                    $typesComptes = ["Admin", "Eleve", "Prof"];
+                    echo "<td>" . $typesComptes[$user["typeAccount"]] . "</td>";
+                    if ($user["numGroupe"] == null) {
+                        echo "<td> </td>";
+                    } else {
+                        echo "<td> <span class=\"rounded-pill text-bg-info\">" . $user['numGroupe'] . " / "  . $user['nomFiliere'] . " " . $user['nomEcole'] . " / " . $user['annee'] . "</span> </td>";
+                    }
+                    echo "<td>" . $user["email"] . "</td>";
+                    echo "<td>" . "<button onclick=\"showUserEditPopup($uid)\" class=\"btn text-bg-danger\"> 💀 </button></td>";
+                    echo "</tr>";
                 }
-                echo "<td>" . $user["email"] . "</td>";
-                echo "<td>" . "<button onclick=\"showUserEditPopup($uid)\" class=\"btn text-bg-danger\"> 💀 </button></td>";
-                echo "</tr>";
-            }
-            ?>
-        </tbody>
-    </table>
+                ?>
+            </tbody>
+        </table>
     </div>
 
     <!-- Fenêtre modale de modification d'utilisateurs -->
@@ -326,6 +335,7 @@ if (isset($_POST["action"])) {
 
                     </div>
                 </div>
+            </div>
 </body>
 
 </html>
