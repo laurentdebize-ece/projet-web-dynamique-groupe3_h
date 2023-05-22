@@ -1,3 +1,9 @@
+<?php
+$sess = SessionManager::getInstance();
+$sess->ensureHasAuthority(User::ACCOUNT_TYPE_USER);
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,6 +13,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="res/css/liste_matiere_compte_administrateur.css" rel="stylesheet" type="text/css" />
     <link rel="icon" type="icon_onglet.png" href="res/img/icon_onglet.png">
+    <link rel="stylesheet" href="res/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="res/css/toolbar.css" />
+    <script src="res/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <title>Liste des matières</title>
@@ -43,24 +52,10 @@
     
     
     <script type="text/javascript" src="res/js/page_ajouter_modifier_supprimer_competence_professeur.js"></script>
-    <div id="header">
-        <table>
-            <tr>
-                <img class="logo" src="res/img/logo_skills_tracker_noir.png" alt="logo">
-            </tr>
-            <tr>
-                <button class="b1"> <strong>Mon compte</strong></button>
-            </tr>
-            <tr>
-                <a href="page_mes_competences.php"><button class="b1"><strong>Mes compétences</strong></button></a>
-            </tr>
-            <tr>
-                <button class="b1"> <strong>A propos</strong></button>
-            </tr>
-            <tr>
-                <button class="b1"> <strong>Contact</strong></button>
-            </tr>
-        </table>
+    <div class="toolbar">
+        <a href="/"><img class="logo" src="res/img/logo_skills_tracker_noir.png" alt="logo"></a>
+        <a href="/listing.php"><button class="toolbar-btn"> <strong>Mes matières</strong></button></a>
+        <a><button class="toolbar-btn"> <strong>Mes compétences</strong></button></a>
     </div>
     <div id="wrapper">
         <br>
