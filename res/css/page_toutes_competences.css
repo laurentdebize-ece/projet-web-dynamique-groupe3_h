@@ -171,6 +171,14 @@ h1 {
     display: none;
 }
 
+/* .b2 {
+    background-color: rgb(147, 129, 207);
+    border: none;
+    width: 100px;
+    height: 25px;
+    border-radius: 8px;
+    transition-duration: 0.6s;
+} */
 
 .titreMatieres{
     height: 27px;

@@ -1,5 +1,5 @@
-html {
-    background-color: rgb(229, 226, 224);
+html{
+    background-color:  rgb(229, 226, 224);
 }
 
 h1 {
@@ -7,7 +7,7 @@ h1 {
     text-align: center;
 }
 
-.logo {
+.logo{
     height: 75px;
     width: 200px;
 }
@@ -16,8 +16,8 @@ h1 {
     background-color: rgb(240, 240, 240);
 }
 
-#wrapper {
-    background-color: rgb(229, 226, 224);
+#wrapper{
+    background-color:  rgb(229, 226, 224);
 }
 
 
@@ -33,7 +33,7 @@ h1 {
     background-color: rgb(232, 216, 194);
 }
 
-#navigation {
+#navigation{
     background-color: rgb(240, 240, 240);
     margin-left: 40px;
     margin-right: 40px;
@@ -48,12 +48,12 @@ h1 {
 }
 
 
-#emplacement_filtres {
+#emplacement_filtres{
     display: flex;
     justify-content: end;
 }
 
-.filtres {
+.filtres{
     background-color: rgb(173, 216, 230);
     margin-right: 40px;
     border-radius: 8px;
@@ -116,47 +116,47 @@ h1 {
     justify-content: space-between;
 }
 
-.texteOnglet1 {
+.texteOnglet1{
     color: black;
     height: 31px;
     text-decoration: none;
-    background: linear-gradient(to top, black 5%, black 8%, transparent 8.01%) no-repeat;
+    background: linear-gradient(to top,black 5%, black 8%, transparent 8.01%) no-repeat;
     background-size: 0% 100%;
     transition: background-size 0.7s;
     margin-left: 10px;
 }
 
-.texteOnglet1:hover {
+.texteOnglet1:hover{
     color: black;
     background-size: 100% 100%;
 }
 
-.texteOnglet2 {
+.texteOnglet2{
     text-decoration-line: underline;
 }
 
-.texteOnglet3 {
+.texteOnglet3{
     color: black;
     text-decoration: none;
     height: 31px;
-    background: linear-gradient(to top, black 0%, black 8%, transparent 8.01%) no-repeat;
+    background: linear-gradient(to top,black 0%, black 8%, transparent 8.01%) no-repeat;
     background-size: 0 100%;
     transition: background-size 0.7s;
 }
 
-.texteOnglet3:hover {
+.texteOnglet3:hover{
     color: black;
     background-size: 100% 100%;
 }
 
-.matiere {
+.matiere{
     display: flex;
     flex-wrap: wrap;
     width: 1410px;
     justify-content: space-between;
 }
 
-.matieres {
+.matieres{
     font-size: large;
     padding-left: 10px;
     display: flex;
@@ -166,7 +166,7 @@ h1 {
     overflow: scroll;
 }
 
-::-webkit-scrollbar {
+::-webkit-scrollbar{
     display: none;
 }
 
@@ -179,7 +179,7 @@ h1 {
     transition-duration: 0.6s;
 } */
 
-.titreMatieres {
+.titreMatieres{
     height: 27px;
     width: 170px;
 }
@@ -188,7 +188,7 @@ h1 {
     text-shadow: 3px 3px rgb(234, 210, 177);
 }
 
-.ligne {
+.ligne{
     display: flex;
     justify-content: space-between;
 }
