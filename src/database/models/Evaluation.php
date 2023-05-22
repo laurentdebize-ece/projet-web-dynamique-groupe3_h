@@ -31,9 +31,9 @@ class Evaluation extends DatabaseTable
         $this->idMatiere = $idMatiere;
     }
 
-    public static function getEvaluationForCompetence(DatabaseController $db, int $idEleve, int $idCompetence): ?Evaluation
+    public static function getEvaluationForCompetence(DatabaseController $db, int $idEleve, int $idCompetence, int $idMatiere): ?Evaluation
     {
-        return Evaluation::select($db, null, ["WHERE", "idEleve = $idEleve", "AND", "idCompetences = $idCompetence", "LIMIT 1"])->fetchTyped();
+        return Evaluation::select($db, null, ["WHERE", "idEleve = $idEleve", "AND", "idCompetences = $idCompetence", "AND", "idMatiere = $idMatiere", "LIMIT 1"])->fetchTyped();
     }
 
     public function getEvaluation(): string

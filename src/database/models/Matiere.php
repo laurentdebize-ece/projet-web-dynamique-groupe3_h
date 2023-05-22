@@ -45,4 +45,8 @@ class Matiere extends DatabaseTable
             return null;
         }
     }
+
+    public function getID() : ?int {
+        return $this->idMatiere;
+    }
 }
