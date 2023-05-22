@@ -1,3 +1,8 @@
+<?php
+$sess = SessionManager::getInstance();
+$sess->ensureHasAuthority(User::ACCOUNT_TYPE_USER);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
