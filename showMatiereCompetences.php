@@ -33,7 +33,7 @@ function drawCompetences(SessionManager $sess, int $idMat, array $competences, s
     }
 }
 
-///TODO: REGARDER LE PATTERN PRG 
+
 /// Verif que l'ID matière est bien défini.
 if (!isset($_GET['id']) && !isset($_POST['id'])) {
     header('Location: /listing.php');
