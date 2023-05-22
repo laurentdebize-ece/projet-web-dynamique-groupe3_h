@@ -67,7 +67,6 @@ if (isset($_POST['action']) && isset($_POST['skill']) && isset($_POST['evaluatio
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="res/css/bootstrap.min.css" />
     <link rel="stylesheet" href="res/css/toolbar.css" />
-    <link href="page_evaluation_competences_etudiant.css" rel="stylesheet" type="text/css" />
     <link rel="icon" type="icon_onglet.png" href="res/img/icon_onglet.png">
     <link href="res/css/showMatiereCompetences.css" rel="stylesheet">
     <script src="res/js/jquery-3.7.0.min.js"></script>
