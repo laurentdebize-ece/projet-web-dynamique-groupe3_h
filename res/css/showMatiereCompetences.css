@@ -7,27 +7,6 @@ body {
     font-family: 'Varela Round', sans-serif;
 }
 
-.logo {
-    height: 75px;
-    width: 200px;
-}
-
-#header {
-    background-color: rgb(240, 240, 240);
-}
-
-.b1 {
-    height: 75px;
-    width: 200px;
-    border: none;
-    display: inline-block;
-    transition-duration: 0.6s;
-}
-
-.b1:hover {
-    background-color: rgb(232, 216, 194);
-}
-
 #wrapper {
     background-color: rgb(229, 226, 224);
     /* background-color: rgb(217, 61, 47); */
@@ -36,6 +15,7 @@ body {
 h1 {
     text-shadow: 3px 3px rgb(235, 203, 160);
     text-align: center;
+    font-weight: bold;
 }
 
 .titreMatiere {
@@ -73,4 +53,34 @@ li {
 
 .competence {
     margin-bottom: 10px;
+}
+
+.skillPill {
+    color: white;
+    font-size: 16px;
+    padding: 8px;
+    border-radius: 32px;
+    background-color: lightpink;
+    max-width: fit-content;
+}
+
+.skillA {
+    color: white;
+    background-color: #198754;
+}
+
+.skillECA {
+    color: black;
+    background-color: yellow;
+}
+
+.skillNA {
+    color: white;
+    background-color: red;
+}
+
+.skillEvalDate {
+    color: lightgray;
+    font-size: 12px;
+    font-style: italic;
 }

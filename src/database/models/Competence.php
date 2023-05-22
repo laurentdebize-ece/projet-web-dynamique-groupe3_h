@@ -50,13 +50,14 @@ class Competence extends DatabaseTable
         foreach ($competences as $competence)
         {
             $nomCompetence = $competence['nomCompetences'];
+            $idCompetence = $competence['idCompetences'];
             if (in_array($nomCompetence,MatiereCompetences::getCompetencesTransverses($db)))
             {
-                array_push($matiereCompetence[Competence::COMPETENCE_TYPE_TRANSVERSE], $nomCompetence);
+                array_push($matiereCompetence[Competence::COMPETENCE_TYPE_TRANSVERSE], [$nomCompetence, $idCompetence]);
             }
             else
             {
-                array_push($matiereCompetence[Competence::COMPETENCE_TYPE_MATIERE], $nomCompetence);
+                array_push($matiereCompetence[Competence::COMPETENCE_TYPE_MATIERE], [$nomCompetence, $idCompetence]);
             }
         }
 

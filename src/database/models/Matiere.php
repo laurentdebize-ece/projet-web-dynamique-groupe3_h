@@ -17,6 +17,10 @@ class Matiere extends DatabaseTable
     #[TableOpt(Unique: true)]
     private string $nomMatiere;
 
+    public function getNom(): string {
+        return $this->nomMatiere;
+    }
+
     public static function getAllSubjectsUser(DatabaseController $db, int $idUser): ?array
     {
         $user = User::select($db, null, ["WHERE", "`idUser` = $idUser", "LIMIT 1"])->fetchTyped();
@@ -44,5 +48,9 @@ class Matiere extends DatabaseTable
         else{
             return null;
         }
+    }
+
+    public function getID() : ?int {
+        return $this->idMatiere;
     }
 }
