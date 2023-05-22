@@ -6,7 +6,7 @@ class Classe extends DatabaseTable
     const TABLE_NAME = 'Classes';
     const TABLE_TYPE = Classe::class;
 
-    public function __construct($numGroupe, $idPromo, $effectif = null)
+    public function __construct(int $numGroupe, int $idPromo, int $effectif = null)
     {
         $this->numGroupe = $numGroupe;
         $this->effectif = $effectif;

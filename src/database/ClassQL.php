@@ -215,6 +215,9 @@ final class ClassQL
                 if ($obj instanceof DateTime) {
                     return "'" . $obj->format("Y-m-d H:i:s") . "'";
                 }
+            case "boolean":
+                $value = ($obj)? 1:0;
+                return $value;
             default:
                 return strval($obj);
         }

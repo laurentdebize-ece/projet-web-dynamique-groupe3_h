@@ -6,7 +6,7 @@ class Filiere extends DatabaseTable
     const TABLE_NAME = 'Filieres';
     const TABLE_TYPE = Filiere::class;
 
-    public function __construct($nomFiliere, $idEcole)
+    public function __construct(string $nomFiliere, int $idEcole)
     {
         $this->nomFiliere = $nomFiliere;
         $this->idEcole = $idEcole;

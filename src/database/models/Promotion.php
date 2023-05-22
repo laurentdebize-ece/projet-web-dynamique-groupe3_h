@@ -7,7 +7,7 @@ class Promotion extends DatabaseTable
     const TABLE_NAME = 'Promotions';
     const TABLE_TYPE = Promotion::class;
 
-    public function __construct($annee, $idFiliere)
+    public function __construct(int $annee, int $idFiliere)
     {
         $this->annee = $annee;
         $this->idFiliere = $idFiliere;

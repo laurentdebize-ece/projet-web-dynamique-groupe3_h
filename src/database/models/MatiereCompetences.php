@@ -6,7 +6,7 @@ class MatiereCompetences extends DatabaseTable
     const TABLE_NAME = 'MatiereCompetences';
     const TABLE_TYPE = MatiereCompetences::class;
 
-    public function __construct($idCompetences, $idMatiere)
+    public function __construct(int $idCompetences, int $idMatiere)
     {
         $this->idCompetences = $idCompetences;
         $this->idMatiere = $idMatiere;
@@ -56,9 +56,12 @@ class MatiereCompetences extends DatabaseTable
     }
 
     /// retourne un tableau matieres => compétences de l'utilisateur
-    public static function getSubjectCompetencesUser(DatabaseController $db, $idUser): array|null
+    public static function getSubjectCompetencesUser(DatabaseController $db,int $idUser): ?array
     {
         $user = User::select($db, null, ["WHERE","`idUser` = $idUser","LIMIT 1"])->fetchTyped();
+        if ($user === null) {
+            return null;
+        }
         $arrayUser = classQL::getObjectValues($user);
 
         $coursTable = Cours::TABLE_NAME;

@@ -6,7 +6,7 @@ class ThemesCompetences extends DatabaseTable
     const TABLE_NAME = 'ThemesCompetences';
     const TABLE_TYPE = ThemesCompetences::class;
 
-    public function __construct($idCompetences, $idTheme)
+    public function __construct(int $idCompetences, int $idTheme)
     {
         $this->idCompetences = $idCompetences;
         $this->idTheme = $idTheme;

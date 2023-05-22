@@ -6,7 +6,7 @@ class Theme extends DatabaseTable
     const TABLE_NAME = 'Themes';
     const TABLE_TYPE = Theme::class;
 
-    public function __construct($nomTheme)
+    public function __construct(string $nomTheme)
     {
         $this->nomTheme = $nomTheme;
     }
@@ -17,7 +17,7 @@ class Theme extends DatabaseTable
     #[TableOpt(Unique: true)]
     private string $nomTheme;
 
-    public static function getThemesByCompetences(DatabaseController $db, int $idcompetences): array
+    public static function getThemesByCompetences(DatabaseController $db, int $idCompetences): array
     {
 
         $table_themes = Theme::TABLE_NAME;
@@ -29,7 +29,7 @@ class Theme extends DatabaseTable
                                                 "$table_themes_competences.idCompetences = $table_competences.idCompetences",
                                                 "JOIN $table_themes ON",
                                                 "$table_themes.idTheme = $table_themes_competences.idTheme",
-                                                "WHERE","$table_competences.idCompetences = $idcompetences"])->fetchAll();
+                                                "WHERE","$table_competences.idCompetences = $idCompetences"])->fetchAll();
         foreach ($themes as $theme)
         {
             $nomTheme = $theme['nomTheme'];
