@@ -18,11 +18,11 @@ function drawCompetences(SessionManager $sess, int $idMat, array $competences, s
             echo "<div class=\"card card-body competence\">";
             echo "<p><b>$nomCompetence</b></p>";
             if (!is_null($evaluation)) {
-                $autoEvals = ['a' => 'skillA', 'eca' => 'skillECA', 'na' => 'skillNA'];
-                $note = ['a' => 'Acquis', 'eca' => 'En cours d\'acquisition', 'na' => 'Non Acquis'];
-                $eval = $note[$evaluation->getEvaluation()];
-                $val = $autoEvals[$evaluation->getEvaluation()];
-                echo "<p class=\"skillPill $val\">" . $eval . "</p>";
+                $eval = $evaluation->getEvaluationString();
+                $autoEvals = ['skillA', 'skillECA', 'skillNA'];
+                $cssClass = $autoEvals[$evaluation->getEvaluation() - 1];
+                echo "<p class=\"skillPill $cssClass\">" . $eval . "</p>";
+                echo "<p class=\"skillEvalDate\"> Noté le " . $evaluation->getDate()->format('d/m/Y') . "</p>";
             } else {
                 echo "<p class=\"skillPill\">Pas encore évalué<p>";
                 echo "<button class=\"btn btn-primary\" onclick=\"showEvalModal($idCompetence)\">Evaluer</button>";
@@ -48,10 +48,10 @@ $competences = Competence::getCompetencesByMatiere(DatabaseController::getInstan
 if (isset($_POST['action']) && isset($_POST['skill']) && isset($_POST['evaluation'])) {
     $matiere = $_POST['id'];
     $skill = $_POST['skill'];
-    $eval = $_POST['evaluation'];
+    $eval = (int)$_POST['evaluation'];
 
     //TODO: SECU MONO EVAL
-    $eval = new Evaluation($eval, $sess->getUser()->getID(), $skill, $matiere);
+    $eval = new Evaluation(new DateTime('now', new DateTimeZone('Europe/Paris')), $sess->getUser()->getID(), $skill, $matiere, $eval);
     Evaluation::insert(DatabaseController::getInstance(), $eval);
     header("Location: /showMatiereCompetences.php?id=" . $mat_id);
     exit();
@@ -87,8 +87,8 @@ if (isset($_POST['action']) && isset($_POST['skill']) && isset($_POST['evaluatio
 
     <div id="wrapper">
         <br>
-        <h1> <strong>EVALUATION DES COMPETENCES</strong></h1>
-        <h2><strong><span class="titreMatiere"><?php echo $matiere->getNom() ?></span></strong></h2>
+        <h1>EVALUATION DES COMPETENCES</h1>
+        <h2><span class="titreMatiere"><?php echo $matiere->getNom() ?></span></h2>
         <br>
 
         <?php
@@ -110,13 +110,13 @@ if (isset($_POST['action']) && isset($_POST['skill']) && isset($_POST['evaluatio
                         <input type="hidden" name="action" value="add_eval">
                         <input type="hidden" name="skill" value="id_skill" id="skill_id">
                         <div class="btn-group" role="group">
-                            <input type="radio" class="btn-check" name="evaluation" id="a" autocomplete="off" value="a" checked>
+                            <input type="radio" class="btn-check" name="evaluation" id="a" autocomplete="off" value="1" checked>
                             <label class="btn btn-outline-success" for="a">Acquis</label>
 
-                            <input type="radio" class="btn-check" name="evaluation" id="eca" autocomplete="off" value="eca">
+                            <input type="radio" class="btn-check" name="evaluation" id="eca" autocomplete="off" value="2">
                             <label class="btn btn-outline-warning" for="eca">En cours d'acquisition</label>
 
-                            <input type="radio" class="btn-check" name="evaluation" id="na" autocomplete="off" value="na">
+                            <input type="radio" class="btn-check" name="evaluation" id="na" autocomplete="off" value="3">
                             <label class="btn btn-outline-danger" for="na">Non Acquis</label>
                         </div>
                     </div>

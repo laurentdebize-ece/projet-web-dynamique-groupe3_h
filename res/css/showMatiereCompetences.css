@@ -15,6 +15,7 @@ body {
 h1 {
     text-shadow: 3px 3px rgb(235, 203, 160);
     text-align: center;
+    font-weight: bold;
 }
 
 .titreMatiere {
@@ -76,4 +77,10 @@ li {
 .skillNA {
     color: white;
     background-color: red;
+}
+
+.skillEvalDate {
+    color: lightgray;
+    font-size: 12px;
+    font-style: italic;
 }
