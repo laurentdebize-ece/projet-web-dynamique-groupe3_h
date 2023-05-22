@@ -53,7 +53,7 @@ if (isset($_POST['action']) && isset($_POST['skill']) && isset($_POST['evaluatio
     //TODO: SECU MONO EVAL
     $eval = new Evaluation(new DateTime('now', new DateTimeZone('Europe/Paris')), $sess->getUser()->getID(), $skill, $matiere, $eval);
     Evaluation::insert(DatabaseController::getInstance(), $eval);
-    header("Location: /showMatiereCompetences.php?id=" . $mat_id);
+    header("Location: /matiere.php?id=" . $mat_id);
     exit();
 }
 
@@ -69,8 +69,8 @@ if (isset($_POST['action']) && isset($_POST['skill']) && isset($_POST['evaluatio
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="res/css/bootstrap.min.css" />
     <link rel="stylesheet" href="res/css/toolbar.css" />
-    <link rel="icon" type="icon_onglet.png" href="res/img/icon_onglet.png">
-    <link href="res/css/showMatiereCompetences.css" rel="stylesheet">
+    <link rel="icon" type="icon.png" href="res/img/icon_onglet.png">
+    <link href="res/css/matiere.css" rel="stylesheet">
     <script src="res/js/jquery-3.7.0.min.js"></script>
     <script src="res/js/bootstrap.bundle.min.js"></script>
     <script src="res/js/skill.js"></script>
