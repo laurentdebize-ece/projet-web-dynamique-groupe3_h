@@ -55,6 +55,17 @@ li {
     margin-bottom: 10px;
 }
 
+.skillName {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.skillSubject {
+    font-size: 16px;
+    color: lightgray;
+}
+
 .skillPill {
     color: white;
     font-size: 16px;

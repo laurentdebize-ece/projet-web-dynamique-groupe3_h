@@ -16,7 +16,7 @@ function drawCompetences(SessionManager $sess, int $idMat, array $competences, s
             [$nomCompetence, $idCompetence] = $competence;
             $evaluation = Evaluation::getEvaluationForCompetence(DatabaseController::getInstance(), $sess->getUser()->getId(), $idCompetence, $idMat);
             echo "<div class=\"card card-body competence\">";
-            echo "<p><b>$nomCompetence</b></p>";
+            echo "<p class=\"skillName\">$nomCompetence</p>";
             if (!is_null($evaluation)) {
                 $eval = $evaluation->getEvaluationString();
                 $autoEvals = ['skillA', 'skillECA', 'skillNA'];
@@ -25,7 +25,7 @@ function drawCompetences(SessionManager $sess, int $idMat, array $competences, s
                 echo "<p class=\"skillEvalDate\"> Noté le " . $evaluation->getDate()->format('d/m/Y') . "</p>";
             } else {
                 echo "<p class=\"skillPill\">Pas encore évalué<p>";
-                echo "<button class=\"btn btn-primary\" onclick=\"showEvalModal($idCompetence)\">Evaluer</button>";
+                echo "<button class=\"btn btn-primary\" onclick=\"showEvalModal($idCompetence, $idMat)\">Evaluer</button>";
             }
             echo "</div>";
         }
@@ -106,7 +106,7 @@ if (isset($_POST['action']) && isset($_POST['skill']) && isset($_POST['evaluatio
                 </div>
                 <form method="post">
                     <div class="modal-body">
-                        <input type="hidden" name="id" value="<?php echo $mat_id ?>">
+                        <input type="hidden" name="id" value="<?php echo $mat_id ?>" id="mat_id">
                         <input type="hidden" name="action" value="add_eval">
                         <input type="hidden" name="skill" value="id_skill" id="skill_id">
                         <div class="btn-group" role="group">
