@@ -6,7 +6,7 @@ class Cours extends DatabaseTable
     const TABLE_NAME = 'Cours';
     const TABLE_TYPE = Cours::class;
 
-    public function __construct($volumeHoraire, $idClasse, $idMatiere, $idProfesseur)
+    public function __construct(float $volumeHoraire, int $idClasse, int $idMatiere, int $idProfesseur)
     {
         $this->volumeHoraire = $volumeHoraire;
         $this->idClasse = $idClasse;

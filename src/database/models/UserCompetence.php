@@ -7,7 +7,7 @@ class UserCompetence extends DatabaseTable
     const TABLE_NAME = 'UserCompetences';
     const TABLE_TYPE = UserCompetence::class;
 
-    public function __construct($idCompetences, $idUser)
+    public function __construct(int $idCompetences, int $idUser)
     {
         $this->idCompetences = $idCompetences;
         $this->idUser = $idUser;
@@ -21,7 +21,7 @@ class UserCompetence extends DatabaseTable
     #[TableOpt(TableForeignKey: User::class)]
     private int $idUser;
 
-    public static function getOptionalsCompetences(DatabaseController $db, $idUser): array
+    public static function getOptionalsCompetences(DatabaseController $db,int $idUser): array
     {
         $table_competences = Competence::TABLE_NAME;
         $table_user_competences = UserCompetence::TABLE_NAME;

@@ -10,7 +10,7 @@ class Competence extends DatabaseTable
     const COMPETENCE_TYPE_MATIERE = 'matiere';
 
 
-    public function __construct($nomCompetences)
+    public function __construct(string $nomCompetences)
     {
         $this->nomCompetences = $nomCompetences;
         $this->dateCreation = new DateTime('now', new DateTimeZone('Europe/Paris'));
@@ -23,6 +23,7 @@ class Competence extends DatabaseTable
     private string $nomCompetences;
     private DateTime $dateCreation;
 
+    // renvoie toutes les compétences
     public static function getAllCompetences(DatabaseController $db):array
     {
         $competences = Competence::select($db,null,["ORDER BY","nomCompetences ASC"])->fetchAll();
@@ -30,6 +31,7 @@ class Competence extends DatabaseTable
         return $competences;
     }
 
+    // renvoie toutes les compétences transverses et spécifiques d'une matière 
     public static function getCompetencesByMatiere(DatabaseController $db, int $idMatiere): array
     {
 
@@ -88,7 +90,7 @@ class Competence extends DatabaseTable
         }
     }
 
-    private static function addCompetencesEleve(DatabaseController $db, int $idUser, int $idCompetences)
+    private static function addCompetencesEleve(DatabaseController $db, int $idUser, int $idCompetences): void
     {
         $addCompetence = Competence::select($db, null, ["WHERE", "idCompetences = $idCompetences", "LIMIT 1"])->fetchTyped();
 
@@ -148,8 +150,8 @@ class Competence extends DatabaseTable
     {
         $user = User::select($db, null, ["WHERE","`idUser` = $idUser","LIMIT 1"])->fetchTyped();
         $arrayUser = classQL::getObjectValues($user);
-        $nomCompetence = ClassQL::escapeSQL($nomCompetences);
-        $competence = Competence::select($db,null,["WHERE","`nomCompetences` = '$nomCompetence'","LIMIT 1"])->fetchTyped();
+        $nomCompetenceSQL = ClassQL::escapeSQL($nomCompetences);
+        $competence = Competence::select($db,null,["WHERE","`nomCompetences` = '$nomCompetenceSQL'","LIMIT 1"])->fetchTyped();
         switch($arrayUser['typeAccount'])
         {
             case User::ACCOUNT_TYPE_ADMIN:

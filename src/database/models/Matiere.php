@@ -6,7 +6,7 @@ class Matiere extends DatabaseTable
     const TABLE_NAME = 'Matieres';
     const TABLE_TYPE = Matiere::class;
 
-    public function __construct($nomMatiere)
+    public function __construct(string $nomMatiere)
     {
         $this->nomMatiere = $nomMatiere;
     }
