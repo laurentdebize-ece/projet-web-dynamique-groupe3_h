@@ -22,7 +22,7 @@ $sess->ensureHasAuthority(User::ACCOUNT_TYPE_USER);
     <div class="toolbar">
         <a href="/"><img class="logo" src="res/img/logo_skills_tracker_noir.png" alt="logo"></a>
         <a href="/listing.php"><button class="toolbar-btn"> <strong>Mes matières</strong></button></a>
-        <a><button class="toolbar-btn"> <strong>Mes compétences</strong></button></a>
+        <a href="/competences.php"><button class="toolbar-btn"> <strong>Mes compétences</strong></button></a>
     </div>
     <div id="wrapper">
         <div id="content">

@@ -1,5 +1,7 @@
-html{
-    background-color:  rgb(229, 226, 224);
+@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+
+html {
+    background-color: rgb(229, 226, 224);
 }
 
 h1 {
@@ -7,7 +9,7 @@ h1 {
     text-align: center;
 }
 
-.logo{
+.logo {
     height: 75px;
     width: 200px;
 }
@@ -16,8 +18,8 @@ h1 {
     background-color: rgb(240, 240, 240);
 }
 
-#wrapper{
-    background-color:  rgb(229, 226, 224);
+#wrapper {
+    background-color: rgb(229, 226, 224);
 }
 
 
@@ -33,7 +35,7 @@ h1 {
     background-color: rgb(232, 216, 194);
 }
 
-#navigation{
+#navigation {
     background-color: rgb(240, 240, 240);
     margin-left: 40px;
     margin-right: 40px;
@@ -48,33 +50,33 @@ h1 {
 }
 
 
-#emplacement_filtres{
+#emplacement_filtres {
     display: flex;
     justify-content: end;
 }
 
-.filtres{
+.filtres {
     background-color: rgb(173, 216, 230);
     margin-right: 40px;
     border-radius: 8px;
 }
 
-.filtres:hover{
+.filtres:hover {
     box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2), 0 1px 10px 0 rgba(0, 0, 0, 0.19);
 }
 
-.ajouter{
+.ajouter {
     background-color: rgb(126, 222, 156);
     margin-right: 40px;
     border-radius: 8px;
 }
 
 
-.ajouter:hover{
+.ajouter:hover {
     box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2), 0 1px 10px 0 rgba(0, 0, 0, 0.19);
 }
 
-#titreOnglet{
+#titreOnglet {
     font-size: x-large;
     margin-right: 10px;
     display: flex;
@@ -82,48 +84,48 @@ h1 {
     text-decoration: none;
 }
 
-.texteOnglet1{
+.texteOnglet1 {
     color: black;
     text-decoration: none;
     margin-left: 10px;
     height: 31px;
-    background: linear-gradient(to top,black 0%, black 8%, transparent 8.01%) no-repeat;
+    background: linear-gradient(to top, black 0%, black 8%, transparent 8.01%) no-repeat;
     background-size: 0 100%;
     transition: background-size 0.5s;
 }
 
-.texteOnglet1:hover{
+.texteOnglet1:hover {
     color: black;
     background-size: 100% 100%;
 }
 
-.texteOnglet2{
+.texteOnglet2 {
     color: black;
     text-decoration: none;
     height: 31px;
-    background: linear-gradient(to top,black 0%, black 8%, transparent 8.01%) no-repeat;
+    background: linear-gradient(to top, black 0%, black 8%, transparent 8.01%) no-repeat;
     background-size: 0 100%;
     transition: background-size 0.5s;
 }
 
-.texteOnglet2:hover{
+.texteOnglet2:hover {
     color: black;
     background-size: 100% 100%;
 }
 
-.texteOnglet3{
+.texteOnglet3 {
     text-decoration-line: underline;
 }
 
 
-.matiere{
+.matiere {
     display: flex;
     flex-wrap: wrap;
     width: 1410px;
     justify-content: space-between;
 }
 
-.matieres{
+.matieres {
     font-size: large;
     padding-left: 10px;
     display: flex;
@@ -133,12 +135,12 @@ h1 {
     overflow: scroll;
 }
 
-::-webkit-scrollbar{
+::-webkit-scrollbar {
     display: none;
 }
 
 
-.titreMatieres{
+.titreMatieres {
     height: 27px;
     width: 170px;
 }
@@ -147,7 +149,7 @@ h1 {
     text-shadow: 3px 3px rgb(234, 210, 177);
 }
 
-.ligne{
+.ligne {
     display: flex;
     justify-content: space-between;
 }
