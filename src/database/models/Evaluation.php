@@ -9,13 +9,10 @@ class Evaluation extends DatabaseTable
     public function __construct(DateTime $dateAutoEvaluation, int $idEleve, int $idCompetences, int $idMatiere, ?int $AutoEvaluation = null, ?int $evaluationFinale = null, ?DateTime $dateEvaluation = null)
     {
         $this->AutoEvaluation = $AutoEvaluation;
-        $this->dateAutoEvaluation = new DateTime($dateAutoEvaluation->format("Y-m-d"), new DateTimeZone('Europe/Paris'));
+        $this->dateAutoEvaluation = $dateAutoEvaluation;
         $this->validation = false;
         $this->evaluationFinale = $evaluationFinale;
-        $this->dateEvaluation = null;
-        if ($dateEvaluation) {
-            $this->dateEvaluation = new DateTime($dateEvaluation->format("Y-m-d"), new DateTimeZone('Europe/Paris'));
-        }
+        $this->dateEvaluation = $dateEvaluation;
         $this->idEleve = $idEleve;
         $this->idCompetences = $idCompetences;
         $this->idMatiere = $idMatiere;
@@ -26,21 +23,29 @@ class Evaluation extends DatabaseTable
         return Evaluation::select($db, null, ["WHERE", "idEleve = $idEleve", "AND", "idCompetences = $idCompetence", "AND", "idMatiere = $idMatiere", "LIMIT 1"])->fetchTyped();
     }
 
-    public function getDate(): DateTime
+    /// Retourne la date d'auto-évaluation de la compétence.
+    public function getAutoEvalDate(): DateTime
     {
-        if ($this->dateEvaluation != null) {
-            return $this->dateEvaluation;
-        } else {
-            return $this->dateAutoEvaluation;
-        }
+        return $this->dateAutoEvaluation;
     }
 
+    //// Retourne l'évaluation de la compétence.
     public function getEvaluation(): ?int
     {
         if ($this->evaluationFinale != null) {
             return $this->evaluationFinale;
         } else {
             return $this->AutoEvaluation;
+        }
+    }
+
+    /// Retourne la date de validation de l'auto-évaluation.
+    public function getValidationDate(): ?DateTime
+    {
+        if (!$this->validation) {
+            return null;
+        } else {
+            return $this->dateEvaluation;
         }
     }
 
@@ -52,6 +57,18 @@ class Evaluation extends DatabaseTable
             "Non Acquis"
         ];
         return $EVALUATION[$this->getEvaluation() - 1 ?? 0];
+    }
+
+    /// Valide l'auto-évaluation avec la note donnée.
+    public function validateEval(int $eval)
+    {
+        if ($eval != $this->AutoEvaluation) {
+            $this->evaluationFinale = $eval;
+        }
+        $this->evaluationFinale = $eval;
+        $date = new DateTime("now", new DateTimeZone('Europe/Paris'));
+        $this->dateEvaluation = new DateTime($date->format("Y-m-d"), new DateTimeZone('Europe/Paris'));
+        $this->validation = true;
     }
 
     #[TableOpt(PrimaryKey: true, AutoIncrement: true)]
@@ -99,8 +116,8 @@ class Evaluation extends DatabaseTable
             "JOIN `users` on `evaluations`.`idEleve` = `users`.`idUser`",
             "JOIN `matieres` on `matieres`.`idMatiere` = `evaluations`.`idMatiere`",
             "WHERE", "`cours`.`idClasse` = $classeId",
-            "AND", "`cours`.`idProfesseur` = $idUser"
-            //where `cours`.`idProfesseur` = 1
+            "AND", "`cours`.`idProfesseur` = $idUser",
+            "AND", "`validation` = 0"
         ])->fetchAll();
     }
 
