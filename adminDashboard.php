@@ -25,6 +25,9 @@ $sess->ensureHasAuthority(User::ACCOUNT_TYPE_ADMIN);
         <a href="/users.php"><button class="toolbar-btn"> <strong>Utilisateurs</strong></button></a>
         <a><button class="toolbar-btn"> <strong>Compétences</strong></button></a>
         <a><button class="toolbar-btn"> <strong>Ecoles</strong></button></a>
+        <div class="toolbar-logout">
+            <a href="/logout.php"><button class="toolbar-btn"> <strong>Se déconnecter</strong></button></a>
+        </div>
     </div>
     <div id="wrapper">
         <div id="content">

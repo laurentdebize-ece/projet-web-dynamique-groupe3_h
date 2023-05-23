@@ -6,6 +6,13 @@
     width: 200px;
 }
 
+.toolbar-logout {
+    width: 120px;
+    height: 75px;
+    position: absolute;
+    right: 60px;
+}
+
 .toolbar {
     background-color: rgb(240, 240, 240);
     display: flex;

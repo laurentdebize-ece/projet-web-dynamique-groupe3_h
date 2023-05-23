@@ -23,6 +23,9 @@ $sess->ensureHasAuthority(User::ACCOUNT_TYPE_PROF);
 <div class="toolbar">
         <a href="/"><img class="logo" src="res/img/logo_skills_tracker_noir.png" alt="logo"></a>
         <a href="/classes.php"><button class="toolbar-btn"> <strong>Mes classes</strong></button></a>
+        <div class="toolbar-logout">
+            <a href="/logout.php"><button class="toolbar-btn"> <strong>Se déconnecter</strong></button></a>
+        </div>
     </div>
     <div id="wrapper">
         <div id="content">
