@@ -46,6 +46,10 @@ if (!isset($_GET['id']) && !isset($_POST['id'])) {
 /// TODO: AJOUTER SECU FAUX ID.
 $mat_id = $_GET['id'];
 $matiere = Matiere::select(DatabaseController::getInstance(), null, ["WHERE idMatiere = $mat_id", "LIMIT 1"])->fetchTyped();
+if (is_null($matiere)) {
+    header('Location: /listing.php');
+    exit();
+}
 $competences = Competence::getCompetencesByMatiere(DatabaseController::getInstance(), $mat_id);
 
 if (isset($_POST['action']) && isset($_POST['skill']) && isset($_POST['evaluation'])) {
