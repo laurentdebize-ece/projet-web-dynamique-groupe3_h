@@ -106,4 +106,75 @@ class Classe extends DatabaseTable
             throw new Exception("Seul un administrateur peut créer une classe");
         }
     }
+
+    // modifier une classe depuis un admin
+    public static function modifyClasse(DatabaseController $db, int $idUser, int $idClasse, int $numGroupe, int $idPromo, ?int $effectif = null): void
+    {
+        $user = User::select($db, null, ["WHERE", "`idUser` = $idUser", "LIMIT 1"])->fetchTyped();
+        if($user->getAccountType() === User::ACCOUNT_TYPE_ADMIN)
+        {
+            $numGroupe = intval($numGroupe);
+            $idPromo = intval($idPromo);
+            
+            $promo = Promotion::select($db, null, ["WHERE", "`idPromo` = $idPromo", "LIMIT 1"])->fetchTyped();
+            if($promo === null) {
+                throw new Exception("La promotion" . $idPromo . " n'existe pas");
+            }
+            else {
+                $classe = Classe::select($db, null, ["WHERE", "`numGroupe` = $numGroupe", "AND", "`idPromo` = $idPromo", "LIMIT 1"])->fetchTyped();
+                if($classe !== null and $effectif === null) {
+                    throw new Exception("Cette classe existe déjà");
+                }
+                else {
+                    $classe = Classe::select($db, null, ["WHERE", "`idClasse` = $idClasse", "LIMIT 1"])->fetch();
+                    if($classe === false) {
+                        throw new Exception("Cette classe n'existe pas");
+                    }
+                    else {
+                        $classe['numGroupe'] = $numGroupe;
+                        $classe['idPromo'] = $idPromo;
+
+                        if ($effectif !== null) {
+                            $classe['effectif'] = $effectif;
+                        }
+                        
+                        $classeInsert = (is_null(Classe::select($db, null, ["WHERE", "`numGroupe` = '$numGroupe'", "AND" ,"`idPromo` = '$idPromo'" ,"LIMIT 1"])->fetchTyped()) or $effectif !== null)
+                        ? classQL::createFromFields($classe, Classe::class) : null;
+                        if ($classeInsert !== null) {
+                            var_dump($classeInsert);
+                            Promotion::modify($db, $classeInsert);
+                        }
+                        else {
+                            throw new Exception("Cette classe existe déjà vous ne pouvez pas en créer une autre");
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            throw new Exception("Seul un administrateur peut modifier une classe");
+        }
+    }
+
+    // supprimer une classe depuis un admin
+    public static function deleteClasse(DatabaseController $db, int $idUser, array $idClasses): void
+    {
+        $user = User::select($db, null, ["WHERE", "`idUser` = $idUser", "LIMIT 1"])->fetchTyped();
+        if($user->getAccountType() === User::ACCOUNT_TYPE_ADMIN)
+        {
+            foreach ($idClasses as $idClasse) {
+                $idClasse = intval($idClasse);
+                $classe = Classe::select($db, null, ["WHERE", "`idClasse` = $idClasse", "LIMIT 1"])->fetchTyped();
+                if($classe === null) {
+                    throw new Exception("La classe " . $idClasse . " n'existe pas");
+                }
+                else {
+                    Classe::delete($db, $classe);
+                }
+            }
+        }
+        else {
+            throw new Exception("Seul un administrateur peut supprimer une classe");
+        }
+    }
 }

@@ -93,8 +93,8 @@ class Filiere extends DatabaseTable
                 throw new Exception("La filière `" . $idFiliere . "` n'existe pas");
             }
             else {
-                $ecole = Ecole::select($db, null, ["WHERE", "`idEcole` = $idEcole", "LIMIT 1"])->fetch();
-                if($ecole === false) {
+                $ecole = Ecole::select($db, null, ["WHERE", "`idEcole` = $idEcole", "LIMIT 1"])->fetchTyped();
+                if($ecole === null) {
                     throw new Exception("L'école `" . $idEcole . "` n'existe pas");
                 }
                 else {
@@ -132,6 +132,7 @@ class Filiere extends DatabaseTable
         {
             if (!empty($idFilieres)){
                 foreach ($idFilieres as $idFiliere){
+                    $idFiliere = intval($idFiliere);
                     $filiere = Filiere::select($db, null, ["WHERE", "`idFiliere` = $idFiliere", "LIMIT 1"])->fetchTyped();
                     if($filiere === null) {
                         throw new Exception("La filière `" . $idFiliere . "` n'existe pas");
