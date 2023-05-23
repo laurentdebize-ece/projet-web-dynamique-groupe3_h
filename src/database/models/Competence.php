@@ -45,10 +45,6 @@ class Competence extends DatabaseTable
 
         $competencesTotal = array();
 
-        $table_competences = Competence::TABLE_NAME;
-        $table_user_competences = UserCompetence::TABLE_NAME;
-        $table_user = User::TABLE_NAME;
-
         switch ($arrayUser['typeAccount']) {
 
             case User::ACCOUNT_TYPE_PROF:
@@ -56,22 +52,17 @@ class Competence extends DatabaseTable
 
                 $subjectCompetence = MatiereCompetences::getSubjectCompetencesUser($db, $idUser);
                 foreach ($subjectCompetence as $subject => $competences) {
-                    foreach ($competences[Competence::COMPETENCE_TYPE_TRANSVERSE] as $competence) {
-                        $nomCompetenceSQL = classQL::escapeSQL($competence);
-                        $idCompetence = intval(Competence::select($db, "idCompetences", ["WHERE", "nomCompetences = '$nomCompetenceSQL'","LIMIT 1"])->fetch()['idCompetences']);
+                    foreach ($competences[Competence::COMPETENCE_TYPE_TRANSVERSE] as [$competence,$idCompetence]) {
                         $competencesTotal[$idCompetence] = $competence;
                     }
-                    foreach ($competences[Competence::COMPETENCE_TYPE_MATIERE] as $competence) {
-                        $nomCompetenceSQL = classQL::escapeSQL($competence);
-                        $idCompetence = intval(Competence::select($db, "idCompetences", ["WHERE", "nomCompetences = '$nomCompetenceSQL'","LIMIT 1"])->fetch()['idCompetences']);
+                    foreach ($competences[Competence::COMPETENCE_TYPE_MATIERE] as [$competence,$idCompetence]) {
                         $competencesTotal[$idCompetence] =  $competence;
                     }
                 }
-                
                 if ($arrayUser['typeAccount'] === User::ACCOUNT_TYPE_USER) {
 
                     $competencesOpts = UserCompetence::getOptionalsCompetences($db, $idUser);
-                    $competencesTotal = array_merge($competencesTotal, $competencesOpts);
+                    $competencesTotal = $competencesTotal + $competencesOpts;
                 }
 
                 break;
@@ -84,6 +75,7 @@ class Competence extends DatabaseTable
         }
         if (!empty($competencesTotal)) {
             $competencesTotal = array_unique($competencesTotal);
+            ksort($competencesTotal);
         }
         
         return $competencesTotal;
@@ -244,9 +236,15 @@ class Competence extends DatabaseTable
         if (!empty($idMatieres)){
             self::check_idMatieresInput($db, array_keys(Matiere::getAllSubjects($db)), $idMatieres);
         }
+        else {
+            throw new Exception("idMatieres est vide");
+        }
         
         if (!empty($idThemes)){
             self::check_idThemeInput($db, array_keys(Theme::getAllThemes($db)), $idThemes);
+        }
+        else {
+            throw new Exception("idThemes est vide");
         }
         
 
@@ -281,42 +279,58 @@ class Competence extends DatabaseTable
         }
     }
 
-    public static function modifyCompetenceUser(DatabaseController $db, int $idUser, int $idCompetences, ?array $idMatieres = null, ?array $idThemes = null)
+    public static function modifyCompetenceUser(DatabaseController $db, int $idUser, int $idCompetences, int $idMatiereInitial, int $idThemeInitial, ?int $idMatiereTarget = null, ?int $idThemeTarget = null)
     {
         $user = User::select($db, null, ["WHERE","`idUser` = $idUser","LIMIT 1"])->fetchTyped();
         $arrayUser = classQL::getObjectValues($user);
         $competence = Competence::select($db, null, ["WHERE","`idCompetences` = $idCompetences","LIMIT 1"])->fetchTyped();
 
-        self::check_idMatieresInput($db, array_keys(Matiere::getAllSubjects($db)), $idMatieres);
-        self::check_idThemeInput($db, array_keys(Theme::getAllThemes($db)), $idThemes);
+        $matiereCompetence = MatiereCompetences::select($db, null, ["WHERE", "`idCompetences` = $idCompetences", "AND", "`idMatiere` = $idMatiereInitial", "LIMIT 1"])->fetch();
+        if ($matiereCompetence === false) {
+            throw new Exception("La matière spécifiée n'est pas assignée à la compétence");
+        }
+        $themeCompetence = ThemesCompetences::select($db, null, ["WHERE", "`idCompetences` = $idCompetences", "AND", "`idTheme` = $idThemeInitial", "LIMIT 1"])->fetch();
+        if ($themeCompetence === false) {
+            throw new Exception("Le thème spécifié n'est pas assigné à la compétence");
+        }
 
+        if ($idMatiereTarget === null && $idThemeTarget === null) {
+            throw new Exception("Vous devez spécifier au moins une matière ou un thème pour modifier une compétence");
+        }
+
+        if ($idMatiereTarget === $idMatiereInitial or $idThemeTarget === $idThemeInitial) {
+            throw new Exception("Vous devez spécifier une matière ou un thème différent de la matière ou du thème initial");
+        }
+        
         if ($competence !== null) {
 
             switch($arrayUser['typeAccount'])
             {
                 case User::ACCOUNT_TYPE_ADMIN:
 
-                    foreach ($idMatieres as $idMatiere)
-                    {
-                        $matiereCompetence = MatiereCompetences::select($db, null, ["WHERE", "`idCompetences` = $idCompetences", "AND", "`idMatiere` = $idMatiere", "LIMIT 1"])->fetch();
-                        $matiereCompetence['idMatiere'] = $idMatiere;
-                        if (MatiereCompetences::select($db, null, ["WHERE", "`idCompetences` = $idCompetences", "AND", "`idMatiere` = $idMatiere", "LIMIT 1"])->fetch() === null) {
-                            MatiereCompetences::modify($db, $matiereCompetence);
+                    if ($idMatiereTarget !== null) {
+                        $matiereCompetence['idMatiere'] = $idMatiereTarget;
+                        $matiereCompetenceInsert = (is_null(MatiereCompetences::select($db, null, ["WHERE", "`idCompetences` = $idCompetences", "AND", "`idMatiere` = $idMatiereTarget", "LIMIT 1"])->fetchTyped()))
+                                        ? classQL::createFromFields($matiereCompetence, MatiereCompetences::class)
+                                        : null;
+                        if ($matiereCompetenceInsert !== null) {
+                            MatiereCompetences::modify($db, $matiereCompetenceInsert);
                         }
                         else {
-                            throw new Exception("La doublette idCompetences => ". $matiereCompetence['idCompetences'] . "idMatiere =>" . $matiereCompetence['idMatiere'] ."existe déjà");
+                            MatiereCompetences::delete($db, classQL::createFromFields($matiereCompetence, MatiereCompetences::class));
                         }
                     }
-
-                    foreach ($idThemes as $idTheme)
-                    {
-                        $themeCompetence = ThemesCompetences::select($db, null, ["WHERE", "`idCompetences` = $idCompetences", "AND", "`idTheme` = $idTheme", "LIMIT 1"])->fetch();
-                        $themeCompetence['idTheme'] = $idTheme;
-                        if (ThemesCompetences::select($db, null, ["WHERE", "`idCompetences` = $idCompetences", "AND", "`idTheme` = $idTheme", "LIMIT 1"])->fetch() === null) {
-                            ThemesCompetences::modify($db, $themeCompetence);
+                      
+                    if ($idThemeTarget !== null) {
+                        $themeCompetence['idTheme'] = $idThemeTarget;
+                        $themeCompetenceInsert = (is_null(ThemesCompetences::select($db, null, ["WHERE", "`idCompetences` = $idCompetences", "AND", "`idTheme` = $idThemeTarget", "LIMIT 1"])->fetchTyped()))
+                                        ? classQL::createFromFields($themeCompetence, ThemesCompetences::class)
+                                        : null;
+                        if ($themeCompetenceInsert !== null) {
+                        ThemesCompetences::modify($db, $themeCompetenceInsert);
                         }
                         else {
-                            throw new Exception("La doublette idCompetences => ". $themeCompetence['idCompetences'] . "idTheme =>" . $themeCompetence['idTheme'] ."existe déjà");
+                            ThemesCompetences::delete($db, classQL::createFromFields($themeCompetence, ThemesCompetences::class));
                         }
                     }
 
@@ -327,30 +341,38 @@ class Competence extends DatabaseTable
                     break;
                 case User::ACCOUNT_TYPE_PROF:
 
-                    self::check_idMatieresInput($db, array_keys(Matiere::getAllSubjectsUser($db, $idUser)), $idMatieres);
+                    $arrayIdMatieres = [$idMatiereInitial,$idMatiereTarget];
+                    self::check_idMatieresInput($db, array_keys(Matiere::getAllSubjectsUser($db, $idUser)), $arrayIdMatieres);
 
-                    foreach ($idMatieres as $idMatiere)
-                    {
-                        $matiereCompetence = MatiereCompetences::select($db, null, ["WHERE", "`idCompetences` = $idCompetences", "AND", "`idMatiere` = $idMatiere", "LIMIT 1"])->fetch();
-                        $matiereCompetence['idMatiere'] = $idMatiere;
-                        if (MatiereCompetences::select($db, null, ["WHERE", "`idCompetences` = $idCompetences", "AND", "`idMatiere` = $idMatiere", "LIMIT 1"])->fetch() === null) {
-                            MatiereCompetences::modify($db, $matiereCompetence);
+                    if (!in_array($idCompetences, array_keys(MatiereCompetences::getCompetencesTransverses($db)))) {
+                        if ($idMatiereTarget !== null) {
+                            $matiereCompetence['idMatiere'] = $idMatiereTarget;
+                            $matiereCompetenceInsert = (is_null(MatiereCompetences::select($db, null, ["WHERE", "`idCompetences` = $idCompetences", "AND", "`idMatiere` = $idMatiereTarget", "LIMIT 1"])->fetchTyped()))
+                                            ? classQL::createFromFields($matiereCompetence, MatiereCompetences::class)
+                                            : null;
+                            if ($matiereCompetenceInsert !== null) {
+                                MatiereCompetences::modify($db, $matiereCompetenceInsert);
+                            }
+                            else {
+                                MatiereCompetences::delete($db, classQL::createFromFields($matiereCompetence, MatiereCompetences::class));
+                            }
                         }
-                        else {
-                            throw new Exception("La doublette idCompetences => ". $matiereCompetence['idCompetences'] . "idMatiere =>" . $matiereCompetence['idMatiere'] ."existe déjà");
+
+                        if ($idThemeTarget !== null) {
+                            $themeCompetence['idTheme'] = $idThemeTarget;
+                            $themeCompetenceInsert = (is_null(ThemesCompetences::select($db, null, ["WHERE", "`idCompetences` = $idCompetences", "AND", "`idTheme` = $idThemeTarget", "LIMIT 1"])->fetchTyped()))
+                                            ? classQL::createFromFields($themeCompetence, ThemesCompetences::class)
+                                            : null;
+                            if ($themeCompetenceInsert !== null) {
+                            ThemesCompetences::modify($db, $themeCompetenceInsert);
+                            }
+                            else {
+                                ThemesCompetences::delete($db, classQL::createFromFields($themeCompetence, ThemesCompetences::class));
+                            }
                         }
                     }
-
-                    foreach ($idThemes as $idTheme)
-                    {
-                        $themeCompetence = ThemesCompetences::select($db, null, ["WHERE", "`idCompetences` = $idCompetences", "AND", "`idTheme` = $idTheme", "LIMIT 1"])->fetch();
-                        $themeCompetence['idTheme'] = $idTheme;
-                        if (ThemesCompetences::select($db, null, ["WHERE", "`idCompetences` = $idCompetences", "AND", "`idTheme` = $idTheme", "LIMIT 1"])->fetch() === null) {
-                            ThemesCompetences::modify($db, $themeCompetence);
-                        }
-                        else {
-                            throw new Exception("La doublette idCompetences => ". $themeCompetence['idCompetences'] . "idTheme =>" . $themeCompetence['idTheme'] ."existe déjà");
-                        }
+                    else {
+                        throw new Exception("Les professeurs ne peuvent pas modifier des compétences transverses");
                     }
 
                     break;
@@ -376,13 +398,12 @@ class Competence extends DatabaseTable
                     break;
                 case User::ACCOUNT_TYPE_USER:
 
-
                     throw new Exception("Les élèves n'ont pas les droits pour supprimer une compétence");
                     break;
                 case User::ACCOUNT_TYPE_PROF:
 
                     if (in_array($idCompetences, self::getAllCompetencesUser($db, $idUser))) {
-                        if (!array_keys(MatiereCompetences::getCompetencesTransverses($db), $idCompetences)) {
+                        if (!in_array($idCompetences, array_keys(MatiereCompetences::getCompetencesTransverses($db)))) {
                             UserCompetence::delete($db, $competence);
                         }
                         else {
