@@ -158,16 +158,14 @@ final class ClassQL
                     continue;
                 } else {
                     $value = $property->getValue($instanceObject);
-                    if ($value instanceof DateTime)
-                    {
+                    if ($value instanceof DateTime) {
                         $value = $value->format("Y-m-d H:i:s");
                     }
                     $values[$property->getName()] = $value;
                 }
             } else {
                 $value = $property->getValue($instanceObject);
-                if ($value instanceof DateTime)
-                {
+                if ($value instanceof DateTime) {
                     $value = $value->format("Y-m-d H:i:s");
                 }
                 $values[$property->getName()] = $value;
@@ -216,7 +214,7 @@ final class ClassQL
                     return "'" . $obj->format("Y-m-d H:i:s") . "'";
                 }
             case "boolean":
-                $value = ($obj)? 1:0;
+                $value = ($obj) ? 1 : 0;
                 return $value;
             default:
                 return strval($obj);
@@ -298,6 +296,7 @@ final class ClassQL
                 $prop = $class->getProperty($key);
                 $prop->setAccessible(true);
                 switch ($prop->getType()) {
+                    case "?DateTime":
                     case "DateTime":
                         $prop->setValue($obj, new DateTime($value));
                         break;
@@ -305,8 +304,7 @@ final class ClassQL
                         $prop->setValue($obj, $value);
                         break;
                 }
-            } 
-            catch (ReflectionException $e) {
+            } catch (ReflectionException $e) {
             }
         }
 
@@ -321,5 +319,4 @@ final class ClassQL
         }
         return $nom;
     }
-    
 }

@@ -22,9 +22,12 @@ function drawCompetences(SessionManager $sess, int $idMat, array $competences, s
                 $autoEvals = ['skillA', 'skillECA', 'skillNA'];
                 $cssClass = $autoEvals[$evaluation->getEvaluation() - 1];
                 echo "<p class=\"skillPill $cssClass\">" . $eval . "</p>";
-                echo "<p class=\"skillEvalDate\"> Noté le " . $evaluation->getDate()->format('d/m/Y') . "</p>";
+                echo "<p class=\"skillEvalDate\"> Auto-évaluation remplie le " . $evaluation->getAutoEvalDate()->format('d/m/Y') . "</p>";
+                if (!is_null($evaluation->getValidationDate())) {
+                    echo "<p class=\"skillEvalDate\"> Validation par le professeur le " . $evaluation->getValidationDate()->format('d/m/Y') . "</p>";
+                }
             } else {
-                echo "<p class=\"skillPill\">Pas encore évalué<p>";
+                echo "<p class=\"skillPill\">Pas encore évalué</p>";
                 echo "<button class=\"btn btn-primary\" onclick=\"showEvalModal($idCompetence, $idMat)\">Evaluer</button>";
             }
             echo "</div>";
