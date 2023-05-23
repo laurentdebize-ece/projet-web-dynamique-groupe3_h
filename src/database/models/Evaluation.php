@@ -88,6 +88,22 @@ class Evaluation extends DatabaseTable
         }
     }
 
+    /// Retourne les évaluations qu'un professeur peut éditer.
+    public static function getEvaluationsForProf(DatabaseController $db, int $idUser, int $classeId)
+    {
+        return Evaluation::select($db, null, [
+            // join `cours` on `evaluations`.`idMatiere` = `cours`.`idMatiere`
+            "JOIN `cours` on `evaluations`.`idMatiere` = `cours`.`idMatiere`",
+            //join `competences` on `competences`.`idCompetences` = `evaluations`.`idCompetences`
+            "JOIN `competences` on `competences`.`idCompetences` = `evaluations`.`idCompetences`",
+            "JOIN `users` on `evaluations`.`idEleve` = `users`.`idUser`",
+            "JOIN `matieres` on `matieres`.`idMatiere` = `evaluations`.`idMatiere`",
+            "WHERE", "`cours`.`idClasse` = $classeId",
+            "AND", "`cours`.`idProfesseur` = $idUser"
+            //where `cours`.`idProfesseur` = 1
+        ])->fetchAll();
+    }
+
     public static function createEvaluationUser(DatabaseController $db, int $idUser, int $idCompetences, string $dateButoir, int $idPromo = null)
     {
         $table_matiere = Matiere::TABLE_NAME;

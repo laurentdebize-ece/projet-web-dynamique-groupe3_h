@@ -24,7 +24,7 @@ function drawCompetences(SessionManager $sess, int $idMat, array $competences, s
                 echo "<p class=\"skillPill $cssClass\">" . $eval . "</p>";
                 echo "<p class=\"skillEvalDate\"> Noté le " . $evaluation->getDate()->format('d/m/Y') . "</p>";
             } else {
-                echo "<p class=\"skillPill\">Pas encore évalué<p>";
+                echo "<p class=\"skillPill\">Pas encore évalué</p>";
                 echo "<button class=\"btn btn-primary\" onclick=\"showEvalModal($idCompetence, $idMat)\">Evaluer</button>";
             }
             echo "</div>";

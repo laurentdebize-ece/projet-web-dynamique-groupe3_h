@@ -17,6 +17,7 @@
     border: none;
     display: inline-block;
     transition-duration: 0.6s;
+    font-weight: bold;
 }
 
 .toolbar-btn:hover {

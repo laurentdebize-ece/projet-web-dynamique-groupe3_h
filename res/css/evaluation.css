@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+
+
+body {
+    margin: 0px;
+    background-color: rgb(229, 226, 224);
+    font-family: 'Varela Round', sans-serif;
+}
+
+h1 {
+    text-shadow: 3px 3px rgb(235, 203, 160);
+    text-align: center;
+    font-weight: bold;
+}
+
+.titreMatiere {
+    height: 36px;
+    width: 200px;
+}
+
+
+h2 {
+    text-align: center;
+}
+
+
+h4 {
+    margin-left: 40px;
+    text-decoration: underline;
+    text-align: center;
+}
+
+.liste_evaluations {
+    margin-top: 20px;
+    margin-right: 5%;
+    margin-left: 5%;
+    /* margin-left: 230px; */
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.evaluation {
+    margin-bottom: 10px;
+}
+
+.skillName {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.skillSubject {
+    font-size: 16px;
+    color: lightgray;
+}
+
+.skillPill {
+    color: white;
+    font-size: 16px;
+    padding: 8px;
+    border-radius: 32px;
+    background-color: lightpink;
+    max-width: fit-content;
+}
+
+.skillA {
+    color: white;
+    background-color: #198754;
+}
+
+.skillECA {
+    color: black;
+    background-color: yellow;
+}
+
+.skillNA {
+    color: white;
+    background-color: red;
+}
+
+.skillEvalDate {
+    color: lightgray;
+    font-size: 12px;
+    font-style: italic;
+}
