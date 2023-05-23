@@ -40,13 +40,13 @@ $sess->ensureHasAuthority(User::ACCOUNT_TYPE_USER);
 
             <?php
             $matieres = Matiere::getAllSubjectsUser(DatabaseController::getInstance(), $sess->getUser()->getID());
-            foreach ($matieres as $matiere) {
-                echo "<a href=\"/matiere.php?id=$matiere[1]\">
+            foreach ($matieres as $id => $matiere) {
+                echo "<a href=\"/matiere.php?id=$id\">
                 <span class=\"matiere\">
                     <img src=\"res/img/imageMatiere.png\">
                     <br><br>
                     <div id=\"texte\">
-                        " . $matiere[0] . "
+                        " . $matiere . "
                     </div>
                 </span>
                 </a>";

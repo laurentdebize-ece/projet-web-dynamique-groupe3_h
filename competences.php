@@ -11,10 +11,10 @@ function getSkills(DatabaseController $db, ?string $type, int $uid)
 {
     $matieres = Matiere::getAllSubjectsUser($db, $uid);
     $competences = [];
-    foreach ($matieres as $matiere) {
-        $skills = Competence::getCompetencesByMatiere($db, $matiere[1]);
+    foreach ($matieres as $id => $matiere) {
+        $skills = Competence::getCompetencesByMatiere($db, $id);
         foreach ($skills[$type] as $skill) {
-            $competences[] = [$skill, $matiere[1], $matiere[0]];
+            $competences[] = [$skill, $id, $matiere];
         }
     }
     return $competences;
