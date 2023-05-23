@@ -1,3 +1,7 @@
+<?php
+$sess = SessionManager::getInstance();
+$sess->ensureHasAuthority(User::ACCOUNT_TYPE_USER);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,16 +9,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="page_toutes_competences.css" rel="stylesheet" type="text/css" />
+    <link href="page_mes_competences.css" rel="stylesheet" type="text/css" />
     <link rel="icon" type="icon_onglet.png" href="icon_onglet.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-    <title>Toutes mes compétences</title>
+    <title>Mes compétences</title>
 </head>
 
 <body>
-    <script type="text/javascript" src="page_toutes_competences.js"></script>
-    <div class="maPopup" id="popup_filtres">
+    <div class="maPopup" id="popup">
+        <script type="text/javascript" src="page_mes_competences.js"></script>
         <div class="contenu_popup">
             <span class="fermer"><img src="x-circle.svg" alt="croix"></span>
             <h4>Filtres :</h4>
@@ -65,92 +69,30 @@
                     </tr>
                     <tr>
                         <td>
-                            Années:
+                            Matiere:
                         </td>
                         <td>
-                            <select name="annees" id="annees">
-                                <option value="2023">2023</option>
-                                <option value="2022">2022</option>
-                                <option value="2021">2021</option>
+                            <select name="matiere" id="matiere">
+                                <option value="maths">Maths</option>
+                                <option value="physique">Physique</option>
+                                <option value="info">Informatique</option>
                             </select>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            Filière:
+                            Professeur:
                         </td>
                         <td>
-                            <select name="filiere" id="filiere">
-                                <option value="inge">Ingénieur</option>
-                                <option value="communication">Communication</option>
-                                <option value="commerce">Commerce</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Ecole:
-                        </td>
-                        <td>
-                            <select name="ecole" id="ecole">
-                                <option value="ece">ECE</option>
-                                <option value="inseec">INSEEC</option>
-                                <option value="heip">HEIP</option>
-                                <option value="supdepub">SUP DE PUB</option>
+                            <select name="professeur" id="professeur">
+                                <option value="dupont">Mr.Dupont</option>
+                                <option value="durand">Mme.Durand</option>
+                                <option value="toto">Mr.Toto</option>
                             </select>
                         </td>
                     </tr>
                 </form>
             </table>
-            <br>
-            <input type="submit" id="valider" value="VALIDER">
-        </div>
-    </div>
-    <div class="maPopup" id="popup_ajouter">
-        <div class="contenu_popup">
-            <span class="fermer"><img src="x-circle.svg" alt="croix"></span>
-            <h4>Ajouter une compétence :</h4>
-            <table>
-                <form action="">
-                    <tr>
-                        <td>
-                            <label for="intitulé">Intitulé:</label>
-                        </td>
-                        <td>
-                            <input type="text" name="intitulé" id="intitulé">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="theme">Thème:</label>
-                        </td>
-                        <td>
-                            <input type="text" name="theme" id="theme">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="description">Description:</label>
-                        </td>
-                        <td>
-                            <input type="text" name="description" id="description">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Evaluation:
-                        </td>
-                        <td>
-                            <select name="eval" id="eval">
-                                <option value="A">A</option>
-                                <option value="ECA">ECA</option>
-                                <option value="NA">NA</option>
-                            </select>
-                        </td>
-                    </tr>
-                </form>
-            </table>
-            <br>
             <br>
             <input type="submit" id="valider" value="VALIDER">
         </div>
@@ -176,17 +118,16 @@
     </div>
     <div id="wrapper">
         <br>
-        <h1> <strong> <span id="titrePage">TOUTES MES COMPETENCES</span> </strong></h1>
+        <h1> <strong> <span id="titrePage">MES COMPETENCES</span> </strong></h1>
         <div id="emplacement_filtres">
             <button class="filtres"><img src="filter.svg" alt="icon"> FILTRES</button>
-            <button class="ajouter"><img src="plus-lg.svg" alt="icon"> AJOUTER</button>
         </div>
         <div id="navigation">
             <strong>
                 <div id="titreOnglet">
-                    <a href="page_mes_competences.php" class="texteOnglet1">Mes compétences</a>
+                    <span class="texteOnglet1">Mes compétences</span>
                     <a href="page_competences_transverses.php" class="texteOnglet2">Mes compétences transverses</a>
-                    <span class="texteOnglet3">Toutes mes compétences</span>
+                    <a href="page_toutes_competences.php" class="texteOnglet3">Toutes mes compétences</a>
                 </div>
             </strong>
             <br>
