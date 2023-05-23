@@ -20,6 +20,7 @@ class ThemesCompetences extends DatabaseTable
     #[TableOpt(TableForeignKey: Theme::class)]
     private int $idTheme;
 
+    /// retourne un tableau contenat les informations sur les matieres/competences/themes d'un utilisateur
     public static function getSubjectCompetencesThemeUser(DatabaseController $db, int $idUser): array
     {
         $themesArray = array();
@@ -35,5 +36,26 @@ class ThemesCompetences extends DatabaseTable
             }
         }
         return $themesArray;
+    }
+
+    /// retourne un tableau avec les compétences d'un théme spécifié
+    public static function groupCompetencesByTheme(DatabaseController $db, int $idTheme): ?array
+    {
+        $table_competences = Competence::TABLE_NAME;
+        $table_competences_theme = ThemesCompetences::TABLE_NAME;
+
+        $allcompetencesTheme = array();
+        $competences = Competence::select($db,"DISTINCT $table_competences.idCompetences, $table_competences.nomCompetences",
+                                            ["JOIN $table_competences_theme ON $table_competences_theme.idCompetences = $table_competences.idCompetences",
+                                            "WHERE $table_competences_theme.idTheme = $idTheme"])->fetchAll();
+
+        foreach ($competences as $competence)
+        {
+            $idCompetence = intval($competence['idCompetences']);
+            $nomCompetence = $competence['nomCompetences'];
+            $allcompetencesTheme[$idCompetence] = $nomCompetence;
+        }
+        
+        return $allcompetencesTheme;
     }
 }

@@ -20,4 +20,35 @@ class Filiere extends DatabaseTable
 
     #[TableOpt(TableForeignKey: Ecole::class)]
     private int $idEcole;
+
+    // retourne toutes les filières contenant l'école
+    public static function getAllFilieres(DatabaseController $db): ?array
+    {
+        $allfilieres = array();
+        $filieres = Filiere::select($db,null,["ORDER BY idFiliere ASC"])->fetchAll();
+        foreach ($filieres as $filiere)
+        {
+            $idEcole = intval($filiere['idEcole']);
+            $ecole = Ecole::select($db,null,["WHERE","idEcole = $idEcole","LIMIT 1"])->fetch();
+
+            $filiereInfo = [$filiere['nomFiliere'],$ecole['nomEcole']];
+            $idFiliere = intval($filiere['idFiliere']);
+            $allfilieres[$idFiliere] = $filiereInfo;
+        }
+        return $allfilieres;
+    }
+
+    // retourne toutes les filières d'une école
+    public static function getAllFilieresBySchool(DatabaseController $db, int $idEcole): ?array
+    {
+        $allfilieres = array();
+        $filieres = Filiere::select($db,null,["WHERE","idEcole = $idEcole"])->fetchAll();
+        foreach ($filieres as $filiere)
+        {
+            $nomFiliere = $filiere['nomFiliere'];
+            $idFiliere = intval($filiere['idFiliere']);
+            $allfilieres[$idFiliere] = $nomFiliere;
+        }
+        return $allfilieres;
+    }
 }

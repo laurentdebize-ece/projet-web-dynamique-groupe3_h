@@ -2,14 +2,26 @@
 
 body {
     background-image: url("../img/fond_login.jpg");
+    width: 100vw;
+    height: 100vh;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: top center;
     font-family: 'Varela Round', sans-serif;
+    animation: backgroundScroll 10s linear infinite;
 }
 
-
-
+@keyframes backgroundScroll {
+    0% {
+        background-position: right center;
+    }
+    50% {
+        background-position: left center;
+    }
+    100% {
+        background-position: right center;
+    }
+}
 
 .panel {
     position: absolute;

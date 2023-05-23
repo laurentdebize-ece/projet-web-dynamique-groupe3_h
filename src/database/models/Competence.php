@@ -23,7 +23,7 @@ class Competence extends DatabaseTable
     private string $nomCompetences;
     private DateTime $dateCreation;
 
-    // renvoie toutes les compétences
+    /// renvoie toutes les compétences
     public static function getAllCompetences(DatabaseController $db): ?array
     {
         $allcompetences = array();
@@ -37,7 +37,7 @@ class Competence extends DatabaseTable
         return $allcompetences;
     }
 
-    // renvoie toutes les compétences d'un utilisateur idCompetences => nomCompetences
+    /// renvoie toutes les compétences d'un utilisateur idCompetences => nomCompetences
     public static function getAllCompetencesUser(DatabaseController $db, int $idUser): ?array
     {
         $user = User::select($db, null, ["WHERE", "`idUser` = $idUser", "LIMIT 1"])->fetchTyped();
@@ -81,7 +81,7 @@ class Competence extends DatabaseTable
         return $competencesTotal;
     }
 
-    // renvoie toutes les compétences transverses et spécifiques d'une matière 
+    /// renvoie toutes les compétences transverses et spécifiques d'une matière 
     public static function getCompetencesByMatiere(DatabaseController $db, int $idMatiere): array
     {
         $table_matiere = Matiere::TABLE_NAME;
@@ -114,7 +114,7 @@ class Competence extends DatabaseTable
         return $matiereCompetence;
     }
 
-    // vérifie si les idMatieres et idThemes spécifiés existent et conviennent à l'utilisateur
+    /// vérifie si les idMatieres et idThemes spécifiés existent et conviennent à l'utilisateur
     private static function check_idMatieresInput(DatabaseController $db, array $idMatieres, array $idMatieresInput): void
     {
         $matieresManquantes = array_diff($idMatieresInput, $idMatieres);
@@ -125,7 +125,7 @@ class Competence extends DatabaseTable
 
     }
 
-    // vérifie si les idThemes spécifiés existent et conviennent à l'utilisateur
+    /// vérifie si les idThemes spécifiés existent et conviennent à l'utilisateur
     private static function check_idThemeInput(DatabaseController $db, array $idThemes, array $idThemesInput): void
     {
         $themesManquants = array_diff($idThemesInput, $idThemes);
@@ -279,6 +279,7 @@ class Competence extends DatabaseTable
         }
     }
 
+    /// modifie une compétence depuis un user
     public static function modifyCompetenceUser(DatabaseController $db, int $idUser, int $idCompetences, int $idMatiereInitial, int $idThemeInitial, ?int $idMatiereTarget = null, ?int $idThemeTarget = null)
     {
         $user = User::select($db, null, ["WHERE","`idUser` = $idUser","LIMIT 1"])->fetchTyped();
@@ -383,6 +384,7 @@ class Competence extends DatabaseTable
         }
     }
 
+    /// supprime une compétence depuis un utilisateur
     public static function deleteCompetenceUser(DatabaseController $db, int $idUser, int $idCompetences)
     {
         $user = User::select($db, null, ["WHERE","`idUser` = $idUser","LIMIT 1"])->fetchTyped();
@@ -420,5 +422,46 @@ class Competence extends DatabaseTable
         else {
             throw new Exception("La compétence spécifiée n'existe pas");
         }
+    }
+
+    /// retourne un tableau avec les compétences les plus populaires suivant le nb de matiere idCompetences => nomCompetences
+    public static function getPopularCompetenceByEval(DatabaseController $db, int $idCompetences): ?array
+    {
+        $table_competences = Competence::TABLE_NAME;
+        $table_eval = Evaluation::TABLE_NAME;
+
+        $competenceEvals = Competence::select($db, "Count(*) as nb_evaluations, $table_competences.*", [
+                                "JOIN $table_eval ON $table_eval.idCompetences = $table_competences.idCompetences",
+                                "WHERE $table_competences.idCompetences = $idCompetences
+                                AND ($table_competences.AutoEvaluation OR $table_competences.evaluationFinale) IS NOT NULL",
+                                "ORDER BY $table_competences.nb_evaluations DESC, $table_competences.idCompetences ASC"])->fetchAll();
+
+        $popularCompetence = array();
+        foreach ($competenceEvals as $competenceEval)
+        {
+            $idCompetence = intval($competenceEval['idCompetences']);
+            $nomCompetence = $competenceEval['nomCompetences'];
+            $popularCompetence[$idCompetence] = $nomCompetence;
+        }
+
+        return $popularCompetence;
+    }
+
+    /// retourne un tableau avec les compétences les plus récentes crées dans le mois idCompetences => nomCompetences
+    public static function getCompetencesCurrentMonth(DatabaseController $db): ?array
+    {
+        $recentEvals = array();
+        $table_competences = Competence::TABLE_NAME;
+        $currentEvals = Competence::select($db,null,["WHERE $table_competences.dateCreation >= DATE_SUB(NOW(), INTERVAL 1 MONTH)",
+                                                    "ORDER BY $table_competences.dateCreation DESC, $table_competences.nomCompetences ASC"])->fetchAll();
+
+        foreach ($currentEvals as $currentEval)
+        {
+            $idCompetence = intval($currentEval['idCompetences']);
+            $nomCompetence = $currentEval['nomCompetences'];
+            $recentEvals[$idCompetence] = $nomCompetence;
+        }
+
+        return $recentEvals;
     }
 }

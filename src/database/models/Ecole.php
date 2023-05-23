@@ -18,4 +18,19 @@ class Ecole extends DatabaseTable
     #[TableOpt(Unique: true)]
     private string $nomEcole;
     private string $typeEtude;
+
+
+    // retourne toutes les écoles
+    public static function getAllSchools(DatabaseController $db): ?array
+    {
+        $schools = array();
+        $ecoles = Ecole::select($db,null,["ORDER BY idEcole ASC"])->fetchAll();
+        foreach ($ecoles as $ecole)
+        {
+            $nomEcole = $ecole['nomEcole'];
+            $idEcole = intval($ecole['idEcole']);
+            $schools[$idEcole] = $nomEcole;
+        }
+        return $schools;
+    }
 }
