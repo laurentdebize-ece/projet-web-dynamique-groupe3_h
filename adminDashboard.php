@@ -15,6 +15,7 @@ $sess->ensureHasAuthority(User::ACCOUNT_TYPE_ADMIN);
     <link rel="stylesheet" href="res/css/bootstrap.min.css">
     <link rel="stylesheet" href="res/css/toolbar.css" type="text/css">
     <link rel="stylesheet" href="res/css/dashboard.css" type="text/css">
+    <link rel="stylesheet" href="res/css/nettoyageStrong.css" type="text/css">
     <link rel="icon" type="icon_onglet.png" href="res/img/icon_onglet.png">
     <title>Accueil</title>
 </head>
@@ -22,9 +23,9 @@ $sess->ensureHasAuthority(User::ACCOUNT_TYPE_ADMIN);
 <body>
     <div class="toolbar">
         <a href="/"><img class="logo" src="res/img/logo_skills_tracker_noir.png" alt="logo"></a>
-        <a href="/users.php"><button class="toolbar-btn"> <strong>Utilisateurs</strong></button></a>
-        <a><button class="toolbar-btn"> <strong>Compétences</strong></button></a>
-        <a><button class="toolbar-btn"> <strong>Ecoles</strong></button></a>
+        <a href="/users.php"><button class="toolbar-btn"> <span id="gras" Utilisateurs></span></button></a>
+        <a><button class="toolbar-btn"><span id="gras" Compétences></span></button></a>
+        <a><button class="toolbar-btn"> <span id="gras" Ecoles></span></button></a>
     </div>
     <div id="wrapper">
         <div id="content">

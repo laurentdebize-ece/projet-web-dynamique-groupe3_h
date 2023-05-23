@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="page_evaluation_competences_etudiant.css" rel="stylesheet" type="text/css" />
     <link rel="icon" type="icon_onglet.png" href="icon_onglet.png">
+    <link rel="stylesheet" href="res/css/nettoyageStrong.css" type="text/css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Evaluation</title>
 </head>
@@ -18,24 +19,24 @@
                 <img class="logo" src="logo_skills_tracker_noir.png" alt="logo">
             </tr>
             <tr>
-                <button class="b1"> <strong>Mon compte</strong></button>
+                <button class="b1"> <span id="gras">Mon compte</span></button>
             </tr>
             <tr>
-                <button class="b1"> <strong>Mes compétences</strong></button>
+                <button class="b1"> <span id="gras">Mes compétences</span></button>
             </tr>
             <tr>
-                <button class="b1"> <strong>A propos</strong></button>
+                <button class="b1"> <span id="gras">A propos</span></button>
             </tr>
             <tr>
-                <button class="b1"> <strong>Contact</strong></button>
+                <button class="b1"> <span id="gras">Contact</span></button>
             </tr>
         </table>
     </div>
     <div id="wrapper">
         <br>
-        <h1> <strong>EVALUATION DES COMPETENCES</strong></h1>
+        <h1> <span id="gras">EVALUATION DES COMPETENCES</span></h1>
         <br>
-        <h2><strong><span class="titreMatiere">MATHEMATIQUES</span></strong></h2>
+        <h2><span id="gras" class="titreMatiere">MATHEMATIQUES</span></h2>
         <br>
         <h4>COMPETENCES A VALIDER : </h4>
         <div class="liste_competences">

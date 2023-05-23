@@ -16,6 +16,7 @@ $sess->ensureHasAuthority(User::ACCOUNT_TYPE_USER);
     <link rel="stylesheet" href="res/css/bootstrap.min.css">
     <link rel="stylesheet" href="res/css/toolbar.css" type="text/css">
     <link rel="stylesheet" href="res/css/matiereEtudiant.css" type="text/css">
+    <link rel="stylesheet" href="res/css/nettoyageStrong.css" type="text/css">
     <link rel="icon" type="icon_onglet.png" href="res/img/icon_onglet.png">
     <script src="res\js\jquery-3.7.0.min.js"></script>
     <script type="text/javascript" src="res/js/matiereEtudiant.js"></script>
@@ -25,8 +26,8 @@ $sess->ensureHasAuthority(User::ACCOUNT_TYPE_USER);
 <body class="background">
     <div class="toolbar">
         <a href="/"><img class="logo" src="res/img/logo_skills_tracker_noir.png" alt="logo"></a>
-        <a href="/listing.php"><button class="toolbar-btn"> <strong>Mes matières</strong></button></a>
-        <a href="/competences.php"><button class="toolbar-btn"> <strong>Mes compétences</strong></button></a>
+        <a href="/listing.php"><button class="toolbar-btn"> <span id="gras">Mes matières</span></button></a>
+        <a href="/competences.php"><button class="toolbar-btn"> <span id="gras">Mes compétences</span></button></a>
     </div>
 
     <h1 id="texte">
@@ -44,7 +45,7 @@ $sess->ensureHasAuthority(User::ACCOUNT_TYPE_USER);
                 echo "<a href=\"/matiere.php?id=$matiere[1]\">
                 <span class=\"matiere\">
                     <img src=\"res/img/imageMatiere.png\">
-                    <br><br>
+                    <br>
                     <div id=\"texte\">
                         " . $matiere[0] . "
                     </div>

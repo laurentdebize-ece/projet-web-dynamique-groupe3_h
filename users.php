@@ -27,6 +27,7 @@ function getAllClasses()
     <link rel="stylesheet" href="res/css/bootstrap.min.css">
     <link rel="stylesheet" href="res/css/toolbar.css">
     <link rel="stylesheet" href="res/css/adminUserDashboard.css">
+    <link rel="stylesheet" href="res/css/nettoyageStrong.css" type="text/css">
     <script src="res/js/jquery-3.7.0.min.js"></script>
     <script src="res/js/bootstrap.bundle.min.js"></script>
     <script src="res/js/adminUserDashboard.js"></script>
@@ -121,9 +122,9 @@ if (isset($_POST["action"])) {
 <body>
     <div class="toolbar">
         <a href="/"><img class="logo" src="res/img/logo_skills_tracker_noir.png" alt="logo"></a>
-        <a href="/users.php"><button class="toolbar-btn"> <strong>Utilisateurs</strong></button></a>
-        <a><button class="toolbar-btn"> <strong>Compétences</strong></button></a>
-        <a><button class="toolbar-btn"> <strong>Ecoles</strong></button></a>
+        <a href="/users.php"><button class="toolbar-btn"> <span id="gras">Utilisateurs</span></button></a>
+        <a><button class="toolbar-btn"> <span id="gras">Compétences</span></button></a>
+        <a><button class="toolbar-btn"> <span id="gras">Ecoles</span></button></a>
     </div>
     <div class="panel">
         <button class="btn btn-primary" id="adduserbtn"> ➕ Créer un utilisateur</button>

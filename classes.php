@@ -16,6 +16,7 @@ $sess->ensureHasAuthority(User::ACCOUNT_TYPE_PROF);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="res/css/bootstrap.min.css" />
     <link rel="stylesheet" href="res/css/toolbar.css" />
+    <link rel="stylesheet" href="res/css/nettoyageStrong.css" type="text/css">
     <script src="res/js/jquery-3.7.0.min.js"></script>
     <script src="res/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="res/css/classes.css" type="text/css">
@@ -29,9 +30,9 @@ $sess->ensureHasAuthority(User::ACCOUNT_TYPE_PROF);
         <a href="/classes.php"><button class="toolbar-btn">Mes classes</button></a>
     </div>
     <h1 id="texte2">
-        <strong>
+        <span id="gras">
             MES CLASSES :
-        </strong>
+        </span>
     </h1>
 
     <div class="ensemble-fleche">

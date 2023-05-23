@@ -105,6 +105,7 @@ switch ($_GET['sort'] ?? 'name') {
     <link rel="icon" type="icon" href="res/img/icon_onglet.png">
     <link rel="stylesheet" href="res/css/bootstrap.min.css" />
     <link rel="stylesheet" href="res/css/toolbar.css" />
+    <link rel="stylesheet" href="res/css/nettoyageStrong.css" type="text/css">
     <link rel="icon" type="icon_onglet.png" href="res/img/icon_onglet.png">
     <link href="res/css/matiere.css" rel="stylesheet">
     <script src="res/js/jquery-3.7.0.min.js"></script>
@@ -116,8 +117,8 @@ switch ($_GET['sort'] ?? 'name') {
 <body>
     <div class="toolbar">
         <a href="/"><img class="logo" src="res/img/logo_skills_tracker_noir.png" alt="logo"></a>
-        <a href="/listing.php"><button class="toolbar-btn"> <strong>Mes matières</strong></button></a>
-        <a href="/competences.php"><button class="toolbar-btn"><strong>Mes compétences</strong></button></a>
+        <a href="/listing.php"><button class="toolbar-btn"> <span id="gras">Mes matières</span></button></a>
+        <a href="/competences.php"><button class="toolbar-btn"><span id="gras">Mes compétences</span></button></a>
     </div>
     <div id="wrapper">
         <br>

@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="page_competences_transverses.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="res/css/nettoyageStrong.css" type="text/css">
     <link rel="icon" type="icon_onglet.png" href="icon_onglet.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Compétences transverses</title>
@@ -18,36 +19,25 @@
                 <img class="logo" src="logo_skills_tracker_noir.png" alt="logo">
             </tr>
             <tr>
-                <button class="b1"> <strong>Mon compte</strong></button>
+                <button class="b1"> <span id="gras">Mon compte</span></button>
             </tr>
             <tr>
-                <button class="b1"> <strong>Mes compétences</strong></button>
+                <button class="b1"> <span id="gras">Mes compétences</span></button>
             </tr>
             <tr>
-                <button class="b1"> <strong>A propos</strong></button>
+                <button class="b1"> <span id="gras">A propos</span></button>
             </tr>
             <tr>
-                <button class="b1"> <strong>Contact</strong></button>
+                <button class="b1"> <span id="gras">Contact</span></button>
             </tr>
         </table>
     </div>
     <div id="wrapper">
         <br>
-        <h1> <strong> <span id="titrePage">MES COMPETENCES TRANSVERSES</span> </strong></h1>
+        <h1> <span id="gras" id="titrePage">MES COMPETENCES TRANSVERSES</span> </strong></h1>
         <div id="emplacement_filtres">
             <button class="filtres"><img src="filter.svg" alt="icon"> FILTRES</button>
-            <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="page_competences_transverses.css" rel="stylesheet" type="text/css" />
-    <link rel="icon" type="icon_onglet.png" href="icon_onglet.png">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>Compétences transverses</title>
-</head>
+  
 
 <body>
     <div id="header">
@@ -56,34 +46,34 @@
                 <img class="logo" src="logo_skills_tracker_noir.png" alt="logo">
             </tr>
             <tr>
-                <button class="b1"> <strong>Mon compte</strong></button>
+                <button class="b1"> <span id="gras">Mon compte</span></button>
             </tr>
             <tr>
-                <button class="b1"> <strong>Mes compétences</strong></button>
+                <button class="b1"> <span id="gras">Mes compétences</span></button>
             </tr>
             <tr>
-                <button class="b1"> <strong>A propos</strong></button>
+                <button class="b1"> <span id="gras">A propos</span></button>
             </tr>
             <tr>
-                <button class="b1"> <strong>Contact</strong></button>
+                <button class="b1"> <span id="gras">Contact</span></button>
             </tr>
         </table>
     </div>
     <div id="wrapper">
         <br>
-        <h1> <strong> <span id="titrePage">MES COMPETENCES TRANSVERSES</span> </strong></h1>
+        <h1> <span id="gras"> <span id="titrePage">MES COMPETENCES TRANSVERSES</span> </strong></h1>
         <div id="emplacement_filtres">
             <button class="filtres"><img src="filter.svg" alt="icon"> FILTRES</button>
             <button class="ajouter"><img src="plus-lg.svg" alt="icon"> AJOUTER</button>
         </div>
         <div id="navigation">
-            <strong>
+            <span id="gras">
                 <div id="titreOnglet">
                     <a href="page_mes_competences.php" class="texteOnglet1">Mes compétences</a>
                     <span class="texteOnglet2">Mes compétences transverses</span>
                     <a href="page_toutes_competences.php" class="texteOnglet3">Toutes mes compétences</a>
                 </div>
-            </strong>
+            </span>
             <br>
             <div class="matiere">
                 <div class="matieres">
@@ -152,13 +142,13 @@
 </html>
         </div>
         <div id="navigation">
-            <strong>
+        <span id="gras">
                 <div id="titreOnglet">
                     <a href="page_mes_competences.php" class="texteOnglet1">Mes compétences</a>
                     <span class="texteOnglet2">Mes compétences transverses</span>
                     <a href="page_toutes_competences.php" class="texteOnglet3">Toutes mes compétences</a>
                 </div>
-            </strong>
+            </span>
             <br>
             <div class="matiere">
                 <div class="matieres">
