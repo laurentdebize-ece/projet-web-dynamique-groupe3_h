@@ -1,7 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
 
+
 html {
     background-color: rgb(229, 226, 224);
+}
+
+body{
+    margin: 0;
+    font-family: 'Varela Round', sans-serif;
 }
 
 h1 {
@@ -36,7 +42,7 @@ h1 {
 }
 
 #navigation {
-    background-color: rgb(240, 240, 240);
+    background-color: rgb(229, 226, 224);
     margin-left: 40px;
     margin-right: 40px;
     margin-top: 10px;
@@ -45,8 +51,6 @@ h1 {
     overflow: scroll;
     scroll-behavior: smooth;
     width: auto;
-    border: solid black 2px;
-    
 }
 
 
@@ -55,18 +59,16 @@ h1 {
     justify-content: end;
 }
 
-.filtres {
-    background-color: rgb(173, 216, 230);
-    margin-right: 40px;
-    border-radius: 8px;
-}
-
-.filtres:hover {
-    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2), 0 1px 10px 0 rgba(0, 0, 0, 0.19);
+.img_plus{
+    height: 30px;
+    width: 30px;
 }
 
 .ajouter {
     background-color: rgb(126, 222, 156);
+    height: 50px;
+    width: 250px;
+    font-size: large;
     margin-right: 40px;
     border-radius: 8px;
 }
@@ -74,6 +76,10 @@ h1 {
 
 .ajouter:hover {
     box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2), 0 1px 10px 0 rgba(0, 0, 0, 0.19);
+}
+
+.text_ajouter{
+    margin-left: 15px;
 }
 
 .maPopup {
@@ -86,8 +92,8 @@ h1 {
 
 .contenu_popup {
     background-color: rgb(229, 226, 224);
-    width: 750px;
-    height: 290px;
+    width: 650px;
+    height: 260px;
     margin: 100px auto;
     padding: 20px;
 }
@@ -110,69 +116,30 @@ h1 {
     cursor: pointer;
 }
 
-#titreOnglet{
-    font-size: x-large;
-    margin-right: 10px;
-    display: flex;
-    justify-content: space-between;
-    text-decoration: none;
-}
-
-.texteOnglet1 {
-    color: black;
-    text-decoration: none;
-    margin-left: 10px;
-    height: 31px;
-    background: linear-gradient(to top, black 0%, black 8%, transparent 8.01%) no-repeat;
-    background-size: 0 100%;
-    transition: background-size 0.5s;
-}
-
-.texteOnglet1:hover {
-    color: black;
-    background-size: 100% 100%;
-}
-
-.texteOnglet2 {
-    color: black;
-    text-decoration: none;
-    height: 31px;
-    background: linear-gradient(to top, black 0%, black 8%, transparent 8.01%) no-repeat;
-    background-size: 0 100%;
-    transition: background-size 0.5s;
-}
-
-.texteOnglet2:hover {
-    color: black;
-    background-size: 100% 100%;
-}
-
-.texteOnglet3 {
-    text-decoration-line: underline;
-}
-
-
 .matiere {
     display: flex;
     flex-wrap: wrap;
     width: 1410px;
-    justify-content: space-between;
+    justify-content: column;
 }
 
 .matieres {
     font-size: large;
-    padding-left: 10px;
     display: flex;
+    justify-content: center;
+    padding-left: 10px;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-between;
     overflow: scroll;
+}
+
+h4{
+    text-decoration: underline;
 }
 
 ::-webkit-scrollbar {
     display: none;
 }
-
 
 .titreMatieres {
     height: 27px;
@@ -183,7 +150,6 @@ h1 {
     text-shadow: 3px 3px rgb(234, 210, 177);
 }
 
-.ligne {
-    display: flex;
-    justify-content: space-between;
+li{
+    margin-top: 30px;
 }
