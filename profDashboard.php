@@ -15,14 +15,14 @@ $sess->ensureHasAuthority(User::ACCOUNT_TYPE_PROF);
     <link rel="stylesheet" href="res/css/bootstrap.min.css">
     <link rel="stylesheet" href="res/css/toolbar.css" type="text/css">
     <link rel="stylesheet" href="res/css/dashboard.css" type="text/css">
-    <link rel="icon" type="icon_onglet.png" href="res/img/icon_onglet.png">
+    <link rel="icon" type="icon" href="res/img/icon_onglet.png">
     <title>Accueil</title>
 </head>
 
 <body>
 <div class="toolbar">
         <a href="/"><img class="logo" src="res/img/logo_skills_tracker_noir.png" alt="logo"></a>
-        <a href="/adminUserDashboard.php"><button class="toolbar-btn"> <strong>Mes classes</strong></button></a>
+        <a href="/classes.php"><button class="toolbar-btn"> <strong>Mes classes</strong></button></a>
     </div>
     <div id="wrapper">
         <div id="content">
