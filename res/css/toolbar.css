@@ -16,6 +16,7 @@
 .toolbar {
     background-color: rgb(240, 240, 240);
     display: flex;
+    justify-content: space-between;
 }
 
 .toolbar-btn {

@@ -24,6 +24,7 @@ INSERT INTO Matieres (nomMatiere) VALUES
 
 INSERT INTO Ecoles (nomEcole,typeEtude) VALUES
     ("ECE", "Ingénieur");  -- 1
+    ("INSEEC", "Commerce"); -- 2
 
 INSERT INTO Filieres (nomFiliere,idEcole) VALUES
     ("Ingé", 1), -- 1
@@ -40,25 +41,47 @@ INSERT INTO Promotions (annee,idFiliere) VALUES
     (2027,2); -- 7
 
 INSERT INTO Classes (numGroupe,effectif,idPromo) VALUES
-    (1,NULL,4), -- 1
-    (2,NULL,4), -- 2
-    (3,NULL,4); -- 3
+    (1,NULL,1), -- 1
+    (2,NULL,1), -- 2
+    (3,NULL,1), -- 3
+
+    (1,NULL,2), -- 4
+    (2,NULL,2), -- 5
+    (3,NULL,2), -- 6
+
+    (1,NULL,3), -- 7
+    (2,NULL,3), -- 8
+    (3,NULL,3), -- 9
+
+    (1,NULL,4), -- 10
+    (2,NULL,4), -- 11
+    (3,NULL,4), -- 12
+
+    (1,NULL,5), -- 13
+    (2,NULL,5), -- 14
+    (3,NULL,5), -- 15
+
+    (1,NULL,6), -- 16
+    (2,NULL,6), -- 17
+
+    (1,NULL,7), -- 18
+    (2,NULL,7); -- 19
 
 INSERT INTO Users (typeAccount,email,nomUser,prenomUser,hashPassword,idClasse) VALUES
 
     (2,"prof1Maths@ece.fr","Mister","Maths","$2y$10$RXJSyFaDbFxrWtFjTmHFTucAm8.bV407lLn2X1wMW8IRXsgXrRfFe",NULL), -- mdp:prof1Maths -- 1
     (2,"prof2Maths@ece.fr","Madame","Maths","$2y$10$IEAqS23b3Htrlx7t4JLQceKbbjzf1DyxghNqe5wYqqC6SE4TvHNNO",NULL), -- mdp:prof2Maths -- 2
     (2,"prof1physique@ece.fr","Mister","Physique","$2y$10$wMUIxk2lSt7JgYMylPUPzO.IHBz5rcbFAbDDimbX4exdZ8ZO34lHS",NULL), -- mdp:prof1Physique -- 3
-    (2,"prof1Info@ece.fr","Mister","Info","$2y$10$rHGw4jfW6UNMPv3rIWM.A.nvxC5ZbIH/6uufh/DbMgyUDSGm8k40C",NULL), -- mdp:prof1Info -- 4
+    (2,"laurent.debize@ece.fr","Laurent","Debize","$2y$10$rHGw4jfW6UNMPv3rIWM.A.nvxC5ZbIH/6uufh/DbMgyUDSGm8k40C",NULL), -- mdp:prof1Info -- 4
     (2,"prof1Elec@ece.fr","Mister","Elec","$2y$10$sPgqPm/vbhv6nS4XlC1bCOWHOqSzE8u/xpfS039h.LnaeMsbLMoCq",NULL), -- mdp:prof1Elec -- 5
     (2,"prof2Elec@ece.fr","Madame","Elec","$2y$10$QbOFTr8i3MT2FEpoTVyi8OUT2rY8LU6C5C68xVqjfsN6PVlnyv2YS",NULL), -- mdp:prof2Elec -- 6
     (2,"prof1Humanité@ece.fr","Mister","Humanité","$2y$10$bjxHPFcnJq8mwCIzJi7qH.IpSCN0koZGlJ7l.kUO6ztbR7.YK.sbK",NULL), -- mdp:prof1Humanité -- 7
     (2,"prof2Humanité@ece.fr","Madame","Humanité","$2y$10$mecfXPv7PNFuW9lTB6rgE.sMYXUpCv0qsYB6bvz7sjHVohGDIhPOO",NULL), -- mdp:prof2Humanité -- 8
     (2,"prof1Langues@ece.fr","Mister","Langues","$2y$10$176cbX87PWmbi1GgDAWVM.6FlGU1El4AEcleaHN3fHduWOnikr6DS",NULL), -- mdp:prof1Langues -- 9
 
-    (0,"admin1@ece.fr","LeToutPuissant","Lucas","$2y$10$NjjrShOX1B/6WsPBaT3f1OPpehtIk1HVEAQ.2QlM6fDgAZHLLUBim",NULL), -- mdp:lukeh -- 10
-    (1,"user1@ece.fr","LaSalope","Tiffany","$2y$10$NjjrShOX1B/6WsPBaT3f1OPpehtIk1HVEAQ.2QlM6fDgAZHLLUBim",2), -- mdp:lukeh -- 11
-    (1,"user2@ece.fr","thm","thm","$2y$10$NjjrShOX1B/6WsPBaT3f1OPpehtIk1HVEAQ.2QlM6fDgAZHLLUBim",1); -- mdp:lukeh -- 12
+    (0,"admin1@ece.fr","Arriesse","Lucas","$2y$10$NjjrShOX1B/6WsPBaT3f1OPpehtIk1HVEAQ.2QlM6fDgAZHLLUBim",NULL), -- mdp:lukeh -- 10
+    (1,"user1@ece.fr","Marie","Tiffany","$2y$10$NjjrShOX1B/6WsPBaT3f1OPpehtIk1HVEAQ.2QlM6fDgAZHLLUBim",2), -- mdp:lukeh -- 11
+    (1,"user2@ece.fr","Thm","Jul","$2y$10$NjjrShOX1B/6WsPBaT3f1OPpehtIk1HVEAQ.2QlM6fDgAZHLLUBim",1); -- mdp:lukeh -- 12
 
 
 INSERT INTO Cours (volumeHoraire, idClasse, idMatiere, idProfesseur) VALUES

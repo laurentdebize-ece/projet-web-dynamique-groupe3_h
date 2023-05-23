@@ -88,7 +88,7 @@ if (isset($_POST['action']) && isset($_POST['skill']) && isset($_POST['evaluatio
     <div class="toolbar">
         <a href="/"><img class="logo" src="res/img/logo_skills_tracker_noir.png" alt="logo"></a>
         <a href="/listing.php"><button class="toolbar-btn"> <strong>Mes matières</strong></button></a>
-        <a><button class="toolbar-btn"> <strong>Mes compétences</strong></button></a>
+        <a href="/competences.php"><button class="toolbar-btn"> <strong>Mes compétences</strong></button></a>
         <div class="toolbar-logout">
             <a href="/logout.php"><button class="toolbar-btn"> <strong>Se déconnecter</strong></button></a>
         </div>
@@ -119,7 +119,7 @@ if (isset($_POST['action']) && isset($_POST['skill']) && isset($_POST['evaluatio
                         <input type="hidden" name="id" value="<?php echo $mat_id ?>" id="mat_id">
                         <input type="hidden" name="action" value="add_eval">
                         <input type="hidden" name="skill" value="id_skill" id="skill_id">
-                        <div class="btn-group" role="group">
+                        <div class="btn-group center" role="group">
                             <input type="radio" class="btn-check" name="evaluation" id="a" autocomplete="off" value="1" checked>
                             <label class="btn btn-outline-success" for="a">Acquis</label>
 

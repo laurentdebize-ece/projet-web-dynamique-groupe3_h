@@ -95,3 +95,7 @@ li {
     font-size: 12px;
     font-style: italic;
 }
+
+.modal-body {
+    margin-left: 50px;
+}
