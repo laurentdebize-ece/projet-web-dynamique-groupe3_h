@@ -78,4 +78,32 @@ class Classe extends DatabaseTable
         }
         return $students;
     }
+
+    // créer une classe depuis un admin
+    public static function createClasse(DatabaseController $db, int $idUser, int $numGroupe, int $idPromo, ?int $effectif = null): void
+    {
+        $user = User::select($db, null, ["WHERE", "`idUser` = $idUser", "LIMIT 1"])->fetchTyped();
+        if($user->getAccountType() === User::ACCOUNT_TYPE_ADMIN)
+        {
+            $numGroupe = intval($numGroupe);
+            $idPromo = intval($idPromo);
+            $promo = Promotion::select($db, null, ["WHERE", "`idPromo` = $idPromo", "LIMIT 1"])->fetchTyped();
+            if($promo === null) {
+                throw new Exception("Cette promotion n'existe pas");
+            }
+            else {
+                $classe = Classe::select($db, null, ["WHERE", "`numGroupe` = $numGroupe", "AND", "`idPromo` = $idPromo", "LIMIT 1"])->fetchTyped();
+                if($classe !== null) {
+                    throw new Exception("Cette classe existe déjà");
+                }
+                else {
+                    $classe = ($effectif !== null)? new Classe($numGroupe, $idPromo, $effectif) : new Classe($numGroupe, $idPromo);
+                    Classe::insert($db, $classe);
+                }
+            }
+        }
+        else {
+            throw new Exception("Seul un administrateur peut créer une classe");
+        }
+    }
 }

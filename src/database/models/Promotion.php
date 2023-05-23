@@ -57,4 +57,35 @@ class Promotion extends DatabaseTable
         }
         return $promos;
     }
+
+    // créer une promotion depuis un admin
+    public static function createPromo(DatabaseController $db, int $idUser, int $annee, int $idFiliere): void
+    {
+        $user = User::select($db, null, ["WHERE", "`idUser` = $idUser", "LIMIT 1"])->fetchTyped();
+        if ($user->getAccountType() === User::ACCOUNT_TYPE_ADMIN) {
+            $annee = intval($annee);
+            if ($annee > (date("Y") + 5) || $annee < date("Y")) {
+                throw new Exception("L'année doit être supérieure à " . date("Y") . " et inférieure ou égale à " . (date("Y") + 5));
+            }
+            else {
+                $idFiliere = intval($idFiliere);
+                $filiere = Filiere::select($db, null, ["WHERE", "idFiliere = $idFiliere", "LIMIT 1"])->fetchTyped();
+                if ($filiere === null) {
+                    throw new Exception("La filière n'existe pas");
+                }
+                else {
+                    $promo = Promotion::select($db, null, ["WHERE", "annee = $annee", "AND", "idFiliere = $idFiliere", "LIMIT 1"])->fetchTyped();
+                    if ($promo !== null) {
+                        throw new Exception("Cette promotion existe déjà");
+                    }
+                    else {
+                        $promo = new Promotion($annee, $idFiliere);
+                        Promotion::insert($db, $promo);
+                    }
+                }
+            }            
+        } else {
+            throw new Exception("Seul un administrateur peut créer une promotion");
+        }
+    }
 }
