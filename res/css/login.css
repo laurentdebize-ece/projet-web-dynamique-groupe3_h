@@ -1,11 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
 
 body {
-    background-image: url("../img/fish_pond.gif");
+    background-image: url("../img/fond_login.jpg");
+    background-repeat: no-repeat;
     background-size: cover;
-    margin: 0;
+    background-position: top center;
     font-family: 'Varela Round', sans-serif;
 }
+
+
+
 
 .panel {
     position: absolute;

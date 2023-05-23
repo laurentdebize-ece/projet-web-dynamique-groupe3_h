@@ -17,6 +17,19 @@ class Theme extends DatabaseTable
     #[TableOpt(Unique: true)]
     private string $nomTheme;
 
+    public static function getAllThemes(DatabaseController $db): ?array
+    {
+        $allthemes = array();
+        $themes = Theme::select($db,null,["ORDER BY idTheme ASC"])->fetchAll();
+        foreach ($themes as $theme)
+        {
+            $nomTheme = $theme['nomTheme'];
+            $idTheme = intval($theme['idTheme']);
+            $allthemes[$idTheme] = $nomTheme;
+        }
+        return $allthemes;
+    }
+
     public static function getThemesByCompetences(DatabaseController $db, int $idCompetences): array
     {
 

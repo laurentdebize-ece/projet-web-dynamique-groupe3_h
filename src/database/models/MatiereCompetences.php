@@ -20,38 +20,30 @@ class MatiereCompetences extends DatabaseTable
     #[TableOpt(TableForeignKey: Matiere::class)]
     private int $idMatiere;
 
-    public static function getCompetencesTransverses(DatabaseController $db): array
+    public static function getCompetencesTransverses(DatabaseController $db): ?array
     {
         $table_matiere = Matiere::TABLE_NAME;
         $table_competences = Competence::TABLE_NAME;
         $table_matiere_competences = MatiereCompetences::TABLE_NAME;
 
-        $matiereCompetence = array();
         $competencesTransverses = array();
 
-        $competences = Competence::select($db,null,
+        $competences = Competence::select($db,"Count(*) as nbMatiere, $table_competences.idCompetences as idCompetences, $table_competences.nomCompetences as nomCompetences",
                                         ["JOIN $table_matiere_competences ON",
                                         "$table_matiere_competences.idCompetences = $table_competences.idCompetences",
                                         "JOIN $table_matiere ON",
-                                        "$table_matiere.idMatiere = $table_matiere_competences.idMatiere"])->fetchAll();
+                                        "$table_matiere.idMatiere = $table_matiere_competences.idMatiere",
+                                        "GROUP BY $table_competences.idCompetences"])->fetchAll();
 
         foreach ($competences as $competence)
         {
-            $nomMatiere = $competence['nomMatiere'];
-            $nomCompetence = $competence['nomCompetences'];
-            
-            if (!isset($matiereCompetence[$nomCompetence])) {
-                $matiereCompetence[$nomCompetence] = array();
-            }
-            
-            array_push($matiereCompetence[$nomCompetence], $nomMatiere);
-        }
-                        
-        foreach($matiereCompetence as $competence => $matieres){
-            if(count($matieres) > 1){
-                array_push($competencesTransverses,$competence);
+            if (intval($competence['nbMatiere']) > 1){
+                $nomCompetence = $competence['nomCompetences'];
+                $idCompetences = intval($competence['idCompetences']);
+                $competencesTransverses[$idCompetences] = $nomCompetence;
             }
         }
+
         return $competencesTransverses;
     }
 
