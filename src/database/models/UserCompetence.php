@@ -21,18 +21,24 @@ class UserCompetence extends DatabaseTable
     #[TableOpt(TableForeignKey: User::class)]
     private int $idUser;
 
-    public static function getOptionalsCompetences(DatabaseController $db,int $idUser): array
+    public static function getOptionalsCompetences(DatabaseController $db, int $idUser): array
     {
         $table_competences = Competence::TABLE_NAME;
         $table_user_competences = UserCompetence::TABLE_NAME;
         $table_user = User::TABLE_NAME;
+
+        $competencesOpts = array();
 
         $competences = Competence::select($db, null, [
                                         "JOIN $table_user_competences ON $table_user_competences.idCompetences = $table_competences.idCompetences",
                                         "JOIN $table_user ON $table_user.idUser = $table_user_competences.idUser",
                                         "WHERE $table_user.idUser = $idUser"
                                         ])->fetchAll();
-        $competences = array_map(fn ($competence) => $competence['nomCompetences'], $competences);
-        return $competences;
+
+        foreach ($competences as $competence) {
+            $competencesOpts[intval($competence['idCompetences'])] = $competence['nomCompetences'];
+        }
+
+        return $competencesOpts;
     }
 }

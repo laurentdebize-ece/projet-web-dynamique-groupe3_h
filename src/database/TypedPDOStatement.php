@@ -22,6 +22,11 @@ final class TypedPDOStatement
         return $this->stmt->fetchAll();
     }
 
+    public function fetch(): mixed
+    {
+        return $this->stmt->fetch();
+    }
+
     /// Retourne le résultat de la requête sous forme d'un tableau d'objets typés.
     public function fetchAllTyped(): array
     {
