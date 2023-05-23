@@ -90,5 +90,45 @@ class Matiere extends DatabaseTable
     public function getID() : ?int {
         return $this->idMatiere;
     }
+
+
+    public static function addMatiereUser(DatabaseController $db, int $idUser, string $nomMatiere, ?array $idCompetences = null): void
+    {
+        $user = User::select($db, null, ["WHERE", "`idUser` = $idUser", "LIMIT 1"])->fetchTyped();
+        $user = classQL::getObjectValues($user);
+
+        switch($user['typeAccount']){
+            case User::ACCOUNT_TYPE_PROF:
+            case User::ACCOUNT_TYPE_PROF:
+                throw new Exception ("les élèves et les professeurs ne peuvent pas ajouter de matières");
+                break;
+                
+            case User::ACCOUNT_TYPE_ADMIN:
+                $nomMatiereSQL = classQL::escapeSQL($nomMatiere);
+                if (Matiere::select($db, null, ["WHERE", "`nomMatiere` = '$nomMatiereSQL'", "LIMIT 1"])->fetchTyped() !== null) {
+                    throw new Exception("La matière existe déjà");
+                }
+                if (empty($idCompetences)) {
+                    $matiere = new Matiere($nomMatiere);
+                    Matiere::insert($db, $matiere);
+                }
+                else {
+                    foreach ($idCompetences as $idCompetence){
+                        if (Competence::select($db, null, ["WHERE", "`idCompetences` = $idCompetence", "LIMIT 1"])->fetchTyped() === null) {
+                            throw new Exception("La compétence " . $$idCompetence. " n'existe pas");
+                        }
+                    }
+                    $matiere = new Matiere($nomMatiere);
+                    Matiere::insert($db, $matiere);
+                    $matiere = Matiere::select($db, null, ["WHERE", "`nomMatiere` = '$nomMatiereSQL'", "LIMIT 1"])->fetchTyped();
+                    $idMatiere = $matiere->getID();
+                    foreach ($idCompetences as $idCompetence){
+                        $matiereCompetence = new MatiereCompetences($idCompetence, $idMatiere);
+                        MatiereCompetences::insert($db, $matiereCompetence);
+                    }
+                }
+                break;
+        }
+    }
  
 }
