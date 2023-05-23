@@ -425,16 +425,16 @@ class Competence extends DatabaseTable
     }
 
     /// retourne un tableau avec les compétences les plus populaires suivant le nb de matiere idCompetences => nomCompetences
-    public static function getPopularCompetenceByEval(DatabaseController $db, int $idCompetences): ?array
+    public static function getPopularCompetenceByEval(DatabaseController $db): ?array
     {
         $table_competences = Competence::TABLE_NAME;
         $table_eval = Evaluation::TABLE_NAME;
 
         $competenceEvals = Competence::select($db, "Count(*) as nb_evaluations, $table_competences.*", [
                                 "JOIN $table_eval ON $table_eval.idCompetences = $table_competences.idCompetences",
-                                "WHERE $table_competences.idCompetences = $idCompetences
-                                AND ($table_competences.AutoEvaluation OR $table_competences.evaluationFinale) IS NOT NULL",
-                                "ORDER BY $table_competences.nb_evaluations DESC, $table_competences.idCompetences ASC"])->fetchAll();
+                                "WHERE ($table_eval.AutoEvaluation OR $table_eval.evaluationFinale) IS NOT NULL",
+                                "GROUP BY $table_competences.idCompetences",
+                                "ORDER BY nb_evaluations DESC"])->fetchAll();
 
         $popularCompetence = array();
         foreach ($competenceEvals as $competenceEval)
@@ -446,6 +446,7 @@ class Competence extends DatabaseTable
 
         return $popularCompetence;
     }
+
 
     /// retourne un tableau avec les compétences les plus récentes crées dans le mois idCompetences => nomCompetences
     public static function getCompetencesCurrentMonth(DatabaseController $db): ?array

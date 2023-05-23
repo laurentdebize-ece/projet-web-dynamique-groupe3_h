@@ -1,0 +1,77 @@
+
+html {
+    background-color: rgb(229, 226, 224);
+}
+
+.logo {
+    height: 75px;
+    width: 200px;
+}
+
+#header {
+    background-color: rgb(240, 240, 240);
+}
+
+.b1 {
+    height: 75px;
+    width: 200px;
+    border: none;
+    display: inline-block;
+    transition-duration: 0.6s;
+}
+
+.b1:hover {
+    background-color: rgb(232, 216, 194);
+}
+
+#wrapper {
+    background-color: rgb(229, 226, 224);
+
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+h1 {
+    background-color: rgb(229, 226, 224);
+    text-shadow: 3px 3px rgb(235, 203, 160);
+    text-align: center;
+}
+
+h3 {
+    text-decoration: underline;
+}
+
+li:hover {
+    text-shadow: 1px 1px rgb(235, 203, 160);
+}
+
+.col-lg-4 {
+    background-color: rgb(229, 226, 224);
+    margin-top: 40px;
+    margin-left: 40px;
+    height: 60%;
+    border: solid black 2px;
+    background-color: rgb(240, 240, 240);
+}
+
+.content_col_1 {
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-right: 10px;
+}
+
+.content_col_2 {
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-right: 10px;
+}
+
+
+#logo_ece{
+    height: 55%;
+    width: 60%;
+}
