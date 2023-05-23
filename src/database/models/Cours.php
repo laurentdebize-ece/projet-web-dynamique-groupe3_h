@@ -14,6 +14,12 @@ class Cours extends DatabaseTable
         $this->idProfesseur = $idProfesseur;
     }
 
+    /// Retourne toutes les ID de classes pour lesquelles le professeur a des cours.
+    public static function getClassesForProfesseur(DatabaseController $db, int $idUser): array
+    {
+        return Cours::select($db, "DISTINCT `classes`.idClasse, numGroupe", ["JOIN `classes` on `classes`.`idClasse` = `cours`.`idClasse`", "WHERE `idProfesseur` = $idUser"])->fetchAll();
+    }
+
     #[TableOpt(PrimaryKey: true, AutoIncrement: true)]
     private ?int $idCours = null;
 
