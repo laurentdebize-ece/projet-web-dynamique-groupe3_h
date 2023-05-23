@@ -1,7 +1,26 @@
-
 <?php
+header("no-cache, no-store, must-revalidate");
+require 'src/session.php';
+require_once 'src/database/models/Classe.php';
+require_once 'src/database/models/Filiere.php';
+require_once 'src/database/models/Promotion.php';
+require_once 'src/database/models/Ecole.php';
+require_once 'src/database/models/Competence.php';
+
 $sess = SessionManager::getInstance();
 $sess->ensureHasAuthority(User::ACCOUNT_TYPE_USER);
+$idUser = $sess->getUser()->getId();
+$user = User::select(DatabaseController::getInstance(), null, ["WHERE `idUser` = $idUser","LIMIT 1"])->fetch();
+$idClasse = intval($user['idClasse']);
+$classe = Classe::select(DatabaseController::getInstance(), null, ["WHERE `idClasse` = $idClasse","LIMIT 1"])->fetch();
+$idPromo = intval($classe['idPromo']);
+$promo = Promotion::select(DatabaseController::getInstance(), null, ["WHERE `idPromo` = $idPromo","LIMIT 1"])->fetch();
+$idFiliere = intval($promo['idFiliere']);
+$filiere = Filiere::select(DatabaseController::getInstance(), null, ["WHERE `idFiliere` = $idFiliere","LIMIT 1"])->fetch();
+$idEcole = intval($filiere['idEcole']);
+$ecole = Ecole::select(DatabaseController::getInstance(), null, ["WHERE `idEcole` = $idEcole","LIMIT 1"])->fetch();
+
+$competences = Competence::getCompetencesCurrentMonth(DatabaseController::getInstance());
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,51 +43,64 @@ $sess->ensureHasAuthority(User::ACCOUNT_TYPE_USER);
 <body>
     <div class="toolbar">
         <a href="/"><img class="logo" src="res/img/logo_skills_tracker_noir.png" alt="logo"></a>
-        <a href="/listing.php"><button class="toolbar-btn"><span id="gras"> Mes matières</span></button></a>
-        <a><button class="toolbar-btn"> <span id="gras">Mes compétences</span></button></a>
+        <a href="/listing.php"><button class="toolbar-btn"> <strong>Mes matières</strong></button></a>
+        <a href="/competences.php"><button class="toolbar-btn"> <strong>Mes compétences</strong></button></a>
+        <a href="/pageGroupeOmnes.php"><button class="toolbar-btn"> <strong>My Omnes</strong></button></a>
+        <div class="toolbar-logout">
+            <a href="/logout.php"><button class="toolbar-btn"> <strong>Se déconnecter</strong></button></a>
+        </div>
     </div>
     <div id="wrapper">
         <h1>MES INFORMATIONS : GROUPE OMNES </h1>
         <div class="container">
             <div class="col-lg-4">
                 <div class="content_col_1">
-                    <h3>DERNIERES COMPETENCES</h3>
+                    <h3>DERNIERES COMPETENCES AJOUTEES</h3>
+                    <?php
+                    $competences = Competence::getCompetencesCurrentMonth(DatabaseController::getInstance());
+                    ?>
+
                     <ul>
-                        <li>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit : A
-                        </li>
-                        <li>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit : NA
-                        </li>
-                        <li>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit : ECA
-                        </li>
+                        <?php foreach ($competences as $competence) : ?>
+                            <li><?php echo $competence; ?></li>
+                        <?php endforeach; ?>
                     </ul>
-                    <h3>COMPETENCES TENDANCES</h3>
+                    <h3>COMPETENCES POPULAIRES</h3>
+                    <?php
+                    $competences = Competence::getPopularCompetenceByEval(DatabaseController::getInstance());
+                    ?>
+
                     <ul>
-                        <li>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit : A
-                        </li>
-                        <li>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit : NA
-                        </li>
-                        <li>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit : ECA
-                        </li>
+                        <?php foreach ($competences as $competence) : ?>
+                            <li><?php echo $competence; ?></li>
+                        <?php endforeach; ?>
                     </ul>
                 </div>
             </div>
             <div class="col-lg-4">
-                <div class="content_col_2">
-                    <h3>MA FILIERE :</h3>
-                    <ul>
-                        <li>
-                            Ingénieur
-                        </li>
-                    </ul>
-                    <h3>MON ECOLE : </h3>
-                    <img src="res/img/ECE_LOGO.png" alt="img" id="logo_ece">
-                </div>
+            <div class="content_col_2">
+                <?php
+                echo "<table border='1' align='center'>";
+                ?>
+                <thead>
+                    <tr>
+                        <th>Ecole</th>
+                        <th>Filiere</th>
+                        <th>Promo</th>
+                        <th>Classe</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><?php echo $ecole['nomEcole']; ?></td>
+                        <td><?php echo $filiere['nomFiliere']; ?></td>
+                        <td><?php echo $promo['annee']; ?></td>
+                        <td><?php echo $classe['numGroupe']; ?></td>
+                    </tr>
+                </tbody>
+                </table>
+                <img src="res/img/ECE_LOGO.png" alt="img" id="logo_ece">
+            </div>
             </div>
         </div>
     </div>

@@ -27,6 +27,7 @@ $sess->ensureHasAuthority(User::ACCOUNT_TYPE_USER);
         <a href="/"><img class="logo" src="res/img/logo_skills_tracker_noir.png" alt="logo"></a>
         <a href="/listing.php"><button class="toolbar-btn"> <strong>Mes matières</strong></button></a>
         <a href="/competences.php"><button class="toolbar-btn"> <strong>Mes compétences</strong></button></a>
+        <a href="/pageGroupeOmnes.php"><button class="toolbar-btn"> <strong>My Omnes</strong></button></a>
         <div class="toolbar-logout">
             <a href="/logout.php"><button class="toolbar-btn"> <strong>Se déconnecter</strong></button></a>
         </div>
