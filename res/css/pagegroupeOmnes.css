@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+
+
+body {
+    font-family: 'Varela Round', sans-serif;
+}
 
 html {
     background-color: rgb(229, 226, 224);
@@ -8,25 +14,9 @@ html {
     width: 200px;
 }
 
-#header {
-    background-color: rgb(240, 240, 240);
-}
-
-.b1 {
-    height: 75px;
-    width: 200px;
-    border: none;
-    display: inline-block;
-    transition-duration: 0.6s;
-}
-
-.b1:hover {
-    background-color: rgb(232, 216, 194);
-}
 
 #wrapper {
     background-color: rgb(229, 226, 224);
-
 }
 
 .container {
@@ -39,10 +29,12 @@ h1 {
     background-color: rgb(229, 226, 224);
     text-shadow: 3px 3px rgb(235, 203, 160);
     text-align: center;
+    font-family: 'Varela Round', sans-serif;
 }
 
 h3 {
     text-decoration: underline;
+    font-family: 'Varela Round', sans-serif;
 }
 
 li:hover {
@@ -71,7 +63,7 @@ li:hover {
 }
 
 
-#logo_ece{
+#logo_ece {
     height: 55%;
     width: 60%;
 }

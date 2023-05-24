@@ -29,14 +29,11 @@ $competences = Competence::getCompetencesCurrentMonth(DatabaseController::getIns
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="res/css/pagegroupeOmnes.css" rel="stylesheet" type="text/css" />
-    <link href="res/css/nettoyageStrong.css" rel="stylesheet" type="text/css" />
-    <link href="res/css/toolbar.css" rel="stylesheet" type="text/css" />
     <link href="res/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="res/css/toolbar.css" rel="stylesheet" type="text/css" />
+    <link href="res/css/pagegroupeOmnes.css" rel="stylesheet" type="text/css" />
     <link rel="icon" type="res/img/icon_onglet.png" href="icon_onglet.png">
-
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="res/js/jquery-3.7.0.min.js"></script>
     <title>Groupe OMNES</title>
 </head>
 
